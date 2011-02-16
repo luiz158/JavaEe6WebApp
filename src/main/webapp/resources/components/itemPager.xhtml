@@ -1,0 +1,107 @@
+<!--
+
+    Copyright (C) 2010 Ian C. Smith <m4r35n357@gmail.com>
+
+    This file is part of JavaEE6Webapp.
+
+        JavaEE6Webapp is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        JavaEE6Webapp is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with JavaEE6Webapp.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" 
+    "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:composite="http://java.sun.com/jsf/composite">
+
+    <composite:interface>
+        <composite:attribute name="controller" required="true" />
+    </composite:interface>
+
+    <composite:implementation>
+        <h:panelGrid columns="2">
+            <h:outputText value="#{msg.listpageTitle}" />
+            <h:form>
+                <h:commandButton value="#{msg.createLabel}" action="#{cc.attrs.controller.create}" />
+            </h:form>
+        </h:panelGrid>
+
+        <h:form>
+            <h:dataTable id="table" value="#{cc.attrs.controller.pagedItems}" var="item">
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg.idLabel}" />
+                    </f:facet>
+                    <h:outputText value="#{item.id}" />
+                </h:column>
+
+                <h:column>
+                    <h:commandLink action="#{cc.attrs.controller.edit(item.id)}">
+                        <h:graphicImage library="images" name="icons/text-editor.png" />
+                    </h:commandLink>
+                </h:column>
+
+                <h:column>
+                    <h:commandLink action="#{cc.attrs.controller.delete(item.id)}">
+                        <h:graphicImage library="images" name="icons/edittrash.png" />
+                        <f:ajax render="table" />
+                    </h:commandLink>
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="#{msg.nameLabel}" />
+                    </f:facet>
+                    <h:outputText value="#{item.name}" />
+                </h:column>
+
+                <composite:insertChildren />
+            </h:dataTable>
+
+            <h:panelGrid columns="7">
+                <h:commandButton value="First" action="#{cc.attrs.controller.firstPage}" rendered="#{cc.attrs.controller.pageNo gt 0}">
+                    <f:ajax render="table" />
+                </h:commandButton>
+
+                <h:commandLink action="#{cc.attrs.controller.previousPage}" rendered="#{cc.attrs.controller.pageNo gt 0}">
+                    <h:graphicImage library="images" name="icons/list-remove.png" />
+                    <f:ajax render="table" />
+                </h:commandLink>
+
+                <h:outputText value=" Page #{cc.attrs.controller.pageNo + 1} of #{cc.attrs.controller.totalPages + 1} " />
+
+                <h:commandLink action="#{cc.attrs.controller.nextPage}" rendered="#{cc.attrs.controller.pageNo lt cc.attrs.controller.totalPages}">
+                    <h:graphicImage library="images" name="icons/add.png" />
+                    <f:ajax render="table" />
+                </h:commandLink>
+
+                <h:commandButton value="Last" action="#{cc.attrs.controller.lastPage}" rendered="#{cc.attrs.controller.pageNo lt cc.attrs.controller.totalPages}">
+                    <f:ajax render="table" />
+                </h:commandButton>
+
+                <h:commandButton value="Change" action="#{cc.attrs.controller.changePageSize}">
+                    <h:selectOneMenu value="#{cc.attrs.controller.pagesize}">
+                        <f:selectItem itemValue="10" itemLabel="10"/>
+                        <f:selectItem itemValue="20" itemLabel="20"/>
+                        <f:selectItem itemValue="50" itemLabel="50"/>
+                        <f:selectItem itemValue="100" itemLabel="100"/>
+                    </h:selectOneMenu>
+                    <h:outputText value=" items per page" />
+                </h:commandButton>
+            </h:panelGrid>
+        </h:form>
+    </composite:implementation>
+
+</html>

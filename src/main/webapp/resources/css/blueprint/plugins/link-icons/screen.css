@@ -1,0 +1,59 @@
+/**
+ * Copyright (C) 2010 Ian C. Smith <m4r35n357@gmail.com>
+ *
+ * This file is part of JavaEE6Webapp.
+ *
+ *     JavaEE6Webapp is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     JavaEE6Webapp is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with JavaEE6Webapp.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/* --------------------------------------------------------------
+
+   link-icons.css
+   * Icons for links based on protocol or file type.
+
+   See the Readme file in this folder for additional instructions.
+
+-------------------------------------------------------------- */
+
+/* Use this class if a link gets an icon when it shouldn't. */
+body a.noicon {
+  background:transparent none !important;
+  padding:0 !important;
+  margin:0 !important;
+}
+
+/* Make sure the icons are not cut */
+a[href^="http:"], a[href^="mailto:"], a[href^="http:"]:visited,
+a[href$=".pdf"], a[href$=".doc"], a[href$=".xls"], a[href$=".rss"],
+a[href$=".rdf"], a[href^="aim:"] {
+  padding:2px 22px 2px 0;
+  margin:-2px 0;
+  background-repeat: no-repeat;
+  background-position: right center;
+}
+
+/* External links */
+a[href^="http:"]          { background-image: url(icons/external.png); }
+a[href^="mailto:"]        { background-image: url(icons/email.png); }
+a[href^="http:"]:visited  { background-image: url(icons/visited.png); }
+
+/* Files */
+a[href$=".pdf"]   { background-image: url(icons/pdf.png); }
+a[href$=".doc"]   { background-image: url(icons/doc.png); }
+a[href$=".xls"]   { background-image: url(icons/xls.png); }
+
+/* Misc */
+a[href$=".rss"],
+a[href$=".rdf"]   { background-image: url(icons/feed.png); }
+a[href^="aim:"]   { background-image: url(icons/im.png); }

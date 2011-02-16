@@ -1,0 +1,181 @@
+<!--
+
+    Copyright (C) 2010 Ian C. Smith <m4r35n357@gmail.com>
+
+    This file is part of JavaEE6Webapp.
+
+        JavaEE6Webapp is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        JavaEE6Webapp is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with JavaEE6Webapp.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<domain log-root="${com.sun.aas.instanceRoot}/logs" application-root="${com.sun.aas.instanceRoot}/applications" version="10.0">
+  <system-applications />
+  
+  <applications />
+  
+  <resources>
+    <jdbc-resource jndi-name="jdbc/__TimerPool" pool-name="__TimerPool" object-type="system-admin" />
+    
+    <jdbc-resource jndi-name="jdbc/sample" pool-name="WebAppPool" />
+    
+    <jdbc-connection-pool name="__TimerPool" datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource">
+      <property name="databaseName" value="${com.sun.aas.instanceRoot}/lib/databases/ejbtimer" />
+      <property name="connectionAttributes" value=";create=true" />
+    </jdbc-connection-pool>
+    
+    <jdbc-connection-pool name="WebAppPool" datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource">
+       <property name="databaseName" value="memory:testdb" />
+       <property name="connectionAttributes" value=";create=true" />
+     </jdbc-connection-pool>
+  </resources>
+  
+  <servers>
+    <server name="server" config-ref="server-config">
+      <resource-ref ref="jdbc/__TimerPool" />
+      <resource-ref ref="jdbc/sample" />
+    </server>
+  </servers>
+  
+ <configs>
+   <config name="server-config">
+     <http-service>
+        <access-log rotation-interval-in-minutes="15" rotation-suffix="yyyy-MM-dd" />
+        <virtual-server id="server" />
+        <property name="accessLoggingEnabled" value="false" />
+      </http-service>
+      
+      <iiop-service>
+        <orb use-thread-pool-ids="thread-pool-1" />
+        <iiop-listener address="0.0.0.0" port="3700" id="orb-listener-1" />
+        <iiop-listener security-enabled="true" address="0.0.0.0" port="3820" id="SSL">
+          <ssl cert-nickname="s1as" />
+        </iiop-listener>
+        
+        <iiop-listener security-enabled="true" address="0.0.0.0" port="3920" id="SSL_MUTUALAUTH">
+          <ssl cert-nickname="s1as" client-auth-enabled="true" />
+        </iiop-listener>
+      </iiop-service>
+      
+      <admin-service type="das-and-server" system-jmx-connector-name="system">
+        <jmx-connector name="system" enabled="false" auth-realm-name="admin-realm" security-enabled="false" address="0.0.0.0" port="8686" />
+        <das-config autodeploy-enabled="false" dynamic-reload-enabled="true" deploy-xml-validation="full" autodeploy-dir="${com.sun.aas.instanceRoot}/autodeploy" />
+        <property name="adminConsoleContextRoot" value="/admin" />
+        <property name="adminConsoleDownloadLocation" value="${com.sun.aas.installRoot}/lib/install/applications/admingui.war" />
+        <property name="ipsRoot" value="${com.sun.aas.installRoot}/.." />
+      </admin-service>
+      
+      <connector-service shutdown-timeout-in-seconds="30" />
+      
+      <ejb-container steady-pool-size="0" max-pool-size="32" session-store="${com.sun.aas.instanceRoot}/session-store" pool-resize-quantity="8">
+        <property name="disable-nonportable-jndi-names" value="true" />
+        <ejb-timer-service />
+      </ejb-container>
+      
+      <mdb-container steady-pool-size="0" max-pool-size="32" pool-resize-quantity="8" />
+      
+      <jms-service type="EMBEDDED" default-jms-host="default_JMS_host">
+        <jms-host name="default_JMS_host" host="localhost" port="7676" admin-user-name="admin" admin-password="admin" />
+      </jms-service>
+      
+      <log-service file="${com.sun.aas.instanceRoot}/logs/server.log" log-rotation-limit-in-bytes="2000000">
+        <module-log-levels />
+      </log-service>
+      
+      <security-service activate-default-principal-to-role-mapping="true" jacc="simple">
+        <auth-realm name="admin-realm" classname="com.sun.enterprise.security.auth.realm.file.FileRealm">
+          <property name="jaas-context" value="fileRealm" />
+          <property name="file" value="${com.sun.aas.instanceRoot}/config/admin-keyfile" />
+        </auth-realm>
+        
+        <auth-realm name="file" classname="com.sun.enterprise.security.auth.realm.file.FileRealm">
+          <property name="jaas-context" value="fileRealm" />
+          <property name="file" value="${com.sun.aas.instanceRoot}/config/keyfile" />
+        </auth-realm>
+        
+        <auth-realm name="certificate" classname="com.sun.enterprise.security.auth.realm.certificate.CertificateRealm" />
+        
+        <jacc-provider name="default" policy-configuration-factory-provider="com.sun.enterprise.security.provider.PolicyConfigurationFactoryImpl" policy-provider="com.sun.enterprise.security.provider.PolicyWrapper">
+          <property name="repository" value="${com.sun.aas.instanceRoot}/generated/policy" />
+        </jacc-provider>
+        
+        <jacc-provider name="simple" policy-configuration-factory-provider="com.sun.enterprise.security.jacc.provider.SimplePolicyConfigurationFactory" policy-provider="com.sun.enterprise.security.jacc.provider.SimplePolicyProvider" />
+        
+        <audit-module name="default" classname="com.sun.enterprise.security.Audit">
+          <property name="auditOn" value="false" />
+        </audit-module>
+        
+        <message-security-config auth-layer="SOAP">
+          <provider-config provider-id="XWS_ClientProvider" class-name="com.sun.xml.wss.provider.ClientSecurityAuthModule" provider-type="client">
+            <request-policy auth-source="content" />
+            <response-policy auth-source="content" />
+            <property name="encryption.key.alias" value="s1as" />
+            <property name="signature.key.alias" value="s1as" />
+            <property name="dynamic.username.password" value="false" />
+            <property name="debug" value="false" />
+          </provider-config>
+          
+          <provider-config provider-id="ClientProvider" class-name="com.sun.xml.wss.provider.ClientSecurityAuthModule" provider-type="client">
+            <request-policy auth-source="content" />
+            <response-policy auth-source="content" />
+            <property name="encryption.key.alias" value="s1as" />
+            <property name="signature.key.alias" value="s1as" />
+            <property name="dynamic.username.password" value="false" />
+            <property name="debug" value="false" />
+            <property name="security.config" value="${com.sun.aas.instanceRoot}/config/wss-server-config-1.0.xml" />
+          </provider-config>
+          
+          <provider-config provider-id="XWS_ServerProvider" class-name="com.sun.xml.wss.provider.ServerSecurityAuthModule" provider-type="server">
+            <request-policy auth-source="content" />
+            <response-policy auth-source="content" />
+            <property name="encryption.key.alias" value="s1as" />
+            <property name="signature.key.alias" value="s1as" />
+            <property name="debug" value="false" />
+          </provider-config>
+          
+          <provider-config provider-id="ServerProvider" class-name="com.sun.xml.wss.provider.ServerSecurityAuthModule" provider-type="server">
+            <request-policy auth-source="content" />
+            <response-policy auth-source="content" />
+            <property name="encryption.key.alias" value="s1as" />
+            <property name="signature.key.alias" value="s1as" />
+            <property name="debug" value="false" />
+            <property name="security.config" value="${com.sun.aas.instanceRoot}/config/wss-server-config-1.0.xml" />
+          </provider-config>
+        </message-security-config>
+        
+      </security-service>
+      
+      <monitoring-service>
+        <module-monitoring-levels />
+      </monitoring-service>
+      
+      <transaction-service tx-log-dir="${com.sun.aas.instanceRoot}/logs" />
+      
+      <network-config>
+        <protocols />        
+        <network-listeners />        
+        <transports>
+          <transport name="tcp" />
+        </transports>
+      </network-config>
+      
+      <thread-pools>
+          <thread-pool name="http-thread-pool" max-queue-size="4096" />          
+          <thread-pool name="thread-pool-1" max-thread-pool-size="200"/>
+      </thread-pools>
+    </config>
+  </configs>
+  
+  <property name="administrative.domain.name" value="domain1"/>
+</domain>
+

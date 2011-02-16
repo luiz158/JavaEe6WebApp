@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2010 Ian C. Smith <m4r35n357@gmail.com>
+
+    This file is part of JavaEE6Webapp.
+
+        JavaEE6Webapp is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        JavaEE6Webapp is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with JavaEE6Webapp.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<persistence version="2.0" xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
+  <persistence-unit name="jpaPU" transaction-type="JTA">
+    <jta-data-source>jdbc/sample</jta-data-source>
+    <exclude-unlisted-classes>false</exclude-unlisted-classes>
+    <properties>
+      <!-- create tables at deployment -->
+      <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
+      <!-- log sqls executed in server.log -->
+      <property name="eclipselink.logging.level" value="FINE"/>
+      <!-- Instruct EclipseLink to not log execeptions it throws. Lets the application decide about it-->
+      <property name="eclipselink.logging.exceptions" value="false"/>
+    </properties>
+  </persistence-unit>
+</persistence>

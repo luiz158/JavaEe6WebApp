@@ -1,0 +1,82 @@
+/**
+ * Copyright (C) 2010 Ian C. Smith <m4r35n357@gmail.com>
+ *
+ * This file is part of JavaEE6Webapp.
+ *
+ *     JavaEE6Webapp is free software: you can redistribute it and/or modify
+ *     it under the terms of the GNU General Public License as published by
+ *     the Free Software Foundation, either version 3 of the License, or
+ *     (at your option) any later version.
+ *
+ *     JavaEE6Webapp is distributed in the hope that it will be useful,
+ *     but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *     MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *     GNU General Public License for more details.
+ *
+ *     You should have received a copy of the GNU General Public License
+ *     along with JavaEE6Webapp.  If not, see <http://www.gnu.org/licenses/>.
+ */
+
+/*
+html { background-color: #ccc; }
+body { margin: 10px 10px 0px 10px; color: #040; font-family: arial, verdana, sans-serif; }
+img { border: none; }
+h1, h2, h3, h4, h5, h6 { color: #008; }
+li { list-style-type: none; }
+
+a:link { color: #c00; }
+a:visited { color: #808; }
+a:hover { background-color: #ddd; }
+*/
+.menu { margin: 2px 10px 2px 2px; padding: 2px 2px 2px 2px; list-style-type: none; }
+.menu li { margin: 4px 0px 4px 0px; padding: 0px 0px 0px 0px; background-color: #eee; }
+.menu a { display: block; }
+.menu a:link, .menu a:visited, .menu a:active { color: #444; }
+.menu a:hover { color: #eee; background-color: #444; }
+/*
+#topRow { margin: 0px 0px 20px 0px; border-style: none;	float: left; }
+#leftColumn { clear: both; border-style: none; float: left;	width: 20%; }
+#rightColumn { border-style: none; float: right; width: 80%; }
+#bottomRow { margin: 20px; clear: both; border-style: none;	float: left; }
+
+#rightColumn table { width: 100%; }
+#rightobject { width: 100%; height: 600px; }
+.scrollingArea { width: 100%; height: 600px; overflow: auto; }
+
+#banner { border-style: none; float: left; font-size: 200%; }
+#clock { border-style: none; float: right; }
+#clockDisplay { color: #444; background-color: #eee; font-variant: small-caps; font-size: 90%; }
+
+#navigation { clear: both; border-style: none; float: left; }
+#localeselectors { margin: 10px 20px 10px 20px; border-style: none; float: right; font-size: 90%; }
+#themeselectors { margin: 10px 20px 10px 20px; border-style: none; float: right; font-size: 90%; }
+#pageInfo { border-style: none; float: right; }
+
+*/
+.errorMessage { color: #f00; }
+/*
+.ibutton { background-color: #ccc; }
+.textinput { background-color: #ffc; }
+.selectbg { background-color: #cff; }
+
+.entitylc { margin: 0px 0px 0px 0px; padding: 0px 0px 0px 0px; border-style: none; float: left; }
+.entityrc { margin: 0px 0px 0px 0px; border-style: none; float: left; }
+
+.field { margin: 10px 0px 10px 0px; padding: 0px 0px 0px 0px; }
+
+.entitytables { clear:	both; }
+
+.dateTime1 { font-family: monospace; font-stretch: condensed; }
+.rssEntry { font-size: 80%; }
+
+.ajaxLink { color: #c00; }
+.reply { clear:	both; color: #008; background-color: #fff; font-variant: small-caps; font-size: 75%; }
+
+.badfeed { color: #00f; }
+*/
+/*
+tr:nth-child(4n+0) { background-color: #ddd; }
+tr:nth-child(4n+1) { background-color: #ddd; }
+tr:nth-child(4n+2) { background-color: #bbb; }
+tr:nth-child(4n+3) { background-color: #bbb; }
+*/

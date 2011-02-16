@@ -1,0 +1,426 @@
+<!--
+
+    Copyright (C) 2010 Ian C. Smith <m4r35n357@gmail.com>
+
+    This file is part of JavaEE6Webapp.
+
+        JavaEE6Webapp is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        JavaEE6Webapp is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with JavaEE6Webapp.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<domain log-root="${com.sun.aas.instanceRoot}/logs" application-root="${com.sun.aas.instanceRoot}/applications" version="22">
+  <system-applications>
+    <application context-root="" location="${com.sun.aas.installRootURI}/lib/install/applications/__admingui" name="__admingui" directory-deployed="true" object-type="system-admin">
+      <module name="__admingui">
+        <engine sniffer="web"></engine>
+        <engine sniffer="security"></engine>
+      </module>
+    </application>
+  </system-applications>
+  <applications>
+<!--    <application context-root="/jee6webapp" location="file:/home/super/Documents/projects/webapp/target/webapp/" name="uk.me.doitto_webapp_war_0.0.1-SNAPSHOT" directory-deployed="true" object-type="user">-->
+<!--      <property name="org.glassfish.persistence.create_table_value_property.jpaPU" value="true"></property>-->
+<!--      <property name="org.glassfish.persistence.resource_jndi_name_property.jpaPU" value="jdbc/sample"></property>-->
+<!--      <property name="org.glassfish.persistence.drop_table_value_property.jpaPU" value="false"></property>-->
+<!--      <property name="org.glassfish.persistence.drop_jdbc_file_name_property.jpaPU" value="uk.me.doitto_webapp_war_0.0.1-SNAPSHOT_jpaPU_dropDDL.jdbc"></property>-->
+<!--      <property name="org.glassfish.persistence.processor_type.jpaPU" value="JPA"></property>-->
+<!--      <property name="org.glassfish.persistence.create_jdbc_file_name_property.jpaPU" value="uk.me.doitto_webapp_war_0.0.1-SNAPSHOT_jpaPU_createDDL.jdbc"></property>-->
+<!--      <property name="appLocation" value="file:/home/super/Documents/projects/webapp/target/webapp/"></property>-->
+<!--      <property name="org.glassfish.ejb.container.application_unique_id" value="84149918851137536"></property>-->
+<!--      <property name="org.glassfish.persistence.app_name_property" value="uk.me.doitto_webapp_war_0.0.1-SNAPSHOT"></property>-->
+<!--      <property name="defaultAppName" value="webapp"></property>-->
+<!--      <module name="uk.me.doitto_webapp_war_0.0.1-SNAPSHOT">-->
+<!--        <engine sniffer="ejb"></engine>-->
+<!--        <engine sniffer="security"></engine>-->
+<!--        <engine sniffer="jpa"></engine>-->
+<!--        <engine sniffer="web"></engine>-->
+<!--        <engine sniffer="weld"></engine>-->
+<!--      </module>-->
+<!--    </application>-->
+  </applications>
+  <resources>
+    <jdbc-resource pool-name="SamplePool" jndi-name="jdbc/sample"></jdbc-resource>
+    <jdbc-resource pool-name="__TimerPool" jndi-name="jdbc/__TimerPool" object-type="system-admin"></jdbc-resource>
+    <jdbc-resource pool-name="DerbyPool" jndi-name="jdbc/__default"></jdbc-resource>
+    <jdbc-connection-pool datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource" name="__TimerPool">
+      <property name="databaseName" value="${com.sun.aas.instanceRoot}/lib/databases/ejbtimer"></property>
+      <property name="connectionAttributes" value=";create=true"></property>
+    </jdbc-connection-pool>
+    <jdbc-connection-pool name="SamplePool" datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource">
+     <property value="memory:testdb" name="databaseName" />
+<!--     <property value="${com.sun.aas.instanceRoot}/lib/databases/default" name="databaseName" />-->
+       <property value=";create=true" name="connectionAttributes" />
+    </jdbc-connection-pool>
+    <jdbc-connection-pool datasource-classname="org.apache.derby.jdbc.ClientDataSource" is-isolation-level-guaranteed="false" res-type="javax.sql.DataSource" name="DerbyPool">
+      <property name="PortNumber" value="1527"></property>
+      <property name="Password" value="APP"></property>
+      <property name="User" value="APP"></property>
+      <property name="serverName" value="localhost"></property>
+      <property name="DatabaseName" value="sun-appserv-samples"></property>
+      <property name="connectionAttributes" value=";create=true"></property>
+    </jdbc-connection-pool>
+<!--    <jdbc-connection-pool datasource-classname="org.apache.derby.jdbc.ClientDataSource" res-type="javax.sql.DataSource" name="SamplePool">-->
+<!--      <property name="DatabaseName" value="sample"></property>-->
+<!--      <property name="User" value="app"></property>-->
+<!--      <property name="Password" value="app"></property>-->
+<!--      <property name="URL" value="jdbc:derby://localhost:1527/sample"></property>-->
+<!--      <property name="PortNumber" value="1527"></property>-->
+<!--      <property name="serverName" value="localhost"></property>-->
+<!--    </jdbc-connection-pool>-->
+  </resources>
+  <servers>
+    <server name="server" config-ref="server-config">
+<!--      <application-ref ref="__admingui" virtual-servers="__asadmin"></application-ref>-->
+<!--      <application-ref ref="uk.me.doitto_webapp_war_0.0.1-SNAPSHOT" virtual-servers="server"></application-ref>-->
+      <resource-ref ref="jdbc/__TimerPool"></resource-ref>
+      <resource-ref ref="jdbc/__default"></resource-ref>
+      <resource-ref ref="jdbc/sample"></resource-ref>
+    </server>
+  </servers>
+  <nodes>
+    <node node-host="localhost" name="localhost" type="CONFIG" install-dir="${com.sun.aas.installRoot}"></node>
+  </nodes>
+  <configs>
+    <config name="server-config">
+      <http-service>
+        <access-log></access-log>
+        <virtual-server id="server" network-listeners="http-listener-1,http-listener-2"></virtual-server>
+        <virtual-server id="__asadmin" network-listeners="admin-listener"></virtual-server>
+      </http-service>
+      <iiop-service>
+        <orb use-thread-pool-ids="thread-pool-1"></orb>
+        <iiop-listener id="orb-listener-1" port="3700" address="0.0.0.0" lazy-init="true"></iiop-listener>
+        <iiop-listener id="SSL" port="3820" address="0.0.0.0" security-enabled="true">
+          <ssl classname="com.sun.enterprise.security.ssl.GlassfishSSLImpl" cert-nickname="s1as"></ssl>
+        </iiop-listener>
+        <iiop-listener id="SSL_MUTUALAUTH" port="3920" address="0.0.0.0" security-enabled="true">
+          <ssl classname="com.sun.enterprise.security.ssl.GlassfishSSLImpl" cert-nickname="s1as" client-auth-enabled="true"></ssl>
+        </iiop-listener>
+      </iiop-service>
+      <admin-service system-jmx-connector-name="system" type="das-and-server">
+        <jmx-connector port="8686" address="0.0.0.0" security-enabled="false" auth-realm-name="admin-realm" name="system"></jmx-connector>
+        <das-config dynamic-reload-enabled="true" autodeploy-dir="${com.sun.aas.instanceRoot}/autodeploy" autodeploy-enabled="true"></das-config>
+        <property name="adminConsoleContextRoot" value="/admin"></property>
+        <property name="adminConsoleDownloadLocation" value="${com.sun.aas.installRoot}/lib/install/applications/admingui.war"></property>
+        <property name="ipsRoot" value="${com.sun.aas.installRoot}/.."></property>
+        <property name="adminConsoleVersion" value="3.1,0-22:20100928T122347Z"></property>
+      </admin-service>
+      <connector-service></connector-service>
+<!--      <web-container>-->
+<!--        <session-config>-->
+<!--          <session-manager>-->
+<!--            <manager-properties></manager-properties>-->
+<!--            <store-properties></store-properties>-->
+<!--          </session-manager>-->
+<!--          <session-properties></session-properties>-->
+<!--        </session-config>-->
+<!--      </web-container>-->
+      <ejb-container session-store="${com.sun.aas.instanceRoot}/session-store">
+        <ejb-timer-service></ejb-timer-service>
+      </ejb-container>
+      <mdb-container></mdb-container>
+      <jms-service default-jms-host="default_JMS_host" type="EMBEDDED">
+        <jms-host host="localhost" name="default_JMS_host" lazy-init="true"></jms-host>
+      </jms-service>
+      <security-service>
+        <auth-realm classname="com.sun.enterprise.security.auth.realm.file.FileRealm" name="admin-realm">
+          <property name="file" value="${com.sun.aas.instanceRoot}/config/admin-keyfile"></property>
+          <property name="jaas-context" value="fileRealm"></property>
+        </auth-realm>
+        <auth-realm classname="com.sun.enterprise.security.auth.realm.file.FileRealm" name="file">
+          <property name="file" value="${com.sun.aas.instanceRoot}/config/keyfile"></property>
+          <property name="jaas-context" value="fileRealm"></property>
+        </auth-realm>
+        <auth-realm classname="com.sun.enterprise.security.auth.realm.certificate.CertificateRealm" name="certificate"></auth-realm>
+        <jacc-provider policy-provider="com.sun.enterprise.security.provider.PolicyWrapper" name="default" policy-configuration-factory-provider="com.sun.enterprise.security.provider.PolicyConfigurationFactoryImpl">
+          <property name="repository" value="${com.sun.aas.instanceRoot}/generated/policy"></property>
+        </jacc-provider>
+        <jacc-provider policy-provider="com.sun.enterprise.security.jacc.provider.SimplePolicyProvider" name="simple" policy-configuration-factory-provider="com.sun.enterprise.security.jacc.provider.SimplePolicyConfigurationFactory"></jacc-provider>
+        <audit-module classname="com.sun.enterprise.security.Audit" name="default">
+          <property name="auditOn" value="false"></property>
+        </audit-module>
+        <message-security-config auth-layer="SOAP">
+          <provider-config provider-type="client" provider-id="XWS_ClientProvider" class-name="com.sun.xml.wss.provider.ClientSecurityAuthModule">
+            <request-policy auth-source="content"></request-policy>
+            <response-policy auth-source="content"></response-policy>
+            <property name="encryption.key.alias" value="s1as"></property>
+            <property name="signature.key.alias" value="s1as"></property>
+            <property name="dynamic.username.password" value="false"></property>
+            <property name="debug" value="false"></property>
+          </provider-config>
+          <provider-config provider-type="client" provider-id="ClientProvider" class-name="com.sun.xml.wss.provider.ClientSecurityAuthModule">
+            <request-policy auth-source="content"></request-policy>
+            <response-policy auth-source="content"></response-policy>
+            <property name="encryption.key.alias" value="s1as"></property>
+            <property name="signature.key.alias" value="s1as"></property>
+            <property name="dynamic.username.password" value="false"></property>
+            <property name="debug" value="false"></property>
+            <property name="security.config" value="${com.sun.aas.instanceRoot}/config/wss-server-config-1.0.xml"></property>
+          </provider-config>
+          <provider-config provider-type="server" provider-id="XWS_ServerProvider" class-name="com.sun.xml.wss.provider.ServerSecurityAuthModule">
+            <request-policy auth-source="content"></request-policy>
+            <response-policy auth-source="content"></response-policy>
+            <property name="encryption.key.alias" value="s1as"></property>
+            <property name="signature.key.alias" value="s1as"></property>
+            <property name="debug" value="false"></property>
+          </provider-config>
+          <provider-config provider-type="server" provider-id="ServerProvider" class-name="com.sun.xml.wss.provider.ServerSecurityAuthModule">
+            <request-policy auth-source="content"></request-policy>
+            <response-policy auth-source="content"></response-policy>
+            <property name="encryption.key.alias" value="s1as"></property>
+            <property name="signature.key.alias" value="s1as"></property>
+            <property name="debug" value="false"></property>
+            <property name="security.config" value="${com.sun.aas.instanceRoot}/config/wss-server-config-1.0.xml"></property>
+          </provider-config>
+        </message-security-config>
+      </security-service>
+      <transaction-service tx-log-dir="${com.sun.aas.instanceRoot}/logs"></transaction-service>
+      <java-config debug-options="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9009" system-classpath="" classpath-suffix="">
+        <jvm-options>-XX:MaxPermSize=192m</jvm-options>
+        <jvm-options>-client</jvm-options>
+        <jvm-options>-XX:+UnlockDiagnosticVMOptions</jvm-options>
+        <jvm-options>-Djava.endorsed.dirs=${com.sun.aas.installRoot}/modules/endorsed${path.separator}${com.sun.aas.installRoot}/lib/endorsed</jvm-options>
+        <jvm-options>-Djava.security.policy=${com.sun.aas.instanceRoot}/config/server.policy</jvm-options>
+        <jvm-options>-Djava.security.auth.login.config=${com.sun.aas.instanceRoot}/config/login.conf</jvm-options>
+        <jvm-options>-Dcom.sun.enterprise.security.httpsOutboundKeyAlias=s1as</jvm-options>
+        <jvm-options>-Xmx512m</jvm-options>
+        <jvm-options>-Djavax.net.ssl.keyStore=${com.sun.aas.instanceRoot}/config/keystore.jks</jvm-options>
+        <jvm-options>-Djavax.net.ssl.trustStore=${com.sun.aas.instanceRoot}/config/cacerts.jks</jvm-options>
+        <jvm-options>-Djava.ext.dirs=${com.sun.aas.javaRoot}/lib/ext${path.separator}${com.sun.aas.javaRoot}/jre/lib/ext${path.separator}${com.sun.aas.instanceRoot}/lib/ext</jvm-options>
+        <jvm-options>-Djdbc.drivers=org.apache.derby.jdbc.ClientDriver</jvm-options>
+        <jvm-options>-DANTLR_USE_DIRECT_CLASS_LOADING=true</jvm-options>
+        <jvm-options>-Dcom.sun.enterprise.config.config_environment_factory_class=com.sun.enterprise.config.serverbeans.AppserverConfigEnvironmentFactory</jvm-options>
+        <jvm-options>-Dosgi.shell.telnet.port=6666</jvm-options>
+        <jvm-options>-Dosgi.shell.telnet.maxconn=1</jvm-options>
+        <jvm-options>-Dosgi.shell.telnet.ip=127.0.0.1</jvm-options>
+        <jvm-options>-Dfelix.fileinstall.dir=${com.sun.aas.installRoot}/modules/autostart/</jvm-options>
+        <jvm-options>-Dfelix.fileinstall.poll=5000</jvm-options>
+        <jvm-options>-Dfelix.fileinstall.log.level=3</jvm-options>
+        <jvm-options>-Dfelix.fileinstall.bundles.new.start=true</jvm-options>
+        <jvm-options>-Dfelix.fileinstall.bundles.startTransient=true</jvm-options>
+        <jvm-options>-Dorg.glassfish.web.rfc2109_cookie_names_enforced=false</jvm-options>
+        <jvm-options>-XX:NewRatio=2</jvm-options>
+      </java-config>
+      <network-config>
+        <protocols>
+<!--          <protocol name="http-listener-1">-->
+<!--            <http default-virtual-server="server" max-connections="250">-->
+<!--              <file-cache></file-cache>-->
+<!--            </http>-->
+<!--          </protocol>-->
+<!--          <protocol security-enabled="true" name="http-listener-2">-->
+<!--            <http default-virtual-server="server" max-connections="250">-->
+<!--              <file-cache></file-cache>-->
+<!--            </http>-->
+<!--            <ssl classname="com.sun.enterprise.security.ssl.GlassfishSSLImpl" ssl3-enabled="false" cert-nickname="s1as"></ssl>-->
+<!--          </protocol>-->
+<!--          <protocol name="admin-listener">-->
+<!--            <http default-virtual-server="__asadmin" max-connections="250" encoded-slash-enabled="true">-->
+<!--              <file-cache></file-cache>-->
+<!--            </http>-->
+<!--          </protocol>-->
+        </protocols>
+        <network-listeners>
+<!--          <network-listener port="8080" protocol="http-listener-1" transport="tcp" name="http-listener-1" thread-pool="http-thread-pool"></network-listener>-->
+<!--          <network-listener port="8181" protocol="http-listener-2" transport="tcp" name="http-listener-2" thread-pool="http-thread-pool"></network-listener>-->
+<!--          <network-listener port="4848" protocol="admin-listener" transport="tcp" name="admin-listener" thread-pool="http-thread-pool"></network-listener>-->
+        </network-listeners>
+        <transports>
+          <transport name="tcp"></transport>
+        </transports>
+      </network-config>
+      <thread-pools>
+        <thread-pool name="http-thread-pool"></thread-pool>
+        <thread-pool max-thread-pool-size="200" name="thread-pool-1"></thread-pool>
+      </thread-pools>
+      <monitoring-service>
+        <module-monitoring-levels></module-monitoring-levels>
+      </monitoring-service>
+      <group-management-service>
+        <failure-detection></failure-detection>
+      </group-management-service>
+    </config>
+<!--    <config name="default-config">-->
+<!--      <http-service>-->
+<!--        <access-log></access-log>-->
+<!--        <virtual-server id="server" network-listeners="http-listener-1, http-listener-2">-->
+<!--          <property name="default-web-xml" value="${com.sun.aas.instanceRoot}/config/default-web.xml"></property>-->
+<!--        </virtual-server>-->
+<!--        <virtual-server id="__asadmin" network-listeners="admin-listener"></virtual-server>-->
+<!--      </http-service>-->
+<!--      <iiop-service>-->
+<!--        <orb use-thread-pool-ids="thread-pool-1"></orb>-->
+<!--        <iiop-listener id="orb-listener-1" port="${IIOP_LISTENER_PORT}" address="0.0.0.0"></iiop-listener>-->
+<!--        <iiop-listener id="SSL" port="${IIOP_SSL_LISTENER_PORT}" address="0.0.0.0" security-enabled="true">-->
+<!--          <ssl classname="com.sun.enterprise.security.ssl.GlassfishSSLImpl" cert-nickname="s1as"></ssl>-->
+<!--        </iiop-listener>-->
+<!--        <iiop-listener id="SSL_MUTUALAUTH" port="${IIOP_SSL_MUTUALAUTH_PORT}" address="0.0.0.0" security-enabled="true">-->
+<!--          <ssl classname="com.sun.enterprise.security.ssl.GlassfishSSLImpl" cert-nickname="s1as" client-auth-enabled="true"></ssl>-->
+<!--        </iiop-listener>-->
+<!--      </iiop-service>-->
+<!--      <admin-service system-jmx-connector-name="system">-->
+<!--        <jmx-connector port="${JMX_SYSTEM_CONNECTOR_PORT}" address="0.0.0.0" security-enabled="false" auth-realm-name="admin-realm" name="system"></jmx-connector>-->
+<!--        <das-config dynamic-reload-enabled="true" autodeploy-dir="${com.sun.aas.instanceRoot}/autodeploy" autodeploy-enabled="true"></das-config>-->
+<!--        <property name="adminConsoleDownloadLocation" value="${com.sun.aas.installRoot}/lib/install/applications/admingui.war"></property>-->
+<!--      </admin-service>-->
+<!--      <web-container>-->
+<!--        <session-config>-->
+<!--          <session-manager>-->
+<!--            <manager-properties></manager-properties>-->
+<!--            <store-properties></store-properties>-->
+<!--          </session-manager>-->
+<!--          <session-properties></session-properties>-->
+<!--        </session-config>-->
+<!--      </web-container>-->
+<!--      <ejb-container session-store="${com.sun.aas.instanceRoot}/session-store">-->
+<!--        <ejb-timer-service></ejb-timer-service>-->
+<!--      </ejb-container>-->
+<!--      <mdb-container></mdb-container>-->
+<!--      <jms-service addresslist-behavior="priority" default-jms-host="default_JMS_host" type="LOCAL">-->
+<!--        <jms-host port="${JMS_PROVIDER_PORT}" host="localhost" name="default_JMS_host"></jms-host>-->
+<!--      </jms-service>-->
+<!--      <log-service log-rotation-limit-in-bytes="2000000" file="${com.sun.aas.instanceRoot}/logs/server.log">-->
+<!--        <module-log-levels></module-log-levels>-->
+<!--      </log-service>-->
+<!--      <security-service>-->
+<!--        <auth-realm classname="com.sun.enterprise.security.auth.realm.file.FileRealm" name="admin-realm">-->
+<!--          <property name="file" value="${com.sun.aas.instanceRoot}/config/admin-keyfile"></property>-->
+<!--          <property name="jaas-context" value="fileRealm"></property>-->
+<!--        </auth-realm>-->
+<!--        <auth-realm classname="com.sun.enterprise.security.auth.realm.file.FileRealm" name="file">-->
+<!--          <property name="file" value="${com.sun.aas.instanceRoot}/config/keyfile"></property>-->
+<!--          <property name="jaas-context" value="fileRealm"></property>-->
+<!--        </auth-realm>-->
+<!--        <auth-realm classname="com.sun.enterprise.security.auth.realm.certificate.CertificateRealm" name="certificate"></auth-realm>-->
+<!--        <jacc-provider policy-provider="com.sun.enterprise.security.provider.PolicyWrapper" name="default" policy-configuration-factory-provider="com.sun.enterprise.security.provider.PolicyConfigurationFactoryImpl">-->
+<!--          <property name="repository" value="${com.sun.aas.instanceRoot}/generated/policy"></property>-->
+<!--        </jacc-provider>-->
+<!--        <jacc-provider policy-provider="com.sun.enterprise.security.jacc.provider.SimplePolicyProvider" name="simple" policy-configuration-factory-provider="com.sun.enterprise.security.jacc.provider.SimplePolicyConfigurationFactory"></jacc-provider>-->
+<!--        <audit-module classname="com.sun.enterprise.security.Audit" name="default">-->
+<!--          <property name="auditOn" value="false"></property>-->
+<!--        </audit-module>-->
+<!--        <message-security-config auth-layer="SOAP">-->
+<!--          <provider-config provider-type="client" provider-id="XWS_ClientProvider" class-name="com.sun.xml.wss.provider.ClientSecurityAuthModule">-->
+<!--            <request-policy auth-source="content"></request-policy>-->
+<!--            <response-policy auth-source="content"></response-policy>-->
+<!--            <property name="encryption.key.alias" value="s1as"></property>-->
+<!--            <property name="signature.key.alias" value="s1as"></property>-->
+<!--            <property name="dynamic.username.password" value="false"></property>-->
+<!--            <property name="debug" value="false"></property>-->
+<!--          </provider-config>-->
+<!--          <provider-config provider-type="client" provider-id="ClientProvider" class-name="com.sun.xml.wss.provider.ClientSecurityAuthModule">-->
+<!--            <request-policy auth-source="content"></request-policy>-->
+<!--            <response-policy auth-source="content"></response-policy>-->
+<!--            <property name="encryption.key.alias" value="s1as"></property>-->
+<!--            <property name="signature.key.alias" value="s1as"></property>-->
+<!--            <property name="dynamic.username.password" value="false"></property>-->
+<!--            <property name="debug" value="false"></property>-->
+<!--            <property name="security.config" value="${com.sun.aas.instanceRoot}/config/wss-server-config-1.0.xml"></property>-->
+<!--          </provider-config>-->
+<!--          <provider-config provider-type="server" provider-id="XWS_ServerProvider" class-name="com.sun.xml.wss.provider.ServerSecurityAuthModule">-->
+<!--            <request-policy auth-source="content"></request-policy>-->
+<!--            <response-policy auth-source="content"></response-policy>-->
+<!--            <property name="encryption.key.alias" value="s1as"></property>-->
+<!--            <property name="signature.key.alias" value="s1as"></property>-->
+<!--            <property name="debug" value="false"></property>-->
+<!--          </provider-config>-->
+<!--          <provider-config provider-type="server" provider-id="ServerProvider" class-name="com.sun.xml.wss.provider.ServerSecurityAuthModule">-->
+<!--            <request-policy auth-source="content"></request-policy>-->
+<!--            <response-policy auth-source="content"></response-policy>-->
+<!--            <property name="encryption.key.alias" value="s1as"></property>-->
+<!--            <property name="signature.key.alias" value="s1as"></property>-->
+<!--            <property name="debug" value="false"></property>-->
+<!--            <property name="security.config" value="${com.sun.aas.instanceRoot}/config/wss-server-config-1.0.xml"></property>-->
+<!--          </provider-config>-->
+<!--        </message-security-config>-->
+<!--      </security-service>-->
+<!--      <transaction-service tx-log-dir="${com.sun.aas.instanceRoot}/logs" automatic-recovery="true"></transaction-service>-->
+<!--      <diagnostic-service></diagnostic-service>-->
+<!--      <java-config debug-options="-Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9009" system-classpath="" classpath-suffix="">-->
+<!--        <jvm-options>-XX:MaxPermSize=192m</jvm-options>-->
+<!--        <jvm-options>-server</jvm-options>-->
+<!--        <jvm-options>-XX:+UnlockDiagnosticVMOptions</jvm-options>-->
+<!--        <jvm-options>-Djava.endorsed.dirs=${com.sun.aas.installRoot}/modules/endorsed${path.separator}${com.sun.aas.installRoot}/lib/endorsed</jvm-options>-->
+<!--        <jvm-options>-Djava.security.policy=${com.sun.aas.instanceRoot}/config/server.policy</jvm-options>-->
+<!--        <jvm-options>-Djava.security.auth.login.config=${com.sun.aas.instanceRoot}/config/login.conf</jvm-options>-->
+<!--        <jvm-options>-Dcom.sun.enterprise.security.httpsOutboundKeyAlias=s1as</jvm-options>-->
+<!--        <jvm-options>-Djavax.net.ssl.keyStore=${com.sun.aas.instanceRoot}/config/keystore.jks</jvm-options>-->
+<!--        <jvm-options>-Djavax.net.ssl.trustStore=${com.sun.aas.instanceRoot}/config/cacerts.jks</jvm-options>-->
+<!--        <jvm-options>-Djava.ext.dirs=${com.sun.aas.javaRoot}/lib/ext${path.separator}${com.sun.aas.javaRoot}/jre/lib/ext${path.separator}${com.sun.aas.instanceRoot}/lib/ext</jvm-options>-->
+<!--        <jvm-options>-Djdbc.drivers=org.apache.derby.jdbc.ClientDriver</jvm-options>-->
+<!--        <jvm-options>-DANTLR_USE_DIRECT_CLASS_LOADING=true</jvm-options>-->
+<!--        <jvm-options>-Dcom.sun.enterprise.config.config_environment_factory_class=com.sun.enterprise.config.serverbeans.AppserverConfigEnvironmentFactory</jvm-options>-->
+<!--        <jvm-options>-XX:NewRatio=2</jvm-options>-->
+<!--        <jvm-options>-Xmx512m</jvm-options>-->
+<!--      </java-config>-->
+<!--      <availability-service>-->
+<!--        <web-container-availability persistence-scope="session" availability-enabled="true" http-session-store-pool-name="jdbc/hastore" persistence-frequency="web-method" persistence-type="replicated"></web-container-availability>-->
+<!--        <ejb-container-availability availability-enabled="true" sfsb-store-pool-name="jdbc/hastore"></ejb-container-availability>-->
+<!--        <jms-availability></jms-availability>-->
+<!--      </availability-service>-->
+<!--      <network-config>-->
+<!--        <protocols>-->
+<!--          <protocol name="http-listener-1">-->
+<!--            <http default-virtual-server="server">-->
+<!--              <file-cache></file-cache>-->
+<!--            </http>-->
+<!--          </protocol>-->
+<!--          <protocol security-enabled="true" name="http-listener-2">-->
+<!--            <http default-virtual-server="server">-->
+<!--              <file-cache></file-cache>-->
+<!--            </http>-->
+<!--            <ssl classname="com.sun.enterprise.security.ssl.GlassfishSSLImpl" ssl3-enabled="false" cert-nickname="s1as"></ssl>-->
+<!--          </protocol>-->
+<!--          <protocol name="admin-listener">-->
+<!--            <http default-virtual-server="__asadmin" max-connections="250">-->
+<!--              <file-cache></file-cache>-->
+<!--            </http>-->
+<!--          </protocol>-->
+<!--        </protocols>-->
+<!--        <network-listeners>-->
+<!--          <network-listener port="${HTTP_LISTENER_PORT}" protocol="http-listener-1" transport="tcp" name="http-listener-1" thread-pool="http-thread-pool"></network-listener>-->
+<!--          <network-listener port="${HTTP_SSL_LISTENER_PORT}" protocol="http-listener-2" transport="tcp" name="http-listener-2" thread-pool="http-thread-pool"></network-listener>-->
+<!--          <network-listener port="${ASADMIN_LISTENER_PORT}" protocol="admin-listener" transport="tcp" name="admin-listener" thread-pool="http-thread-pool"></network-listener>-->
+<!--        </network-listeners>-->
+<!--        <transports>-->
+<!--          <transport name="tcp"></transport>-->
+<!--        </transports>-->
+<!--      </network-config>-->
+<!--      <thread-pools>-->
+<!--        <thread-pool name="http-thread-pool"></thread-pool>-->
+<!--        <thread-pool max-thread-pool-size="200" name="thread-pool-1"></thread-pool>-->
+<!--      </thread-pools>-->
+<!--      <group-management-service ping-protocol-timeout-in-millis="5000">-->
+<!--        <failure-detection></failure-detection>-->
+<!--      </group-management-service>-->
+<!--      <management-rules></management-rules>-->
+<!--      <system-property name="ASADMIN_LISTENER_PORT" value="24848"></system-property>-->
+<!--      <system-property name="HTTP_LISTENER_PORT" value="28080"></system-property>-->
+<!--      <system-property name="HTTP_SSL_LISTENER_PORT" value="28181"></system-property>-->
+<!--      <system-property name="JMS_PROVIDER_PORT" value="27676"></system-property>-->
+<!--      <system-property name="IIOP_LISTENER_PORT" value="23700"></system-property>-->
+<!--      <system-property name="IIOP_SSL_LISTENER_PORT" value="23820"></system-property>-->
+<!--      <system-property name="IIOP_SSL_MUTUALAUTH_PORT" value="23920"></system-property>-->
+<!--      <system-property name="JMX_SYSTEM_CONNECTOR_PORT" value="28686"></system-property>-->
+<!--      <monitoring-service>-->
+<!--        <module-monitoring-levels></module-monitoring-levels>-->
+<!--      </monitoring-service>-->
+<!--      <connector-service></connector-service>-->
+<!--    </config>-->
+  </configs>
+  <property name="administrative.domain.name" value="domain1"></property>
+  <lb-configs></lb-configs>
+  <load-balancers></load-balancers>
+  <clusters></clusters>
+</domain>

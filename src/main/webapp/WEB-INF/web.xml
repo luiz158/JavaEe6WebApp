@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    Copyright (C) 2010 Ian C. Smith <m4r35n357@gmail.com>
+
+    This file is part of JavaEE6Webapp.
+
+        JavaEE6Webapp is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.
+
+        JavaEE6Webapp is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+        GNU General Public License for more details.
+
+        You should have received a copy of the GNU General Public License
+        along with JavaEE6Webapp.  If not, see <http://www.gnu.org/licenses/>.
+
+-->
+
+<web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
+    <context-param>
+        <param-name>javax.faces.PROJECT_STAGE</param-name>
+        <param-value>Development</param-value>
+    </context-param>
+    <servlet>
+        <servlet-name>Faces Servlet</servlet-name>
+        <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>Faces Servlet</servlet-name>
+        <url-pattern>*.xhtml</url-pattern>
+    </servlet-mapping>
+    <servlet>
+        <servlet-name>ServletAdaptor</servlet-name>
+        <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>ServletAdaptor</servlet-name>
+        <url-pattern>/resources/*</url-pattern>
+    </servlet-mapping>
+    <session-config>
+        <session-timeout>30</session-timeout>
+    </session-config>
+    <welcome-file-list>
+        <welcome-file>index.xhtml</welcome-file>
+    </welcome-file-list>
+    <security-constraint>
+        <display-name>Admin</display-name>
+        <web-resource-collection>
+            <web-resource-name>Administration</web-resource-name>
+            <description/>
+            <url-pattern>/admin/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>administrator</role-name>
+        </auth-constraint>
+        <user-data-constraint>
+            <description/>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+    </security-constraint>
+    <security-constraint>
+        <display-name>UserSecured</display-name>
+        <web-resource-collection>
+            <web-resource-name>User</web-resource-name>
+            <description/>
+            <url-pattern>/pages/secured/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+        </auth-constraint>
+    </security-constraint>
+<!--    <security-constraint>-->
+<!--        <display-name>RestAccess</display-name>-->
+<!--        <web-resource-collection>-->
+<!--            <web-resource-name>WebServices</web-resource-name>-->
+<!--            <description/>-->
+<!--            <url-pattern>/resources/*</url-pattern>-->
+<!--        </web-resource-collection>-->
+<!--        <user-data-constraint>-->
+<!--            <description/>-->
+<!--            <transport-guarantee>INTEGRAL</transport-guarantee>-->
+<!--        </user-data-constraint>-->
+<!--    </security-constraint>-->
+    <login-config>
+        <auth-method>FORM</auth-method>
+        <realm-name>file</realm-name>
+        <form-login-config>
+            <form-login-page>/index.xhtml</form-login-page>
+            <form-error-page>/error.xhtml</form-error-page>
+        </form-login-config>
+    </login-config>
+    <security-role>
+        <description/>
+        <role-name>administrator</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>user</role-name>
+    </security-role>
+    <security-role>
+        <description/>
+        <role-name>guest</role-name>
+    </security-role>
+</web-app>
