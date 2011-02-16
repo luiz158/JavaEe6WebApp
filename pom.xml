@@ -60,8 +60,8 @@
 	</ciManagement>
 
 	<scm>
-		<connection>scm:svn:${subversionUrl}</connection>
-		<developerConnection>scm:svn:${subversionUrl}</developerConnection>
+		<connection>scm:git:git://github.com/m4r35n357/JavaEe6WebApp.git</connection>
+		<developerConnection>scm:git:git@github.com:m4r35n357/JavaEe6WebApp.git</developerConnection>
 	</scm>
 
 	<dependencies>

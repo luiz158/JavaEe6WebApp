@@ -1,0 +1,14 @@
+This is a Maven project
+
+To build & test:
+
+$ mvn clean install
+
+To run:
+
+$ mvn embedded-glassfish:run
+
+then browse to:
+
+http://localhost:9090/jee6webapp
+
