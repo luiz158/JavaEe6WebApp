@@ -19,6 +19,8 @@
 
 package uk.me.doitto.webapp.dao;
 
+import static uk.me.doitto.webapp.util.Globals.LOGGER;
+
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -26,7 +28,6 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -92,6 +93,19 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		this.name = name;
 	}
 
+	/**
+	 * Copy constructor
+	 * @param entity
+	 */
+	protected AbstractEntity (final AbstractEntity entity) {
+		this.id = entity.id;
+		this.version = entity.version;
+		this.name = entity.name;
+		this.created = new Date(entity.created.getTime());
+		this.modified = new Date(entity.modified.getTime());
+		this.accessed = new Date(entity.accessed.getTime());
+	}
+	
 	/**
 	 * {@inheritDoc}
 	 */
@@ -165,29 +179,27 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 */
 	@Override
 	public AbstractEntity deepCopy () throws IOException, ClassNotFoundException {
-		Object obj = null;
-		ObjectOutputStream out = null;
+		Object object = null;
+		ObjectOutputStream oos = null;
 		try {
 			// Write the object out to a byte array
-			ByteArrayOutputStream bos = new ByteArrayOutputStream();
-			out = new ObjectOutputStream(bos);
-			out.writeObject(this);
-			out.flush();
-			out.close();
-			// Make an input stream from the byte array and read a copy of the
-			// object back in.
-			obj = new ObjectInputStream(new ByteArrayInputStream(
-					bos.toByteArray())).readObject();
+			ByteArrayOutputStream baos = new ByteArrayOutputStream();
+			oos = new ObjectOutputStream(baos);
+			oos.writeObject(this);
+			oos.flush();
+			oos.close();
+			// Make an input stream from the byte array and read a copy of the object back in.
+			object = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray())).readObject();
 		} finally {
 			try {
-				if (out != null) {
-					out.close();
+				if (oos != null) {
+					oos.close();
 				}
 			} catch (IOException ex) {
-				Logger.getLogger(AbstractEntity.class.getName()).log(Level.SEVERE, null, ex);
+				LOGGER.log(Level.FINE, "deepCopy of " + this + ": " + ex);
 			}
 		}
-		return (AbstractEntity) obj;
+		return getClass().cast(object);
 	}
 
 	@Override
