@@ -31,7 +31,7 @@ import java.util.Date;
  *            The database primary key for this PersistentEntity
  * @author Ian Smith
  */
-public interface PersistentEntity<PK extends Serializable> extends Serializable {
+public interface PersistentEntity<PK extends Serializable> extends IDb<PK>, Serializable {
 
 	/**
 	 * Obtain the database primary key for this PersistentEntity

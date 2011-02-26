@@ -29,10 +29,10 @@ import javax.persistence.metamodel.SingularAttribute;
 /**
  *
  * @param <T> persistent class
- * @param <PK> Database primary key type
+ * @param <PK> Database primary key type, should be serializable !
  * @author ian
  */
-public interface ICrud<T extends AbstractEntity, PK extends Serializable> extends Serializable {
+public interface ICrud<T, PK extends Serializable> extends IDb<PK>, Serializable {
 
     void create (T t);
 
