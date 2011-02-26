@@ -32,7 +32,7 @@ import javax.persistence.metamodel.SingularAttribute;
  * @param <PK> Database primary key type, should be serializable !
  * @author ian
  */
-public interface ICrud<T, PK extends Serializable> extends IDb<PK>, Serializable {
+public interface ICrud<T, PK extends Serializable> extends IDb<PK> {
 
     void create (T t);
 
