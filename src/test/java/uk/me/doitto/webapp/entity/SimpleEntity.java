@@ -36,14 +36,10 @@ public class SimpleEntity extends AbstractEntity {
 
 	public SimpleEntity () {
 		super();
-//		id = 1L;
-//		version = 1;
 	}
 	
 	public SimpleEntity (final String name) {
 		super(name);
-//		id = 1L;
-//		version = 1;
 	}
 }
 
