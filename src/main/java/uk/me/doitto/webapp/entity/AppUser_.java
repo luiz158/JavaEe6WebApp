@@ -22,11 +22,12 @@ package uk.me.doitto.webapp.entity;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
-import uk.me.doitto.webapp.dao.AbstractEntity_;
+
+import uk.me.doitto.jpadao.AbstractEntity;
 
 @Generated("EclipseLink-2.0.1.v20100213-r6600 @ Sat Nov 27 13:00:49 GMT 2010")
 @StaticMetamodel(AppUser.class)
-public class AppUser_ extends AbstractEntity_ {
+public class AppUser_ extends AbstractEntity {
 
 	public static volatile SingularAttribute<AppUser, String> realName;
 	public static volatile SingularAttribute<AppUser, String> password;

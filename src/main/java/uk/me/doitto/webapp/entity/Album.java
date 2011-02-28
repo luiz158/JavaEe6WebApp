@@ -35,7 +35,7 @@ import javax.persistence.Temporal;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import uk.me.doitto.webapp.dao.AbstractEntity;
+import uk.me.doitto.jpadao.AbstractEntity;
 
 /**
  * Class representing a compilation of two or more tracks, eg. an album, single, EP etc.

@@ -27,7 +27,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import uk.me.doitto.webapp.dao.AbstractEntity;
+import uk.me.doitto.jpadao.AbstractEntity;
 
 /**
  *

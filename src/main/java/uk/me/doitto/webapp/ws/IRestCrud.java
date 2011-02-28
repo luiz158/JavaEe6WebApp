@@ -28,7 +28,7 @@ import java.util.List;
 import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 
-import uk.me.doitto.webapp.dao.AbstractEntity;
+import uk.me.doitto.jpadao.AbstractEntity;
 
 /**
  *

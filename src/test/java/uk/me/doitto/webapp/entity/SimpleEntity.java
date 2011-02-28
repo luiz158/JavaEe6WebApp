@@ -23,7 +23,7 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import uk.me.doitto.webapp.dao.AbstractEntity;
+import uk.me.doitto.jpadao.AbstractEntity;
 
 @Entity
 @XmlRootElement
@@ -36,10 +36,14 @@ public class SimpleEntity extends AbstractEntity {
 
 	public SimpleEntity () {
 		super();
+//		id = 1L;
+//		version = 1;
 	}
 	
 	public SimpleEntity (final String name) {
 		super(name);
+//		id = 1L;
+//		version = 1;
 	}
 }
 
