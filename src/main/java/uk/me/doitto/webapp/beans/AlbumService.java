@@ -23,7 +23,6 @@
  */
 package uk.me.doitto.webapp.beans;
 
-import static uk.me.doitto.webapp.util.Globals.LOGGER;
 import java.util.logging.Level;
 
 import javax.ejb.EJB;

@@ -23,6 +23,8 @@
  */
 package uk.me.doitto.webapp.model;
 
+import java.io.Serializable;
+
 import javax.ejb.Local;
 
 /**
@@ -30,7 +32,7 @@ import javax.ejb.Local;
  * @author ian
  */
 @Local
-public interface IControllerCrud {
+public interface IControllerCrud extends Serializable {
 
     Object list ();
 

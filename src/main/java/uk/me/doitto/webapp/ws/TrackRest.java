@@ -23,7 +23,6 @@
  */
 package uk.me.doitto.webapp.ws;
 
-import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 
@@ -59,7 +58,7 @@ import uk.me.doitto.webapp.entity.Track;
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class TrackRest implements IRestCrud<Track>,Serializable {
+public class TrackRest implements IRestCrud<Track> {
 
 	private static final long serialVersionUID = 1L;
 

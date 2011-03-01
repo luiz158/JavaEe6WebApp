@@ -23,7 +23,6 @@
  */
 package uk.me.doitto.webapp.model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -35,7 +34,7 @@ import uk.me.doitto.jpadao.AbstractEntity;
  * @author ian
  */
 @SuppressWarnings("serial")
-public abstract class ControllerBase<T extends AbstractEntity> implements Serializable,IControllerCrud,IPager {
+public abstract class ControllerBase<T extends AbstractEntity> implements IControllerCrud,IPager {
 
     protected enum Pager {
     	FIRST {

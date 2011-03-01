@@ -23,6 +23,7 @@
  */
 package uk.me.doitto.webapp.ws;
 
+import java.io.Serializable;
 import java.util.List;
 
 import javax.ws.rs.core.Response;
@@ -35,7 +36,7 @@ import uk.me.doitto.jpadao.AbstractEntity;
  * @param <T>
  * @author ian
  */
-public interface IRestCrud<T extends AbstractEntity> {
+public interface IRestCrud<T extends AbstractEntity> extends Serializable {
 
     Response create (JAXBElement<T> jaxb) ;
 

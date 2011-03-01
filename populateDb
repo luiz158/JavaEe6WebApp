@@ -12,6 +12,7 @@ done
 curl -i -H "Accept: application/json" -X GET http://$host:$port/jee6webapp/resources/appuser
 echo ""
 
+
 while read a b c d e f g h
 do
 	if [ -n "$h" ]

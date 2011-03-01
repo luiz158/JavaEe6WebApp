@@ -23,7 +23,6 @@
  */
 package uk.me.doitto.webapp.ws;
 
-import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +63,7 @@ import uk.me.doitto.webapp.util.Globals;
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class AlbumRest implements IRestCrud<Album>,Serializable {
+public class AlbumRest implements IRestCrud<Album> {
 
 	private static final long serialVersionUID = 1L;
 

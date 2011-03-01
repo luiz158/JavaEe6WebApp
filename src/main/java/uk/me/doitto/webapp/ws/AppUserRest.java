@@ -23,7 +23,6 @@
  */
 package uk.me.doitto.webapp.ws;
 
-import java.io.Serializable;
 import java.net.URI;
 import java.util.List;
 
@@ -59,7 +58,7 @@ import uk.me.doitto.webapp.entity.AppUser;
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class AppUserRest implements IRestCrud<AppUser>,Serializable {
+public class AppUserRest implements IRestCrud<AppUser> {
 
 	private static final long serialVersionUID = 1L;
 
