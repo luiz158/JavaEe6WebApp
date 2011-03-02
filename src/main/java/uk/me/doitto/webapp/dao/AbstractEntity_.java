@@ -17,34 +17,22 @@
  *     along with JavaEE6Webapp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package uk.me.doitto.webapp.ws;
+package uk.me.doitto.webapp.dao;
 
-import java.io.Serializable;
-import java.util.List;
+import java.util.Date;
+import javax.annotation.Generated;
+import javax.persistence.metamodel.SingularAttribute;
+import javax.persistence.metamodel.StaticMetamodel;
 
-import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBElement;
+@Generated("EclipseLink-2.0.1.v20100213-r6600 @ Sat Nov 27 13:00:49 GMT 2010")
+@StaticMetamodel(AbstractEntity.class)
+public abstract class AbstractEntity_ { 
 
-import uk.me.doitto.webapp.dao.AbstractEntity;
+	public static volatile SingularAttribute<AbstractEntity, Long> id;
+	public static volatile SingularAttribute<AbstractEntity, Date> accessed;
+	public static volatile SingularAttribute<AbstractEntity, Date> created;
+	public static volatile SingularAttribute<AbstractEntity, String> name;
+	public static volatile SingularAttribute<AbstractEntity, Integer> version;
+	public static volatile SingularAttribute<AbstractEntity, Date> modified;
 
-/**
- *
- * @param <T>
- * @author ian
- */
-public interface IRestCrud<T extends AbstractEntity> extends Serializable {
-
-    Response create (JAXBElement<T> jaxb) ;
-
-    T update (JAXBElement<T> jaxb);
-    
-    List<T> getAll ();
-
-    T getById (Long id);
-
-    Response delete (Long id);
 }

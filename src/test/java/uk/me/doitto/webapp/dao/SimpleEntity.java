@@ -17,34 +17,27 @@
  *     along with JavaEE6Webapp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-package uk.me.doitto.webapp.ws;
+package uk.me.doitto.webapp.dao;
 
-import java.io.Serializable;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.NamedQuery;
+import javax.xml.bind.annotation.XmlRootElement;
 
-import javax.ws.rs.core.Response;
-import javax.xml.bind.JAXBElement;
+@Entity
+@XmlRootElement
+@NamedQuery(name = SimpleEntity.FIND_ALL, query = "SELECT e FROM SimpleEntity e")
+public class SimpleEntity extends AbstractEntity {
+	
+	private static final long serialVersionUID = 1L;
+	
+    public static final String FIND_ALL = "Entity.findAll";
 
-import uk.me.doitto.webapp.dao.AbstractEntity;
-
-/**
- *
- * @param <T>
- * @author ian
- */
-public interface IRestCrud<T extends AbstractEntity> extends Serializable {
-
-    Response create (JAXBElement<T> jaxb) ;
-
-    T update (JAXBElement<T> jaxb);
-    
-    List<T> getAll ();
-
-    T getById (Long id);
-
-    Response delete (Long id);
+	public SimpleEntity () {
+		super();
+	}
+	
+	public SimpleEntity (final String name) {
+		super(name);
+	}
 }
+

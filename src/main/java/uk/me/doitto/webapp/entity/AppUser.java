@@ -27,7 +27,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import uk.me.doitto.jpadao.AbstractEntity;
+import uk.me.doitto.webapp.dao.AbstractEntity;
 
 /**
  * @author ian

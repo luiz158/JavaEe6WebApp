@@ -32,7 +32,7 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import uk.me.doitto.jpadao.AbstractEntity;
+import uk.me.doitto.webapp.dao.AbstractEntity;
 
 /**
  * Class representing an entire band, a band member, a solo artist, a composer, or a performer

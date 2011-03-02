@@ -31,7 +31,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
 import uk.me.doitto.webapp.beans.EntityService;
-import uk.me.doitto.webapp.entity.SimpleEntity;
+import uk.me.doitto.webapp.dao.SimpleEntity;
 
 /**
  *

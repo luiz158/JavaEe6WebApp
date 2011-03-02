@@ -28,7 +28,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.faces.bean.ManagedBean;
 
-import uk.me.doitto.jpadao.Crud;
+import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.AppUser;
 
 /**

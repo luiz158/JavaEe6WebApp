@@ -32,7 +32,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import uk.me.doitto.webapp.beans.EntityService;
-import uk.me.doitto.webapp.entity.SimpleEntity;
+import uk.me.doitto.webapp.dao.SimpleEntity;
 
 /**
  * @author ian

@@ -17,29 +17,19 @@
  *     along with JavaEE6Webapp.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package uk.me.doitto.webapp.entity;
+package uk.me.doitto.webapp.dao;
 
-import javax.persistence.Entity;
-import javax.persistence.NamedQuery;
-import javax.xml.bind.annotation.XmlRootElement;
+import javax.persistence.EntityManager;
 
-import uk.me.doitto.jpadao.AbstractEntity;
-
-@Entity
-@XmlRootElement
-@NamedQuery(name = SimpleEntity.FIND_ALL, query = "SELECT e FROM SimpleEntity e")
-public class SimpleEntity extends AbstractEntity {
+public class SimpleDao extends Crud<SimpleEntity> {
 	
 	private static final long serialVersionUID = 1L;
 	
-    public static final String FIND_ALL = "Entity.findAll";
-
-	public SimpleEntity () {
-		super();
+	public SimpleDao () {
+		super(SimpleEntity.class);
 	}
 	
-	public SimpleEntity (final String name) {
-		super(name);
+	public SimpleDao (EntityManager mock) {
+		super(SimpleEntity.class, mock);
 	}
 }
-

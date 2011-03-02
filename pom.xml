@@ -147,12 +147,12 @@
 			<scope>test</scope>
 		</dependency>
 
-		<dependency>
-		  <groupId>uk.me.doitto</groupId>
-		  <artifactId>jpa-dao</artifactId>
-		  <version>1.0-SNAPSHOT</version>
-			<scope>compile</scope>
-		</dependency>
+<!--		<dependency>-->
+<!--		  <groupId>uk.me.doitto</groupId>-->
+<!--		  <artifactId>jpa-dao</artifactId>-->
+<!--		  <version>1.0-SNAPSHOT</version>-->
+<!--			<scope>compile</scope>-->
+<!--		</dependency>-->
 		
 		<dependency>
 			<groupId>org.glassfish.extras</groupId>

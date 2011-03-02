@@ -28,7 +28,7 @@ import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import uk.me.doitto.jpadao.AbstractEntity;
+import uk.me.doitto.webapp.dao.AbstractEntity;
 
 /**
  * Class representing a single track
