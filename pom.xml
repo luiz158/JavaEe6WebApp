@@ -400,7 +400,7 @@
 				<artifactId>maven-embedded-glassfish-plugin</artifactId>
 				<version>${embeddedGlassfishVersion}</version>
 				<configuration>
-					<app>${project.build.directory}/${build.finalName}.war</app>
+					<app>${project.build.directory}/${project.build.finalName}.war</app>
 					<port>9090</port>
 					<containerType>all</containerType>
 					<installRoot>${basedir}/glassfish</installRoot>
