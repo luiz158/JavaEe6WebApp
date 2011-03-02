@@ -26,7 +26,13 @@ package uk.me.doitto.webapp.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.validation.constraints.NotNull;
+
 import uk.me.doitto.jpadao.AbstractEntity;
+import uk.me.doitto.jpadao.Crud;
+import uk.me.doitto.webapp.entity.Album;
 
 /**
  *
@@ -36,6 +42,10 @@ import uk.me.doitto.jpadao.AbstractEntity;
 @SuppressWarnings("serial")
 public abstract class ControllerBase<T extends AbstractEntity> implements IControllerCrud,IPager {
 
+//	@NotNull
+//    @PersistenceContext
+//    protected EntityManager em;
+    
     protected enum Pager {
     	FIRST {
             @Override
@@ -68,6 +78,14 @@ public abstract class ControllerBase<T extends AbstractEntity> implements IContr
 
         protected abstract <U extends AbstractEntity> void setCurrentPage (final ControllerBase<U> base);
     }
+
+//    protected ControllerBase (Class<T> type) {
+//		super(type);
+//	}
+
+//    protected ControllerBase (Class<T> type, EntityManager em) {
+//		super(type, em);
+//	}
 
     protected T item;
 

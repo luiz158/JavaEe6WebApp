@@ -30,6 +30,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.persistence.EntityManager;
 
 import uk.me.doitto.webapp.beans.AlbumService;
 import uk.me.doitto.webapp.entity.Album;
@@ -49,7 +50,7 @@ public class AlbumController extends ControllerBase<Album> {
 	private static final long serialVersionUID = 1L;
 
     @EJB
-    private AlbumService service;
+    private AlbumService albumService;
 
     private enum Navigation {
         LIST("listAlbums"),
@@ -66,48 +67,52 @@ public class AlbumController extends ControllerBase<Album> {
         }
     }
 
+//    public AlbumController() {
+//        super(Album.class);
+//    }
+    
     @Override
-	public Object list () {
-        items = service.findAll();
+	public Object jsfList () {
+        items = albumService.findAll();
         pagedItems = listPagedItems();
         return Navigation.LIST.getPage();
     }
 
     @Override
-	public Object save () {
+	public Object jsfSave () {
         if (item.isNew()) {
-        	service.create(item);
+        	albumService.create(item);
         } else {
-        	service.update(item);
+        	albumService.update(item);
         }
-        return list();
+        return jsfList();
     }
 
     @Override
-	public Object create () {
+	public Object jsfCreate () {
     	item = new Album();
         return Navigation.EDIT.getPage();
     }
 
     @Override
-	public Object edit (final Long id) {
-    	item = service.find(id);
+	public Object jsfEdit (final Long id) {
+    	item = albumService.find(id);
         return Navigation.EDIT.getPage();
     }
 
     @Override
-	public Object delete (final Long id) {
-    	service.delete(id);
-        return list();
+	public Object jsfDelete (final Long id) {
+    	albumService.delete(id);
+        return jsfList();
     }
     
 	public Object linkTrack (final Long id, final Long trackId) {
-    	service.linkTrack(id, trackId);
+    	albumService.linkTrack(id, trackId);
         return Navigation.EDIT.getPage();
     }
     
 	public Object unlinkTrack (final Long id, final Long trackId) {
-    	service.unlinkTrack(id, trackId);
+    	albumService.unlinkTrack(id, trackId);
         return Navigation.EDIT.getPage();
     }
 

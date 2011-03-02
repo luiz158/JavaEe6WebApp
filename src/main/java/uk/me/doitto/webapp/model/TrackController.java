@@ -49,7 +49,7 @@ public class TrackController extends ControllerBase<Track> {
     private static final long serialVersionUID = 1L;
 
     @EJB
-    private TrackService service;
+    private TrackService trackService;
 
     private enum Navigation {
         LIST("listTracks"),
@@ -66,39 +66,43 @@ public class TrackController extends ControllerBase<Track> {
         }
     }
 
+//    public TrackController() {
+//        super(Track.class);
+//    }
+    
     @Override
-    public Object list () {
-        items = service.findAll();
+    public Object jsfList () {
+        items = trackService.findAll();
         pagedItems = listPagedItems();
         return Navigation.LIST.getPage();
     }
 
     @Override
-    public Object save () {
+    public Object jsfSave () {
         if (item.isNew()) {
-            service.create(item);
+            trackService.create(item);
         } else {
-            service.update(item);
+            trackService.update(item);
         }
-        return list();
+        return jsfList();
     }
 
     @Override
-    public Object create () {
+    public Object jsfCreate () {
         item = new Track();
         return Navigation.EDIT.getPage();
     }
 
     @Override
-    public Object edit (final Long id) {
-        item = service.find(id);
+    public Object jsfEdit (final Long id) {
+        item = trackService.find(id);
         return Navigation.EDIT.getPage();
     }
 
     @Override
-    public Object delete (final Long id) {
-        service.delete(id);
-        return list();
+    public Object jsfDelete (final Long id) {
+        trackService.delete(id);
+        return jsfList();
     }
 
     @Override

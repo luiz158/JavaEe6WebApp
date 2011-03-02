@@ -29,6 +29,7 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.persistence.EntityManager;
 
 import uk.me.doitto.webapp.beans.EntityService;
 import uk.me.doitto.webapp.entity.SimpleEntity;
@@ -70,38 +71,42 @@ public class EntityController extends ControllerBase<SimpleEntity> {
         }
     }
 
+//	public EntityController () {
+//		super(SimpleEntity.class);
+//	}
+	
     @Override
-	public Object list () {
+	public Object jsfList () {
         items = service.findAll();
         return Navigation.LIST.getPage();
     }
 
     @Override
-	public Object save () {
+	public Object jsfSave () {
         if (item.isNew()) {
         	service.create(item);
         } else {
         	service.update(item);
         }
-        return list();
+        return jsfList();
     }
 
     @Override
-	public Object create () {
+	public Object jsfCreate () {
     	item = new SimpleEntity();
         return Navigation.EDIT.getPage();
     }
 
     @Override
-	public Object edit (final Long id) {
+	public Object jsfEdit (final Long id) {
     	item = service.find(id);
         return Navigation.EDIT.getPage();
     }
 
     @Override
-	public Object delete (final Long id) {
+	public Object jsfDelete (final Long id) {
     	service.delete(id);
-        return list();
+        return jsfList();
     }
 
 	@Override

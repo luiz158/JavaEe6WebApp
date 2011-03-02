@@ -27,6 +27,7 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.faces.bean.ManagedBean;
+import javax.persistence.EntityManager;
 
 import uk.me.doitto.jpadao.Crud;
 import uk.me.doitto.webapp.entity.AppUser;
@@ -45,5 +46,11 @@ public class AppUserService extends Crud<AppUser> {
     public AppUserService() {
         super(AppUser.class);
     }
-
+    
+    /**
+     * set the EntityManager for testing
+     */
+//    public AppUserService (final EntityManager em) {
+//        super(AppUser.class, em);
+//    }
 }

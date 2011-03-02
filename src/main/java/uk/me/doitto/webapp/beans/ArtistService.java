@@ -30,8 +30,10 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.faces.bean.ManagedBean;
+import javax.persistence.EntityManager;
 
 import uk.me.doitto.jpadao.Crud;
+import uk.me.doitto.webapp.entity.AppUser;
 import uk.me.doitto.webapp.entity.Artist;
 
 /**
@@ -46,11 +48,18 @@ public class ArtistService extends Crud<Artist> {
 	private static final long serialVersionUID = 1L;
 
     @EJB
-    AlbumService albumService;
+	private final AlbumService albumService = new AlbumService();
 
     public ArtistService() {
         super(Artist.class);
     }
+    
+    /**
+     * set the EntityManager for testing
+     */
+//    public ArtistService (final EntityManager em) {
+//        super(Artist.class, em);
+//    }
 
     public void linkAlbum (final Long id, final Long albumId) {
         LOGGER.log(Level.FINE, "Linking Artist: {0} to Album: {1}", new Object[]{id, albumId});

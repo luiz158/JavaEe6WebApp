@@ -78,46 +78,46 @@ public class ControllerMockTest extends EasyMockSupport {
 	}
 
 	/**
-	 * Test method for {@link uk.me.doitto.webapp.model.EntityController#list()}.
+	 * Test method for {@link uk.me.doitto.webapp.model.EntityController#jsfList()}.
 	 */
 	@Test
 	public final void testList() {
-		controller.list();
+		controller.jsfList();
 	}
 
 	/**
-	 * Test method for {@link uk.me.doitto.webapp.model.EntityController#save()}.
+	 * Test method for {@link uk.me.doitto.webapp.model.EntityController#jsfSave()}.
 	 */
 	@Test
 	public final void testSave() {
-		controller.save();
+		controller.jsfSave();
 	}
 
 	/**
-	 * Test method for {@link uk.me.doitto.webapp.model.EntityController#create()}.
+	 * Test method for {@link uk.me.doitto.webapp.model.EntityController#jsfCreate()}.
 	 */
 	@Test
 	public final void testCreate() {
-		controller.create();
+		controller.jsfCreate();
 	}
 
 	/**
-	 * Test method for {@link uk.me.doitto.webapp.model.EntityController#edit(java.lang.Long)}.
+	 * Test method for {@link uk.me.doitto.webapp.model.EntityController#jsfEdit(java.lang.Long)}.
 	 */
 	@Test
 	public final void testEdit() {
-		controller.edit(0L);
+		controller.jsfEdit(0L);
 	}
 
 	/**
-	 * Test method for {@link uk.me.doitto.webapp.model.EntityController#delete(java.lang.Long)}.
+	 * Test method for {@link uk.me.doitto.webapp.model.EntityController#jsfDelete(java.lang.Long)}.
 	 */
 	@Test
 	public final void testDelete() {
 //		org.easymock.EasyMock.expect(mockService.find(EasyMock.isA(Long.class)));
 //		mockService.delete(EasyMock.isA(Long.class));
 //		replayAll();
-		controller.delete(0L);
+		controller.jsfDelete(0L);
 //		verifyAll();
 	}
 

@@ -70,7 +70,7 @@ public class ArtistRest implements IRestCrud<Artist> {
     public static final String PATH = "/artist";
     
     @EJB
-    ArtistService artistService;
+    private ArtistService artistService;
 
     @Context
     private UriInfo uriInfo;

@@ -49,7 +49,7 @@ public class ArtistController extends ControllerBase<Artist> {
 	private static final long serialVersionUID = 1L;
 
     @EJB
-    private ArtistService service;
+    private ArtistService artistService;
 
     private enum Navigation {
         LIST("listArtists"),
@@ -66,48 +66,52 @@ public class ArtistController extends ControllerBase<Artist> {
         }
     }
 
+//    public ArtistController() {
+//        super(Artist.class);
+//    }
+    
     @Override
-	public Object list () {
-        items = service.findAll();
+	public Object jsfList () {
+        items = artistService.findAll();
         pagedItems = listPagedItems();
         return Navigation.LIST.getPage();
     }
 
     @Override
-	public Object save () {
+	public Object jsfSave () {
         if (item.isNew()) {
-        	service.create(item);
+        	artistService.create(item);
         } else {
-        	service.update(item);
+        	artistService.update(item);
         }
-        return list();
+        return jsfList();
     }
 
     @Override
-	public Object create () {
+	public Object jsfCreate () {
     	item = new Artist();
         return Navigation.EDIT.getPage();
     }
 
     @Override
-	public Object edit (final Long id) {
-    	item = service.find(id);
+	public Object jsfEdit (final Long id) {
+    	item = artistService.find(id);
         return Navigation.EDIT.getPage();
     }
 
     @Override
-	public Object delete (final Long id) {
-    	service.delete(id);
-        return list();
+	public Object jsfDelete (final Long id) {
+    	artistService.delete(id);
+        return jsfList();
     }
     
 	public Object linkAlbum (final Long id, final Long albumId) {
-    	service.linkAlbum(id, albumId);
+    	artistService.linkAlbum(id, albumId);
         return Navigation.EDIT.getPage();
     }
     
 	public Object unlinkAlbum (final Long id, final Long albumId) {
-    	service.unlinkAlbum(id, albumId);
+    	artistService.unlinkAlbum(id, albumId);
         return Navigation.EDIT.getPage();
     }
 

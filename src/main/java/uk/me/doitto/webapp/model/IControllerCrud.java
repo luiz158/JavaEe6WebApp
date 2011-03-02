@@ -34,13 +34,13 @@ import javax.ejb.Local;
 @Local
 public interface IControllerCrud extends Serializable {
 
-    Object list ();
+    Object jsfList ();
 
-    Object save ();
+    Object jsfSave ();
 
-    Object create ();
+    Object jsfCreate ();
 
-    Object edit (Long id);
+    Object jsfEdit (Long id);
 
-    Object delete (Long id);
+    Object jsfDelete (Long id);
 }

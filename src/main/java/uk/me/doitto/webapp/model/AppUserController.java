@@ -30,6 +30,9 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.validation.constraints.NotNull;
 
 import uk.me.doitto.webapp.beans.AppUserService;
 import uk.me.doitto.webapp.entity.AppUser;
@@ -48,6 +51,10 @@ public class AppUserController extends ControllerBase<AppUser> {
 
     private static final long serialVersionUID = 1L;
 
+//    @NotNull
+//    @PersistenceContext
+//    protected EntityManager em;
+    
     @EJB
     private AppUserService service;
 
@@ -71,15 +78,19 @@ public class AppUserController extends ControllerBase<AppUser> {
         }
     }
 
+//    public AppUserController() {
+//        super(AppUser.class);
+//    }
+    
     @Override
-	public Object list () {
+	public Object jsfList () {
         items = service.findAll();
         pagedItems = listPagedItems();
         return Navigation.LIST.getPage();
     }
 
     @Override
-	public Object save () {
+	public Object jsfSave () {
         if (password != null && password.length() > 0 && password.equals(passwordConf)) {
         	item.setPassword(password);
             password = null;
@@ -90,25 +101,25 @@ public class AppUserController extends ControllerBase<AppUser> {
         } else {
             service.update(item);
         }
-        return list();
+        return jsfList();
     }
 
     @Override
-	public Object create () {
+	public Object jsfCreate () {
     	item = new AppUser();
         return Navigation.EDIT.getPage();
     }
 
     @Override
-	public Object edit (final Long id) {
+	public Object jsfEdit (final Long id) {
     	item = service.find(id);
         return Navigation.EDIT.getPage();
     }
 
     @Override
-	public Object delete (final Long id) {
+	public Object jsfDelete (final Long id) {
         service.delete(id);
-        return list();
+        return jsfList();
     }
 
     public String getPassword() {
