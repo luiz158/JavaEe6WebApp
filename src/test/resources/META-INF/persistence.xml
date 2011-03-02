@@ -26,7 +26,7 @@
 
     <persistence-unit name="testPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-        <class>uk.me.doitto.jpadao.SimpleEntity</class>
+<!--        <class>uk.me.doitto.jpadao.SimpleEntity</class>-->
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="eclipselink.target-database" value="DERBY"/>
