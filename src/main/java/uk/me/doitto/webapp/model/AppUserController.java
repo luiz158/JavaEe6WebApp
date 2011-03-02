@@ -30,9 +30,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-import javax.validation.constraints.NotNull;
 
 import uk.me.doitto.webapp.beans.AppUserService;
 import uk.me.doitto.webapp.entity.AppUser;
@@ -51,10 +48,6 @@ public class AppUserController extends ControllerBase<AppUser> {
 
     private static final long serialVersionUID = 1L;
 
-//    @NotNull
-//    @PersistenceContext
-//    protected EntityManager em;
-    
     @EJB
     private AppUserService service;
 
@@ -78,10 +71,6 @@ public class AppUserController extends ControllerBase<AppUser> {
         }
     }
 
-//    public AppUserController() {
-//        super(AppUser.class);
-//    }
-    
     @Override
 	public Object jsfList () {
         items = service.findAll();

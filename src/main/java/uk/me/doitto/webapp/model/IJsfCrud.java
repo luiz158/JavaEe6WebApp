@@ -32,7 +32,7 @@ import javax.ejb.Local;
  * @author ian
  */
 @Local
-public interface IControllerCrud extends Serializable {
+public interface IJsfCrud extends Serializable {
 
     Object jsfList ();
 

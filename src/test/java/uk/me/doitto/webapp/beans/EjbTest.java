@@ -124,7 +124,6 @@ public class EjbTest {
     public void tearDown() {
     }
 
-    @Ignore
     @Test
     public void testAppUserServiceCrud () {
     	AppUser t = new AppUser();
@@ -184,7 +183,6 @@ public class EjbTest {
         assertEquals(false, userController.getItems().contains(userController.getItem()));
     }
 
-//    @Ignore
     @Test
     public void testAppUserRest () {
         try {
@@ -196,7 +194,6 @@ public class EjbTest {
 		}
      }
 
-    @Ignore
     @Test
     public void testArtistServiceCrud () {
         Artist t = new Artist();
@@ -314,7 +311,6 @@ public class EjbTest {
 ////    	artistRest.create(new JAXBElement<Artist>(new QName("planet"), Artist.class, t));  	
 //    }
 
-    @Ignore
     @Test
     public void testAlbumServiceCrud () {
         Album t = new Album();
@@ -419,7 +415,6 @@ public class EjbTest {
 		}
     }
     
-    @Ignore
     @Test
     public void testTrackServiceCrud () {
     	Track t = new Track();

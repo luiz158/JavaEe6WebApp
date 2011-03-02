@@ -66,10 +66,6 @@ public class TrackController extends ControllerBase<Track> {
         }
     }
 
-//    public TrackController() {
-//        super(Track.class);
-//    }
-    
     @Override
     public Object jsfList () {
         items = trackService.findAll();

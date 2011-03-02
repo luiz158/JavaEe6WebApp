@@ -66,10 +66,6 @@ public class ArtistController extends ControllerBase<Artist> {
         }
     }
 
-//    public ArtistController() {
-//        super(Artist.class);
-//    }
-    
     @Override
 	public Object jsfList () {
         items = artistService.findAll();

@@ -29,7 +29,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.persistence.EntityManager;
 
 import uk.me.doitto.webapp.beans.EntityService;
 import uk.me.doitto.webapp.entity.SimpleEntity;
@@ -71,10 +70,6 @@ public class EntityController extends ControllerBase<SimpleEntity> {
         }
     }
 
-//	public EntityController () {
-//		super(SimpleEntity.class);
-//	}
-	
     @Override
 	public Object jsfList () {
         items = service.findAll();

@@ -30,7 +30,6 @@ import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
-import javax.persistence.EntityManager;
 
 import uk.me.doitto.webapp.beans.AlbumService;
 import uk.me.doitto.webapp.entity.Album;
@@ -67,10 +66,6 @@ public class AlbumController extends ControllerBase<Album> {
         }
     }
 
-//    public AlbumController() {
-//        super(Album.class);
-//    }
-    
     @Override
 	public Object jsfList () {
         items = albumService.findAll();
