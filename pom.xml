@@ -405,8 +405,8 @@
 					<port>9090</port>
 					<contextRoot>jee6webapp</contextRoot>
 					<autoDelete>false</autoDelete>
-<!--					<configFile>${basedir}/glassfish/domains/domain1/config/domain.xml</configFile>-->
-					<configFile>${basedir}/domain.xml</configFile>
+					<configFile>${basedir}/glassfish/domains/domain1/config/domain.xml</configFile>
+<!--					<configFile>${basedir}/domain.xml</configFile>-->
                     <systemProperties> 
                         <property>java.util.logging.config.file=logging.properties</property> 
                     </systemProperties> 
