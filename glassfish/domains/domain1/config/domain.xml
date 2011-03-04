@@ -180,7 +180,7 @@
           </protocol>
         </protocols>
         <network-listeners>
-          <network-listener port="0" protocol="http-listener" transport="tcp" name="http-listener" thread-pool="http-thread-pool" enabled="false"/>
+          <network-listener port="9090" protocol="http-listener" transport="tcp" name="http-listener" thread-pool="http-thread-pool" enabled="true"/>
           <network-listener port="0" protocol="https-listener" transport="tcp" name="https-listener" thread-pool="http-thread-pool" enabled="false"/>
         </network-listeners>
         <transports>
