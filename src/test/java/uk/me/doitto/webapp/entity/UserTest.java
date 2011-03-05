@@ -32,6 +32,8 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import uk.me.doitto.webapp.dao.AbstractEntity;
+
 /**
  * @author ian
  *
@@ -72,6 +74,15 @@ public class UserTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testConstructors () {
+		AppUser artist1 = new AppUser();
+		AppUser artist2 = new AppUser(artist1);
+		assertNotSame("Same object!", artist2.getCreated(), artist1.getCreated());
+		assertNotSame("Same object!", artist2.getAccessed(), artist1.getAccessed());
+		assertNotSame("Same object!", artist2.getModified(), artist1.getModified());
 	}
 
 	/**
@@ -159,14 +170,16 @@ public class UserTest {
 	
 	@Test
 	public void testDeepCopy () {
-		AppUser appUser = null;
+		AbstractEntity appUser = null;
 		try {
-			appUser = (AppUser)user.deepCopy();
+			appUser = user.deepCopy();
 		} catch (IOException e) {
 			fail("Should not reach here!");
 		} catch (ClassNotFoundException e) {
 			fail("Should not reach here!");
 		}
-		assertNotSame("", user, appUser);
+		assert appUser != null;
+		assertNotSame("Same object!", this.user, appUser);
+		assertEquals("Wrong class!", appUser.getClass(), this.user.getClass());
 	}
 }

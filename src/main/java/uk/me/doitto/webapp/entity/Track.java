@@ -49,19 +49,19 @@ public class Track extends AbstractEntity {
 
     // for hibernate
     public Track () {
+    	duration = new Date();
     }
 
     // for searching
     public Track (final String name) {
         super(name);
+    	duration = new Date();
     }
 
     // Copy constructor
     public Track (final Track track) {
-        this(track.name);
-        id = track.id;
-        version = track.version;
-        duration = track.duration;
+    	super(track);
+    	duration = new Date(track.duration.getTime());
         url = track.url;
     }
 

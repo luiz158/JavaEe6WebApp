@@ -60,9 +60,7 @@ public class Artist extends AbstractEntity {
 
     // Copy constructor
     public Artist (final Artist artist) {
-        this(artist.name);
-        id = artist.id;
-        version = artist.version;
+    	super(artist);
         albums = new HashSet<Album>(artist.albums);
     }
 

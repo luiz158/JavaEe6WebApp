@@ -63,7 +63,11 @@ public class AppUser extends AbstractEntity {
         this.password = password;
     }
 
-    public String getPassword () {
+    public AppUser(AppUser artist) {
+		super(artist);
+	}
+
+	public String getPassword () {
         return password;
     }
 

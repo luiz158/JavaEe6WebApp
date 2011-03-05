@@ -29,6 +29,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -62,6 +63,8 @@ public class EmTest {
     
     private SimpleEntity entity;
     
+    private int entityCount;
+    
     private static final String TEST_STRING_1 = "Hello World!";
 
     private static final String TEST_STRING_2 = "Goodbye World!";
@@ -84,6 +87,7 @@ public class EmTest {
         tx = em.getTransaction();
         entity = new SimpleEntity();
         entity.setName(TEST_STRING_1);
+        entityCount = dao.count();
     }
 
     @After
@@ -101,6 +105,7 @@ public class EmTest {
         em.persist(entity);
         tx.commit();
         assertFalse("Should NOT be new!", entity.isNew());
+        assertTrue("EM should contain " + entity, em.contains(entity));
 
         tx.begin();
         SimpleEntity s = em.find(SimpleEntity.class, entity.getId());
@@ -124,6 +129,7 @@ public class EmTest {
         SimpleEntity u = em.find(SimpleEntity.class, entity.getId());
         tx.commit();
         assertNull("Should be null!", u);
+        assertFalse("EM should NOT contain " + entity, em.contains(entity));
      }
     
     @Test
@@ -133,7 +139,8 @@ public class EmTest {
         tx.begin();
         dao.create(entity);
         tx.commit();
-        assertFalse("", entity.isNew());
+        assertFalse("Should be new", entity.isNew());
+        assertTrue("EM should contain " + entity, em.contains(entity));
 
         tx.begin();
         SimpleEntity s = dao.find(entity.getId());
@@ -154,13 +161,13 @@ public class EmTest {
         tx.begin();
         List<SimpleEntity> list1 = dao.findAll();
         tx.commit();
-        assertEquals(1, list1.size());
+    	assertEquals("Should be " + (entityCount + 1) + " instances", entityCount + 1, list1.size());
         assertEquals(true, list1.contains(s));
 
         tx.begin();
         List<SimpleEntity> list2 = dao.findByNamedQuery(SimpleEntity.FIND_ALL, null, 0, 0);
         tx.commit();
-        assertEquals(1, list2.size());
+    	assertEquals("Should be " + (entityCount + 1) + " instances", entityCount + 1, list2.size());
         assertEquals(true, list2.contains(s));
 
         tx.begin();
@@ -170,10 +177,11 @@ public class EmTest {
         SimpleEntity u = dao.find(entity.getId());
         tx.commit();
         assertNull("Should be null!", u);
+        assertFalse("EM should NOT contain " + entity, em.contains(entity));
         tx.begin();
         List<SimpleEntity> list3 = dao.findAll();
         tx.commit();
-        assertEquals(0, list3.size());
+    	assertEquals("Should be " + entityCount + " instances", entityCount, list3.size());
         assertEquals(false, list3.contains(s));
      }
     
@@ -197,4 +205,54 @@ public class EmTest {
     	assertEquals(1, em.createQuery(query).getResultList().size());
     }
 
+    @Test
+    public void testCount () {
+    	assertEquals("Should be " + entityCount + " instances", entityCount, dao.count());
+    	int number = 7;
+        tx.begin();
+    	for (int i = 0; i < number; i++) {
+            em.persist(new SimpleEntity("TestCount" + i));
+    	}
+        tx.commit();
+        int newCount = entityCount + number;
+    	assertEquals("Should be " + newCount + " instances", newCount, dao.count());
+    }
+
+    @Test
+    public void testFind () {
+    	assertEquals("Should be " + entityCount + " instances", entityCount, dao.count());
+    	final int number = 11;
+        tx.begin();
+    	for (int i = 0; i < number; i++) {
+            em.persist(new SimpleEntity("TestFindRange" + i));
+    	}
+        tx.commit();
+        final int newCount = entityCount + number;
+    	assertEquals("Should be " + newCount + " instances", newCount, dao.count());
+    	// find all
+    	assertEquals("Should be " + newCount + " instances", newCount, dao.findAll().size());
+    	assertEquals("Should be " + newCount + " instances", newCount, dao.findRange(0, dao.count()).size());
+    	assertEquals("Should be " + newCount + " instances", newCount, dao.findByNamedQuery(SimpleEntity.FIND_ALL, null, 0, 0).size());
+    	// find first number
+    	assertEquals("Should be " + number + " instances", number, dao.findRange(0, number).size());
+    	assertEquals("Should be " + number + " instances", number, dao.findByNamedQuery(SimpleEntity.FIND_ALL, null, 0, number).size());
+    	// find last number
+    	assertEquals("Should be " + number + " instances", number, dao.findRange(dao.count() - number, number).size());
+    	assertEquals("Should be " + number + " instances", number, dao.findByNamedQuery(SimpleEntity.FIND_ALL, null, dao.count() - number, number).size());
+    }
+    
+    @Test
+    public void testDates () {
+    	dao.before(AbstractEntity_.created, new Date());
+    	dao.since(AbstractEntity_.created, new Date());
+    	dao.during(AbstractEntity_.created, new Date(), new Date());
+    	dao.notDuring(AbstractEntity_.created, new Date(), new Date());
+    }
+    
+    @Test
+    public void testSearch () {
+    	assertEquals("Should be " + 18 + " instances", 18, dao.search(AbstractEntity_.name, "Test%").size());
+    	assertEquals("Should be " + 7 + " instances", 7, dao.search(AbstractEntity_.name, "%Count").size());
+    	assertEquals("Should be " + 11 + " instances", 11, dao.search(AbstractEntity_.name, "%FindRange").size());
+    }
 }

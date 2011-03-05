@@ -30,7 +30,7 @@ public class SimpleEntity extends AbstractEntity {
 	
 	private static final long serialVersionUID = 1L;
 	
-    public static final String FIND_ALL = "Entity.findAll";
+    public static final String FIND_ALL = "SimpleEntity.findAll";
 
 	public SimpleEntity () {
 		super();
@@ -38,6 +38,10 @@ public class SimpleEntity extends AbstractEntity {
 	
 	public SimpleEntity (final String name) {
 		super(name);
+	}
+
+	public SimpleEntity(SimpleEntity entity) {
+		super(entity);
 	}
 }
 

@@ -42,17 +42,21 @@ public interface ICrud<T, PK extends Serializable> extends IDb<PK> {
 
     List<T> findAll ();
 
+    List<T> findRange (int first, int max);
+
     T update (T t);
 
     List<T> findByNamedQuery (String queryName, Map<String, Object> parameters, int first, int max);
     
-    List<T> before (SingularAttribute<T, Date> attribute, Date date);
+    List<T> before (SingularAttribute<? super T, Date> attribute, Date date);
     
-    List<T> since (SingularAttribute<T, Date> attribute, Date date);
+    List<T> since (SingularAttribute<? super T, Date> attribute, Date date);
     
-    List<T> between (SingularAttribute<T, Date> attribute, Date date1, Date date2);
+    List<T> during (SingularAttribute<? super T, Date> attribute, Date date1, Date date2);
     
-    List<T> outside (SingularAttribute<T, Date> attribute, Date date1, Date date2);
+    List<T> notDuring (SingularAttribute<? super T, Date> attribute, Date date1, Date date2);
     
-    List<T> search (SingularAttribute<T, String> attribute, String queryString);
+    List<T> search (SingularAttribute<? super T, String> attribute, String queryString);
+    
+	int count();
 }

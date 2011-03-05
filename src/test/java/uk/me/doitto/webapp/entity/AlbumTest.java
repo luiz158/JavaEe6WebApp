@@ -33,6 +33,9 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import uk.me.doitto.webapp.dao.AbstractEntity;
+import uk.me.doitto.webapp.dao.SimpleEntity;
+
 /**
  * @author ian
  *
@@ -71,6 +74,15 @@ public class AlbumTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testConstructors () {
+		Album album1 = new Album();
+		Album album2 = new Album(album1);
+		assertNotSame("Same object!", album2.getCreated(), album1.getCreated());
+		assertNotSame("Same object!", album2.getAccessed(), album1.getAccessed());
+		assertNotSame("Same object!", album2.getModified(), album1.getModified());
 	}
 
 	@Test
@@ -122,14 +134,16 @@ public class AlbumTest {
 	
 	@Test
 	public void testDeepCopy () {
-		Album album = null;
+		AbstractEntity album = null;
 		try {
-			album = (Album)this.album.deepCopy();
+			album = this.album.deepCopy();
 		} catch (IOException e) {
 			fail("Should not reach here!");
 		} catch (ClassNotFoundException e) {
 			fail("Should not reach here!");
 		}
-		assertNotSame("", this.album, album);
+		assert album != null;
+		assertNotSame("Same object!", this.album, album);
+		assertEquals("Wrong class!", album.getClass(), this.album.getClass());
 	}
 }

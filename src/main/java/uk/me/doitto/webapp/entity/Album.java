@@ -73,9 +73,7 @@ public class Album extends AbstractEntity {
 
     // Copy constructor
     public Album (final Album album) {
-        this(album.name);
-        id = album.id;
-        version = album.version;
+    	super(album);
         label = album.label;
         catId = album.catId;
         if (album.releaseDate != null) {

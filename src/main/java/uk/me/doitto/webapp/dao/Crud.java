@@ -114,6 +114,14 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
 
     @Override
+	public List<T> findRange (final int first, final int max) {
+    	LOGGER.log(Level.FINE, "findAll(first, max) " + type);
+    	CriteriaQuery<T> cq = em.getCriteriaBuilder().createQuery(type);
+        cq.select(cq.from(type));
+        return em.createQuery(cq).setMaxResults(max).setFirstResult(first).getResultList();
+    }
+    
+    @Override
     public List<T> findByNamedQuery (@NotNull final String queryName, @NotNull final Map<String, Object> parameters, @NotNull int first, @NotNull int max) {
     	LOGGER.log(Level.FINE, "findByNamedQuery(" + queryName + ") " + type);
         TypedQuery<T> query = em.createNamedQuery(queryName, type);
@@ -132,7 +140,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
 
     @Override
-	public List<T> before (final SingularAttribute<T, Date> attribute, final Date date) {
+	public List<T> before (final SingularAttribute<? super T, Date> attribute, final Date date) {
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
@@ -141,7 +149,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
     
     @Override
-	public List<T> since (final SingularAttribute<T, Date> attribute, final Date date) {
+	public List<T> since (final SingularAttribute<? super T, Date> attribute, final Date date) {
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
@@ -150,7 +158,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
     
     @Override
-	public List<T> between (final SingularAttribute<T, Date> attribute, final Date date1, final Date date2) {
+	public List<T> during (final SingularAttribute<? super T, Date> attribute, final Date date1, final Date date2) {
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
@@ -159,7 +167,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
     
 	@Override
-	public List<T> outside (final SingularAttribute<T, Date> attribute, final Date date1, final Date date2) {
+	public List<T> notDuring (final SingularAttribute<? super T, Date> attribute, final Date date1, final Date date2) {
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
@@ -168,12 +176,20 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
 
     @Override
-	public List<T> search (final SingularAttribute<T, String> attribute, final String queryString) {
+	public List<T> search (final SingularAttribute<? super T, String> attribute, final String queryString) {
     	LOGGER.log(Level.FINE, "search() " + type);
     	CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(type);
         Root<T> root = query.from(type);
         query.select(root).where(builder.like(root.get(attribute), "%" + queryString + "%"));
         return em.createQuery(query).getResultList();
+    }
+    
+    @Override
+	public int count () {
+    	CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<Long> cq = builder.createQuery(Long.class);
+        cq.select(builder.count(cq.from(type)));
+        return em.createQuery(cq).getSingleResult().intValue();
     }
 }

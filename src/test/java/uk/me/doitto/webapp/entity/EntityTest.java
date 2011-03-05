@@ -30,12 +30,15 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
+import javax.validation.constraints.AssertTrue;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import uk.me.doitto.webapp.dao.AbstractEntity;
 import uk.me.doitto.webapp.dao.SimpleEntity;
 
 /**
@@ -76,6 +79,15 @@ public class EntityTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testConstructors () {
+		SimpleEntity entity1 = new SimpleEntity();
+		SimpleEntity entity2 = new SimpleEntity(entity1);
+		assertNotSame("Same object!", entity2.getCreated(), entity1.getCreated());
+		assertNotSame("Same object!", entity2.getAccessed(), entity1.getAccessed());
+		assertNotSame("Same object!", entity2.getModified(), entity1.getModified());
 	}
 
 	@Test
@@ -158,14 +170,16 @@ public class EntityTest {
 	
 	@Test
 	public void testDeepCopy () {
-		SimpleEntity entity = null;
+		AbstractEntity entity = null;
 		try {
-			entity = (SimpleEntity)this.entity.deepCopy();
+			entity = this.entity.deepCopy();
 		} catch (IOException e) {
 			fail("Should not reach here!");
 		} catch (ClassNotFoundException e) {
 			fail("Should not reach here!");
 		}
-		assertNotSame("", this.entity, entity);
+		assert entity != null;
+		assertNotSame("Same object!", this.entity, entity);
+		assertEquals("Wrong class!", entity.getClass(), this.entity.getClass());
 	}
 }

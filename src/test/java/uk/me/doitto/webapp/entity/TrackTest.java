@@ -33,6 +33,8 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import uk.me.doitto.webapp.dao.AbstractEntity;
+
 /**
  * @author ian
  *
@@ -71,6 +73,16 @@ public class TrackTest {
 	 */
 	@After
 	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void testConstructors () {
+		Track track1 = new Track();
+		Track track2 = new Track(track1);
+		assertNotSame("Same object!", track2.getCreated(), track1.getCreated());
+		assertNotSame("Same object!", track2.getAccessed(), track1.getAccessed());
+		assertNotSame("Same object!", track2.getModified(), track1.getModified());
+		assertNotSame("Same object!", track2.getDuration(), track1.getDuration());
 	}
 
 	@Test
@@ -122,14 +134,16 @@ public class TrackTest {
 	
 	@Test
 	public void testDeepCopy () {
-		Track track = null;
+		AbstractEntity track = null;
 		try {
-			track = (Track)this.track.deepCopy();
+			track = this.track.deepCopy();
 		} catch (IOException e) {
 			fail("Should not reach here!");
 		} catch (ClassNotFoundException e) {
 			fail("Should not reach here!");
 		}
-		assertNotSame("", this.track, track);
+		assert track != null;
+		assertNotSame("Same object!", this.track, track);
+		assertEquals("Wrong class!", track.getClass(), this.track.getClass());
 	}
 }
