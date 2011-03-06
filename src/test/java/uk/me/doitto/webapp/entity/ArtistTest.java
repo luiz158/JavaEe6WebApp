@@ -22,10 +22,15 @@
  */
 package uk.me.doitto.webapp.entity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
 
+import org.eclipse.persistence.internal.jpa.metamodel.CollectionAttributeImpl;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -144,5 +149,11 @@ public class ArtistTest {
 		assert artist != null;
 		assertNotSame("Same object!", this.artist, artist);
 		assertEquals("Wrong class!", artist.getClass(), this.artist.getClass());
+	}
+	
+	@SuppressWarnings("unused")
+	@Test
+	public void testMetaModel () {
+		CollectionAttributeImpl<Artist, Album> tracks = Artist_.albums;
 	}
 }

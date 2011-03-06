@@ -22,9 +22,16 @@
  */
 package uk.me.doitto.webapp.entity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.Date;
+
+import javax.persistence.metamodel.SingularAttribute;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -145,5 +152,12 @@ public class TrackTest {
 		assert track != null;
 		assertNotSame("Same object!", this.track, track);
 		assertEquals("Wrong class!", track.getClass(), this.track.getClass());
+	}
+	
+	@SuppressWarnings("unused")
+	@Test
+	public void testMetaModel () {
+		SingularAttribute<Track, Date> duration = Track_.duration;
+		SingularAttribute<Track, String> url = Track_.url;
 	}
 }

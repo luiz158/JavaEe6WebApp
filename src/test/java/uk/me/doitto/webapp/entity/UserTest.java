@@ -22,14 +22,21 @@
  */
 package uk.me.doitto.webapp.entity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
+
+import javax.persistence.metamodel.SingularAttribute;
 
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -107,7 +114,8 @@ public class UserTest {
 	/**
 	 * Test method for {@link uk.me.doitto.webapp.entity.AppUser#getPassword()}.
 	 */
-//	@Test
+	@Ignore
+	@Test
 	public void testGetPassword() {
 		assertEquals("", PASSWORD, user.getPassword());
 	}
@@ -115,7 +123,8 @@ public class UserTest {
 	/**
 	 * Test method for {@link uk.me.doitto.webapp.entity.AppUser#setPassword(java.lang.String)}.
 	 */
-//	@Test
+	@Ignore
+	@Test
 	public void testSetPassword() {
 		fail("Not yet implemented");
 	}
@@ -163,7 +172,8 @@ public class UserTest {
 	/**
 	 * Test method for {@link uk.me.doitto.webapp.entity.AppUser#hashCode()}.
 	 */
-//	@Test
+	@Ignore
+	@Test
 	public void testHashCode() {
 		fail("Not yet implemented");
 	}
@@ -181,5 +191,13 @@ public class UserTest {
 		assert appUser != null;
 		assertNotSame("Same object!", this.user, appUser);
 		assertEquals("Wrong class!", appUser.getClass(), this.user.getClass());
+	}
+	
+	@SuppressWarnings("unused")
+	@Test
+	public void testMetaModel () {
+		SingularAttribute<AppUser, String> realName = AppUser_.realName;
+		SingularAttribute<AppUser, String> password = AppUser_.password;
+		SingularAttribute<AppUser, String> comments = AppUser_.comments;
 	}
 }

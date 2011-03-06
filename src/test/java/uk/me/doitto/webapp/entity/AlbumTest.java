@@ -22,10 +22,18 @@
  */
 package uk.me.doitto.webapp.entity;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotSame;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.Date;
 
+import javax.persistence.metamodel.SingularAttribute;
+
+import org.eclipse.persistence.internal.jpa.metamodel.CollectionAttributeImpl;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -34,7 +42,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
-import uk.me.doitto.webapp.dao.SimpleEntity;
 
 /**
  * @author ian
@@ -145,5 +152,14 @@ public class AlbumTest {
 		assert album != null;
 		assertNotSame("Same object!", this.album, album);
 		assertEquals("Wrong class!", album.getClass(), this.album.getClass());
+	}
+	
+	@SuppressWarnings("unused")
+	@Test
+	public void testMetaModel () {
+		SingularAttribute<Album, Date> releaseDate = Album_.releaseDate;
+		SingularAttribute<Album, String> label = Album_.label;
+		SingularAttribute<Album, String> catId = Album_.catId;
+		CollectionAttributeImpl<Album, Track> tracks = Album_.tracks;
 	}
 }

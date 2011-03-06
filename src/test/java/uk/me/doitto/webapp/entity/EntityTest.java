@@ -29,8 +29,9 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.util.Date;
 
-import javax.validation.constraints.AssertTrue;
+import javax.persistence.metamodel.SingularAttribute;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -39,6 +40,7 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
+import uk.me.doitto.webapp.dao.AbstractEntity_;
 import uk.me.doitto.webapp.dao.SimpleEntity;
 
 /**
@@ -181,5 +183,16 @@ public class EntityTest {
 		assert entity != null;
 		assertNotSame("Same object!", this.entity, entity);
 		assertEquals("Wrong class!", entity.getClass(), this.entity.getClass());
+	}
+	
+	@SuppressWarnings("unused")
+	@Test
+	public void testMetaModel () {
+		SingularAttribute<AbstractEntity, Long> id = AbstractEntity_.id;
+		SingularAttribute<AbstractEntity, Date> accessed = AbstractEntity_.accessed;
+		SingularAttribute<AbstractEntity, Date> created = AbstractEntity_.created;
+		SingularAttribute<AbstractEntity, String> name = AbstractEntity_.name;
+		SingularAttribute<AbstractEntity, Integer> version = AbstractEntity_.version;
+		SingularAttribute<AbstractEntity, Date> modified = AbstractEntity_.modified;
 	}
 }
