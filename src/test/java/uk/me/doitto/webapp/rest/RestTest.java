@@ -22,15 +22,20 @@
  */
 package uk.me.doitto.webapp.rest;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
+
+import javax.ws.rs.core.Response;
 
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.me.doitto.webapp.entity.Artist;
+import uk.me.doitto.webapp.ws.ArtistRest;
 
 import com.sun.jersey.api.client.WebResource;
 import com.sun.jersey.core.header.MediaTypes;
@@ -119,17 +124,47 @@ public class RestTest extends JerseyTest {
         Assert.assertTrue(serviceWadl.length() > 0);
     }
     
+    // This won't work as service EJBs aren't injected
     @Ignore
     @Test
     public void testArtistRestCrud () {
         WebResource webResource = resource();
-        webResource = webResource.path("artist");
-        List<Artist> responseMsg = webResource.get(List.class);
-//        assertTrue(responseMsg.contains("Current time is"));
+        webResource = webResource.path(ArtistRest.PATH);
+        Response response = webResource.post(Response.class, new Artist("test artist"));
+        
+        @SuppressWarnings("unchecked")
+		List<Artist> responseMsg = webResource.get(List.class);
+        assertTrue(responseMsg.contains("Current time is"));
         
 //        Artist t = new Artist();
 //        t.setName(STRING_1);
 //
 //    	artistRest.create(new JAXBElement<Artist>(new QName("planet"), Artist.class, t));  	
     }
+//    public void testArtistServiceCrud () {
+//        Artist t = new Artist();
+//        t.setName(STRING_1);
+//        assertTrue("", t.isNew());
+//
+//        artistService.create(t);
+//        assertFalse("", t.isNew());
+//
+//        Artist s = artistService.find(t.getId());
+//        assertEquals(STRING_1, s.getName());
+//
+//        s.setName(STRING_2);
+//        artistService.update(s);
+//        s = artistService.find(t.getId());
+//        assertEquals(STRING_2, s.getName());
+//
+//        List<Artist> list1 = artistService.findAll();
+//        assertEquals(true, list1.contains(s));
+//
+////        List<Artist> list2 = artistService.findByNamedQuery(Artist.FIND_ALL, null, 0, 0);
+////        assertEquals(true, list2.contains(s));
+//
+//        artistService.delete(s.getId());
+//        List<Artist> list3 = artistService.findAll();
+//        assertEquals(false, list3.contains(s));
+//     }
 }

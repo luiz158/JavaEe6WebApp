@@ -177,7 +177,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 */
 	@Override
 	public AbstractEntity deepCopy () throws IOException, ClassNotFoundException {
-		Object object = null;
+//		AbstractEntity object = null;
 		ObjectOutputStream oos = null;
 		try {
 			// Write the object out to a byte array
@@ -187,7 +187,8 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 			oos.flush();
 			oos.close();
 			// Make an input stream from the byte array and read a copy of the object back in.
-			object = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray())).readObject();
+//			AbstractEntity object = new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray())).readObject();
+			return getClass().cast(new ObjectInputStream(new ByteArrayInputStream(baos.toByteArray())).readObject());
 		} finally {
 			try {
 				if (oos != null) {
@@ -197,7 +198,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 				throw new IOException(ex);
 			}
 		}
-		return getClass().cast(object);
+//		return getClass().cast(object);
 	}
 
 	@Override
