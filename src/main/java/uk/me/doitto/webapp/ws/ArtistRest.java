@@ -69,6 +69,12 @@ public class ArtistRest implements IRestCrud<Artist> {
 
     public static final String PATH = "/artist";
     
+    public static final String CREATE = "/create";
+    
+    public static final String LINK_ALBUM = "/linkalbum";
+    
+    public static final String UNLINK_ALBUM = "/unlinkalbum";
+    
     @EJB
     private ArtistService artistService;
 
@@ -76,7 +82,7 @@ public class ArtistRest implements IRestCrud<Artist> {
     private UriInfo uriInfo;
 
     @PUT
-    @Path("/create/{title}")
+    @Path(CREATE + "/{title}")
     public Response createXtor(@PathParam("title") final String title) {
     	Artist artist = new Artist(title);
     	artistService.create(artist);
@@ -106,14 +112,14 @@ public class ArtistRest implements IRestCrud<Artist> {
     }
 
     @GET
-    @Path("{id}/")
+    @Path("/{id}")
     @Override
     public Artist getById (@PathParam("id") final Long id) {
          return artistService.find(id);
     }
 
     @DELETE
-    @Path("{id}/")
+    @Path("/{id}")
     @Override
     public Response delete (@PathParam("id") final Long id) {
     	artistService.delete(id);
@@ -130,7 +136,7 @@ public class ArtistRest implements IRestCrud<Artist> {
     }
 
     @GET
-    @Path("/linkalbum")
+    @Path(LINK_ALBUM)
     @Produces(MediaType.TEXT_HTML)
     public Response linkAlbum(@QueryParam("artistid") final Long id, @QueryParam("albumid") final Long albumId) {
     	Globals.LOGGER.log(Level.FINE, "Linking Artist: {0} to Album: {1}", new Object[]{id, albumId});
@@ -139,7 +145,7 @@ public class ArtistRest implements IRestCrud<Artist> {
     }
 
     @GET
-    @Path("/unlinkalbum")
+    @Path(UNLINK_ALBUM)
     @Produces(MediaType.TEXT_HTML)
     public Response unlinkAlbum(@QueryParam("artistid") final Long id, @QueryParam("albumid") final Long albumId) {
     	Globals.LOGGER.log(Level.FINE, "Unlinking Artist: {0} from Album: {1}", new Object[]{id, albumId});

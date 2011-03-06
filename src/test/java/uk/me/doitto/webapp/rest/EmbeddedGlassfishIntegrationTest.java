@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import org.junit.After;
@@ -38,6 +39,8 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+
+import uk.me.doitto.webapp.ws.ArtistRest;
 
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.HttpMethod;
@@ -116,7 +119,7 @@ public class EmbeddedGlassfishIntegrationTest {
     }
     
     @Test
-    public void testAppUser () {
+    public void testAppUserController () {
     	String url = APP_URL + "/pages/listUsers.xhtml";
         try {
             HtmlPage page = webClient.getPage(url);
@@ -136,7 +139,7 @@ public class EmbeddedGlassfishIntegrationTest {
     }
     
     @Test
-    public void testArtist () {
+    public void testArtistController () {
     	String url = APP_URL + "/pages/listArtists.xhtml";
         try {
             HtmlPage page = webClient.getPage(url);
@@ -156,7 +159,7 @@ public class EmbeddedGlassfishIntegrationTest {
     }
     
     @Test
-    public void testAlbum () {
+    public void testAlbumController () {
     	String url = APP_URL + "/pages/listAlbums.xhtml";
         try {
             HtmlPage page = webClient.getPage(url);
@@ -176,7 +179,7 @@ public class EmbeddedGlassfishIntegrationTest {
     }
     
     @Test
-    public void testTrack () {
+    public void testTrackController () {
     	String url = APP_URL + "/pages/listTracks.xhtml";
         try {
             HtmlPage page = webClient.getPage(url);
@@ -208,7 +211,7 @@ public class EmbeddedGlassfishIntegrationTest {
     	WebResponse response;
 //        try {
         	request = new WebRequest(new URL(REST_URL + "/appuser"), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
+        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
 
@@ -218,7 +221,7 @@ public class EmbeddedGlassfishIntegrationTest {
             String location = response.getResponseHeaderValue("Location");
             
         	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
+        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
             
@@ -227,7 +230,7 @@ public class EmbeddedGlassfishIntegrationTest {
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
             
         	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
+        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
 //        } catch (Exception e) {
@@ -239,33 +242,66 @@ public class EmbeddedGlassfishIntegrationTest {
     public void testArtistRest () throws FailingHttpStatusCodeException, IOException {
     	WebRequest request;
     	WebResponse response;
-//        try {
-        	request = new WebRequest(new URL(REST_URL + "/artist"), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+    	String location;
+    	
+    	// get all, JSON & XML
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
 
-        	request = new WebRequest(new URL(REST_URL + "/artist/create/testartist"), HttpMethod.PUT);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.CREATED.getStatusCode(), response.getStatusCode());
-            String location = response.getResponseHeaderValue("Location");
-            
-        	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
-            
-            request = new WebRequest(new URL(location), HttpMethod.DELETE);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
-            
-        	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
-//        } catch (Exception e) {
-//            fail("Unexpected exception in test: " + e);
-//        }
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+
+        // create
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH+ ArtistRest.CREATE + "/testartist"), HttpMethod.PUT);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.CREATED.getStatusCode(), response.getStatusCode());
+        location = response.getResponseHeaderValue("Location");
+        assertTrue(location.matches(".*" + REST_URL + ArtistRest.PATH + ".*"));
+        assertTrue("Should be no content!", response.getContentAsString().length() == 0);
+        
+    	// get by ID, JSON & XML
+    	request = new WebRequest(new URL(location), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+    	request = new WebRequest(new URL(location), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+        //delete
+        request = new WebRequest(new URL(location), HttpMethod.DELETE);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertTrue("Should be no content!", response.getContentAsString().length() == 0);
+        
+    	// get all, JSON & XML
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
     }
     
     @Test
@@ -274,7 +310,7 @@ public class EmbeddedGlassfishIntegrationTest {
     	WebResponse response;
 //        try {
         	request = new WebRequest(new URL(REST_URL + "/album"), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
+        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
 
@@ -284,7 +320,7 @@ public class EmbeddedGlassfishIntegrationTest {
             String location = response.getResponseHeaderValue("Location");
             
         	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
+        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
             
@@ -293,7 +329,7 @@ public class EmbeddedGlassfishIntegrationTest {
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
             
         	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
+        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
 //        } catch (Exception e) {
@@ -307,7 +343,7 @@ public class EmbeddedGlassfishIntegrationTest {
     	WebResponse response;
 //        try {
         	request = new WebRequest(new URL(REST_URL + "/track"), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
+        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
 
@@ -317,7 +353,7 @@ public class EmbeddedGlassfishIntegrationTest {
             String location = response.getResponseHeaderValue("Location");
             
         	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
+        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
             
@@ -326,7 +362,7 @@ public class EmbeddedGlassfishIntegrationTest {
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
             
         	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", "application/json");
+        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
 //        } catch (Exception e) {
