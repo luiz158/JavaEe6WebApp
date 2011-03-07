@@ -105,6 +105,18 @@ public class ArtistRest implements IRestCrud<Artist> {
     	return artistService.update(jaxb.getValue());
     }
     
+	@PUT
+    @Path("{id}/")
+    @Override
+    public Artist update (@PathParam("id") final Long id, final JAXBElement<Artist> jaxb) {
+    	Artist edited = jaxb.getValue();
+    	Artist old = artistService.find(id);
+    	if (edited.getName() != null) {
+    		old.setName(edited.getName());
+    	}
+    	return artistService.update(old);
+    }
+    
     @GET
     @Override
     public List<Artist> getAll() {

@@ -94,6 +94,24 @@ public class AppUserRest implements IRestCrud<AppUser> {
     	return appUserService.update(jaxb.getValue());
     }
     
+    @PUT
+    @Path("{id}/")
+    @Override
+    public AppUser update (@PathParam("id") final Long id, final JAXBElement<AppUser> jaxb) {
+    	AppUser edited = jaxb.getValue();
+    	AppUser old = appUserService.find(id);
+    	if (edited.getName() != null) {
+    		old.setName(edited.getName());
+    	}
+    	if (edited.getRealName() != null) {
+    		old.setRealName(edited.getRealName());
+    	}
+    	if (edited.getComments() != null) {
+    		old.setComments(edited.getComments());
+    	}
+    	return appUserService.update(old);
+    }
+    
     @GET
     @Override
     public List<AppUser> getAll() {

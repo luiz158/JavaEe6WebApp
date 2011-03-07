@@ -42,6 +42,8 @@ public interface IRestCrud<T extends AbstractEntity> extends Serializable {
 
     T update (JAXBElement<T> jaxb);
     
+    T update (Long id, JAXBElement<T> jaxb);
+    
     List<T> getAll ();
 
     T getById (Long id);

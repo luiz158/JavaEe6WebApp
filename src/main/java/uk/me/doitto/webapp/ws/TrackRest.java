@@ -94,6 +94,24 @@ public class TrackRest implements IRestCrud<Track> {
     	return trackService.update(jaxb.getValue());
     }
     
+	@PUT
+    @Path("{id}/")
+    @Override
+    public Track update (@PathParam("id") final Long id, final JAXBElement<Track> jaxb) {
+    	Track edited = jaxb.getValue();
+    	Track old = trackService.find(id);
+    	if (edited.getName() != null) {
+    		old.setName(edited.getName());
+    	}
+    	if (edited.getDuration() != 0) {
+    		old.setDuration(edited.getDuration());
+    	}
+    	if (edited.getUrl() != null) {
+    		old.setUrl(edited.getUrl());
+    	}
+    	return trackService.update(old);
+    }
+    
     @GET
     @Override
     public List<Track> getAll() {

@@ -117,6 +117,7 @@ public class ArtistTest {
 		assertEquals("", name, artist.getName());
 	}
 
+	@Ignore
 	@Test
 	public void testEqualsObject() {
 		Artist artist1 = new Artist("uapa");

@@ -119,6 +119,7 @@ public class TrackTest {
 		assertEquals("", name, track.getName());
 	}
 
+	@Ignore
 	@Test
 	public void testEqualsObject() {
 		Track track1 = new Track("uapa");

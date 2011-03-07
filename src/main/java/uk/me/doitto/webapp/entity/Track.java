@@ -41,7 +41,7 @@ public class Track extends AbstractEntity {
 
     private int duration = 0;
     
-    private String url = "http://doitto.me.uk/" + name;
+    private String url = "http://doitto.me.uk/";
 
     // for hibernate
     public Track () {

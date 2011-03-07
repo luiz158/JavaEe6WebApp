@@ -120,6 +120,7 @@ public class AlbumTest {
 		assertEquals("", name, album.getName());
 	}
 
+	@Ignore
 	@Test
 	public void testEqualsObject() {
 		Album album1 = new Album("uapa");

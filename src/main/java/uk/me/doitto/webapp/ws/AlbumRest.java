@@ -99,6 +99,27 @@ public class AlbumRest implements IRestCrud<Album> {
     	return albumService.update(jaxb.getValue());
     }
     
+    @PUT
+    @Path("{id}/")
+    @Override
+    public Album update (@PathParam("id") final Long id, final JAXBElement<Album> jaxb) {
+    	Album edited = jaxb.getValue();
+    	Album old = albumService.find(id);
+    	if (edited.getName() != null) {
+    		old.setName(edited.getName());
+    	}
+    	if (edited.getLabel() != null) {
+    		old.setLabel(edited.getLabel());
+    	}
+    	if (edited.getCatId() != null) {
+    		old.setCatId(edited.getCatId());
+    	}
+    	if (edited.getDate() != null) {
+    		old.setDate(edited.getDate());
+    	}
+    	return albumService.update(old);
+    }
+    
     @GET
     @Override
     public List<Album> getAll() {

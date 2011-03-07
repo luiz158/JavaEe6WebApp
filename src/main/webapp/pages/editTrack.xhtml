@@ -33,9 +33,7 @@
             <ui:define name="content">
                 <local:itemEditor controller="#{trackController}">
                     <h:outputLabel value="#{msg.durationLabel}" />
-                    <h:inputText value="#{trackController.item.duration}">
-                        <f:convertDateTime pattern="mm:ss" />
-                    </h:inputText>
+                    <h:inputText value="#{trackController.item.duration}" />
 
                     <h:outputLabel value="#{msg.urlLabel}" />
                     <h:inputText value="#{trackController.item.url}" />

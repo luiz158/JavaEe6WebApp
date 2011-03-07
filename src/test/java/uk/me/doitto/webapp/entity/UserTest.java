@@ -156,6 +156,7 @@ public class UserTest {
 	/**
 	 * Test method for {@link uk.me.doitto.webapp.entity.AppUser#equals(java.lang.Object)}.
 	 */
+	@Ignore
 	@Test
 	public void testEqualsObject() {
 		AppUser user1 = new AppUser("ua", "pa");
