@@ -34,7 +34,7 @@
         <h:panelGrid columns="2">
             <h:outputText value="#{msg.listpageTitle}" />
             <h:form>
-                <h:commandButton value="#{msg.createLabel}" action="#{cc.attrs.controller.create}" />
+                <h:commandButton value="#{msg.createLabel}" action="#{cc.attrs.controller.jsfCreate}" />
             </h:form>
         </h:panelGrid>
 
@@ -48,13 +48,13 @@
                 </h:column>
 
                 <h:column>
-                    <h:commandLink action="#{cc.attrs.controller.edit(item.id)}">
+                    <h:commandLink action="#{cc.attrs.controller.jsfEdit(item.id)}">
                         <h:graphicImage library="images" name="icons/text-editor.png" />
                     </h:commandLink>
                 </h:column>
 
                 <h:column>
-                    <h:commandLink action="#{cc.attrs.controller.delete(item.id)}">
+                    <h:commandLink action="#{cc.attrs.controller.jsfDelete(item.id)}">
                         <h:graphicImage library="images" name="icons/edittrash.png" />
                         <f:ajax render="table" />
                     </h:commandLink>
