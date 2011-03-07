@@ -63,13 +63,11 @@ import uk.me.doitto.webapp.util.Globals;
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class ArtistRest implements IRestCrud<Artist, Long> {
+public class ArtistRest extends RestCrudBase<Artist> {
 
 	private static final long serialVersionUID = 1L;
 
     public static final String PATH = "/artist";
-    
-    public static final String CREATE = "/create";
     
     public static final String LINK_ALBUM = "/linkalbum";
     
@@ -80,41 +78,29 @@ public class ArtistRest implements IRestCrud<Artist, Long> {
 
     @Context
     private UriInfo uriInfo;
-
-    @PUT
-    @Path(CREATE + "/{title}")
-    public Response createXtor(@PathParam("title") final String title) {
-    	Artist artist = new Artist(title);
-    	artistService.create(artist);
-        URI uri = uriInfo.getBaseUriBuilder().path(ArtistRest.PATH + "/" + artist.getId().toString()).build();
-        return Response.created(uri).entity(artist).build();
+    
+    @Override
+	protected Artist overlay (final Artist incoming, final Artist existing) {
+    	if (incoming.getName() != null) {
+    		existing.setName(incoming.getName());
+    	}
+    	return existing;
     }
-
+    
     @POST
     @Override
     public Response create (final JAXBElement<Artist> jaxb) {
-    	Artist artist = jaxb.getValue();
-    	artistService.create(artist);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(artist.getId().toString()).build();
-        return Response.created(uri).entity(artist).build();
+    	Artist combined = overlay(jaxb.getValue(), new Artist());
+    	artistService.create(combined);
+        URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
+        return Response.created(uri).entity(combined).build();
     }
 
-    @PUT
-//    @Override
-    public Artist update (final JAXBElement<Artist> jaxb) {
-    	return artistService.update(jaxb.getValue());
-    }
-    
 	@PUT
     @Path("{id}/")
     @Override
     public Artist update (@PathParam("id") final Long id, final JAXBElement<Artist> jaxb) {
-    	Artist edited = jaxb.getValue();
-    	Artist old = artistService.find(id);
-    	if (edited.getName() != null) {
-    		old.setName(edited.getName());
-    	}
-    	return artistService.update(old);
+    	return artistService.update(overlay(jaxb.getValue(), artistService.find(id)));
     }
     
     @GET
