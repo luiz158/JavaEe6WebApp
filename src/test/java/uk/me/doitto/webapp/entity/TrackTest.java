@@ -89,7 +89,6 @@ public class TrackTest {
 		assertNotSame("Same object!", track2.getCreated(), track1.getCreated());
 		assertNotSame("Same object!", track2.getAccessed(), track1.getAccessed());
 		assertNotSame("Same object!", track2.getModified(), track1.getModified());
-		assertNotSame("Same object!", track2.getDuration(), track1.getDuration());
 	}
 
 	@Test
@@ -157,7 +156,7 @@ public class TrackTest {
 	@SuppressWarnings("unused")
 	@Test
 	public void testMetaModel () {
-		SingularAttribute<Track, Date> duration = Track_.duration;
+		SingularAttribute<Track, Integer> duration = Track_.duration;
 		SingularAttribute<Track, String> url = Track_.url;
 	}
 }

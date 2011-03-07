@@ -22,10 +22,7 @@
  */
 package uk.me.doitto.webapp.entity;
 
-import java.util.Date;
-
 import javax.persistence.Entity;
-import javax.persistence.Temporal;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -42,41 +39,35 @@ public class Track extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
-    @Temporal(javax.persistence.TemporalType.TIME)
-    private Date duration;
+    private int duration = 0;
     
-    private String url;
+    private String url = "http://doitto.me.uk/" + name;
 
     // for hibernate
     public Track () {
-    	duration = new Date();
     }
 
     // for searching
     public Track (final String name) {
         super(name);
-    	duration = new Date();
     }
 
     // Copy constructor
     public Track (final Track track) {
     	super(track);
-    	duration = new Date(track.duration.getTime());
+    	duration = track.duration;
         url = track.url;
     }
 
-    public Date getDuration () {
-        if (duration == null) {
-            return null;
-        }
-        return new Date(duration.getTime());
-    }
+    public int getDuration () {
+		return duration;
+	}
 
-    public void setDuration (final Date duration) {
-        this.duration = new Date(duration.getTime());
-    }
+	public void setDuration (int duration) {
+		this.duration = duration;
+	}
 
-    public String getUrl () {
+	public String getUrl () {
         return url;
     }
 

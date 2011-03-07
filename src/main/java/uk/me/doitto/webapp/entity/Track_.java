@@ -19,7 +19,6 @@
 
 package uk.me.doitto.webapp.entity;
 
-import java.util.Date;
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -30,7 +29,7 @@ import uk.me.doitto.webapp.dao.AbstractEntity_;
 @StaticMetamodel(Track.class)
 public class Track_ extends AbstractEntity_ {
 
-	public static volatile SingularAttribute<Track, Date> duration;
+	public static volatile SingularAttribute<Track, Integer> duration;
 	public static volatile SingularAttribute<Track, String> url;
 
 }

@@ -51,9 +51,9 @@ public class Album extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private String label;
+    private String label = "UnknownLabel";
 
-    private String catId;
+    private String catId = "UnknownId";
 
     @Temporal(javax.persistence.TemporalType.DATE)
     @Past
