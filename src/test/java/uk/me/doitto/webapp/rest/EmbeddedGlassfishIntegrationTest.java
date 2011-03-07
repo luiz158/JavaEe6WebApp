@@ -38,6 +38,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.me.doitto.webapp.ws.ArtistRest;
@@ -240,6 +241,73 @@ public class EmbeddedGlassfishIntegrationTest {
     
     @Test
     public void testArtistRest () throws FailingHttpStatusCodeException, IOException {
+    	WebRequest request;
+    	WebResponse response;
+    	String location;
+    	
+    	// get all, JSON & XML
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+
+        // create
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH+ ArtistRest.CREATE + "/testartist"), HttpMethod.PUT);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.CREATED.getStatusCode(), response.getStatusCode());
+        location = response.getResponseHeaderValue("Location");
+        assertTrue(location.matches(".*" + REST_URL + ArtistRest.PATH + ".*"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+    	// get by ID, JSON & XML
+    	request = new WebRequest(new URL(location), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+    	request = new WebRequest(new URL(location), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+        //delete
+        request = new WebRequest(new URL(location), HttpMethod.DELETE);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertTrue("Should be no content!", response.getContentAsString().length() == 0);
+        
+    	// get all, JSON & XML
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader("Accept", MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue("Content-Type"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+    }
+    
+    @Ignore
+    @Test
+    public void testArtistRest2 () throws FailingHttpStatusCodeException, IOException {
     	WebRequest request;
     	WebResponse response;
     	String location;

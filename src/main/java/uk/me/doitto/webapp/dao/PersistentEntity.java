@@ -66,6 +66,8 @@ public interface PersistentEntity<PK extends Serializable> extends IDb<PK> {
 
 	Date getCreated ();
 
+	void setCreated (Date created);
+	
 	Date getModified ();
 
 	void setModified (Date modified);

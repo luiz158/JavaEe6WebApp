@@ -25,7 +25,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.Date;
-import java.util.logging.Level;
 
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -157,6 +156,11 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	@Override
 	public Date getCreated () {
 		return new Date(created.getTime());
+	}
+
+	@Override
+	public void setCreated (Date created) {
+		this.created = new Date(created.getTime());
 	}
 
 	@Override

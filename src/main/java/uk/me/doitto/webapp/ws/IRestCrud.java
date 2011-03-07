@@ -30,23 +30,24 @@ import javax.ws.rs.core.Response;
 import javax.xml.bind.JAXBElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
+import uk.me.doitto.webapp.dao.IDb;
 
 /**
  *
  * @param <T>
  * @author ian
  */
-public interface IRestCrud<T extends AbstractEntity> extends Serializable {
+public interface IRestCrud<T extends AbstractEntity, PK extends Serializable> extends IDb<PK> {
 
     Response create (JAXBElement<T> jaxb) ;
 
-    T update (JAXBElement<T> jaxb);
+//    T update (JAXBElement<T> jaxb);
     
-    T update (Long id, JAXBElement<T> jaxb);
+    T update (PK id, JAXBElement<T> jaxb);
     
     List<T> getAll ();
 
-    T getById (Long id);
+    T getById (PK id);
 
-    Response delete (Long id);
+    Response delete (PK id);
 }

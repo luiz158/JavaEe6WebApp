@@ -63,7 +63,7 @@ import uk.me.doitto.webapp.util.Globals;
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class AlbumRest implements IRestCrud<Album> {
+public class AlbumRest implements IRestCrud<Album, Long> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -81,7 +81,7 @@ public class AlbumRest implements IRestCrud<Album> {
     	Album album = new Album(title);
         albumService.create(album);
         URI uri = uriInfo.getBaseUriBuilder().path(AlbumRest.PATH + "/" + album.getId().toString()).build();
-        return Response.created(uri).build();
+        return Response.created(uri).entity(album).build();
     }
 
     @POST
@@ -90,11 +90,11 @@ public class AlbumRest implements IRestCrud<Album> {
     	Album album = jaxb.getValue();
     	albumService.create(album);
         URI uri = uriInfo.getAbsolutePathBuilder().path(album.getId().toString()).build();
-        return Response.created(uri).build();
+        return Response.created(uri).entity(album).build();
     }
 
     @PUT
-    @Override
+//    @Override
     public Album update (final JAXBElement<Album> jaxb) {
     	return albumService.update(jaxb.getValue());
     }

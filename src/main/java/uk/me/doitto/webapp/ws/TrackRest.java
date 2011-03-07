@@ -58,7 +58,7 @@ import uk.me.doitto.webapp.entity.Track;
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class TrackRest implements IRestCrud<Track> {
+public class TrackRest implements IRestCrud<Track, Long> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -76,7 +76,7 @@ public class TrackRest implements IRestCrud<Track> {
     	Track track = new Track(title);
         trackService.create(track);
         URI uri = uriInfo.getBaseUriBuilder().path(TrackRest.PATH + "/" + track.getId().toString()).build();
-        return Response.created(uri).build();
+        return Response.created(uri).entity(track).build();
     }
 
     @POST
@@ -85,11 +85,11 @@ public class TrackRest implements IRestCrud<Track> {
     	Track track = jaxb.getValue();
     	trackService.create(track);
         URI uri = uriInfo.getAbsolutePathBuilder().path(track.getId().toString()).build();
-        return Response.created(uri).build();
+        return Response.created(uri).entity(track).build();
     }
 
     @PUT
-    @Override
+//    @Override
     public Track update (final JAXBElement<Track> jaxb) {
     	return trackService.update(jaxb.getValue());
     }

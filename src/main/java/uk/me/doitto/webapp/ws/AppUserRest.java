@@ -58,7 +58,7 @@ import uk.me.doitto.webapp.entity.AppUser;
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class AppUserRest implements IRestCrud<AppUser> {
+public class AppUserRest implements IRestCrud<AppUser, Long> {
 
 	private static final long serialVersionUID = 1L;
 
@@ -89,7 +89,7 @@ public class AppUserRest implements IRestCrud<AppUser> {
     }
 
     @PUT
-    @Override
+//    @Override
     public AppUser update (final JAXBElement<AppUser> jaxb) {
     	return appUserService.update(jaxb.getValue());
     }
