@@ -63,61 +63,49 @@ import uk.me.doitto.webapp.util.Globals;
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class AlbumRest implements IRestCrud<Album, Long> {
+public class AlbumRest extends RestCrudBase<Album> {
 
 	private static final long serialVersionUID = 1L;
 
     public static final String PATH = "/album";
     
     @EJB
-    AlbumService albumService;
+    private AlbumService albumService;
 
     @Context
     private UriInfo uriInfo;
 
-    @PUT
-    @Path("/create/{title}")
-    public Response createXtor(@PathParam("title") final String title) {
-    	Album album = new Album(title);
-        albumService.create(album);
-        URI uri = uriInfo.getBaseUriBuilder().path(AlbumRest.PATH + "/" + album.getId().toString()).build();
-        return Response.created(uri).entity(album).build();
-    }
+	@Override
+	protected Album overlay(Album incoming, Album existing) {
+    	if (incoming.getName() != null) {
+    		existing.setName(incoming.getName());
+    	}
+    	if (incoming.getLabel() != null) {
+    		existing.setLabel(incoming.getLabel());
+    	}
+    	if (incoming.getCatId() != null) {
+    		existing.setCatId(incoming.getCatId());
+    	}
+    	if (incoming.getDate() != null) {
+    		existing.setDate(incoming.getDate());
+    	}
+		return existing;
+	}
 
     @POST
     @Override
     public Response create (final JAXBElement<Album> jaxb) {
-    	Album album = jaxb.getValue();
-    	albumService.create(album);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(album.getId().toString()).build();
-        return Response.created(uri).entity(album).build();
+    	Album combined = overlay(jaxb.getValue(), new Album());
+    	albumService.create(combined);
+        URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
+        return Response.created(uri).entity(combined).build();
     }
 
-    @PUT
-//    @Override
-    public Album update (final JAXBElement<Album> jaxb) {
-    	return albumService.update(jaxb.getValue());
-    }
-    
     @PUT
     @Path("{id}/")
     @Override
     public Album update (@PathParam("id") final Long id, final JAXBElement<Album> jaxb) {
-    	Album edited = jaxb.getValue();
-    	Album old = albumService.find(id);
-    	if (edited.getName() != null) {
-    		old.setName(edited.getName());
-    	}
-    	if (edited.getLabel() != null) {
-    		old.setLabel(edited.getLabel());
-    	}
-    	if (edited.getCatId() != null) {
-    		old.setCatId(edited.getCatId());
-    	}
-    	if (edited.getDate() != null) {
-    		old.setDate(edited.getDate());
-    	}
-    	return albumService.update(old);
+    	return albumService.update(overlay(jaxb.getValue(), albumService.find(id)));
     }
     
     @GET

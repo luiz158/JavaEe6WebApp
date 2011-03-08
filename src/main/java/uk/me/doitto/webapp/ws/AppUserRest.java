@@ -58,58 +58,46 @@ import uk.me.doitto.webapp.entity.AppUser;
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class AppUserRest implements IRestCrud<AppUser, Long> {
+public class AppUserRest extends RestCrudBase<AppUser> {
 
 	private static final long serialVersionUID = 1L;
 
     public static final String PATH = "/appuser";
     
     @EJB
-    AppUserService appUserService;
+    private AppUserService appUserService;
     
     @Context
     private UriInfo uriInfo;
 
-    @PUT
-    @Path("/create/{username}/{password}")
-    public Response createXtor(@PathParam("username") final String username, @PathParam("password") final String password) {
-    	AppUser appUser = new AppUser(username, password);
-    	appUserService.create(appUser);
-        URI uri = uriInfo.getBaseUriBuilder().path(AppUserRest.PATH + "/" + appUser.getId().toString()).build();
-        return Response.created(uri).entity(appUser).build();
-    }
+	@Override
+	protected AppUser overlay(AppUser incoming, AppUser existing) {
+    	if (incoming.getName() != null) {
+    		existing.setName(incoming.getName());
+    	}
+    	if (incoming.getRealName() != null) {
+    		existing.setRealName(incoming.getRealName());
+    	}
+    	if (incoming.getComments() != null) {
+    		existing.setComments(incoming.getComments());
+    	}
+		return existing;
+	}
 
     @POST
     @Override
     public Response create (final JAXBElement<AppUser> jaxb) {
-    	AppUser appUser = jaxb.getValue();
-    	appUserService.create(appUser);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(appUser.getId().toString()).build();
-        return Response.created(uri).entity(appUser).build();
+    	AppUser combined = overlay(jaxb.getValue(), new AppUser());
+    	appUserService.create(combined);
+        URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
+        return Response.created(uri).entity(combined).build();
     }
 
-    @PUT
-//    @Override
-    public AppUser update (final JAXBElement<AppUser> jaxb) {
-    	return appUserService.update(jaxb.getValue());
-    }
-    
     @PUT
     @Path("{id}/")
     @Override
     public AppUser update (@PathParam("id") final Long id, final JAXBElement<AppUser> jaxb) {
-    	AppUser edited = jaxb.getValue();
-    	AppUser old = appUserService.find(id);
-    	if (edited.getName() != null) {
-    		old.setName(edited.getName());
-    	}
-    	if (edited.getRealName() != null) {
-    		old.setRealName(edited.getRealName());
-    	}
-    	if (edited.getComments() != null) {
-    		old.setComments(edited.getComments());
-    	}
-    	return appUserService.update(old);
+    	return appUserService.update(overlay(jaxb.getValue(), appUserService.find(id)));
     }
     
     @GET

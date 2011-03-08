@@ -58,58 +58,46 @@ import uk.me.doitto.webapp.entity.Track;
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
-public class TrackRest implements IRestCrud<Track, Long> {
+public class TrackRest extends RestCrudBase<Track> {
 
 	private static final long serialVersionUID = 1L;
 
     public static final String PATH = "/track";
     
     @EJB
-    TrackService trackService;
+    private TrackService trackService;
 
     @Context
     private UriInfo uriInfo;
 
-    @PUT
-    @Path("/create/{title}")
-    public Response createXtor(@PathParam("title") final String title) {
-    	Track track = new Track(title);
-        trackService.create(track);
-        URI uri = uriInfo.getBaseUriBuilder().path(TrackRest.PATH + "/" + track.getId().toString()).build();
-        return Response.created(uri).entity(track).build();
-    }
+	@Override
+	protected Track overlay(Track incoming, Track existing) {
+    	if (incoming.getName() != null) {
+    		existing.setName(incoming.getName());
+    	}
+    	if (incoming.getDuration() != 0) {
+    		existing.setDuration(incoming.getDuration());
+    	}
+    	if (incoming.getUrl() != null) {
+    		existing.setUrl(incoming.getUrl());
+    	}
+		return existing;
+	}
 
     @POST
     @Override
     public Response create (final JAXBElement<Track> jaxb) {
-    	Track track = jaxb.getValue();
-    	trackService.create(track);
-        URI uri = uriInfo.getAbsolutePathBuilder().path(track.getId().toString()).build();
-        return Response.created(uri).entity(track).build();
+    	Track combined = overlay(jaxb.getValue(), new Track());
+    	trackService.create(combined);
+        URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
+        return Response.created(uri).entity(combined).build();
     }
 
-    @PUT
-//    @Override
-    public Track update (final JAXBElement<Track> jaxb) {
-    	return trackService.update(jaxb.getValue());
-    }
-    
 	@PUT
     @Path("{id}/")
     @Override
     public Track update (@PathParam("id") final Long id, final JAXBElement<Track> jaxb) {
-    	Track edited = jaxb.getValue();
-    	Track old = trackService.find(id);
-    	if (edited.getName() != null) {
-    		old.setName(edited.getName());
-    	}
-    	if (edited.getDuration() != 0) {
-    		old.setDuration(edited.getDuration());
-    	}
-    	if (edited.getUrl() != null) {
-    		old.setUrl(edited.getUrl());
-    	}
-    	return trackService.update(old);
+    	return trackService.update(overlay(jaxb.getValue(), trackService.find(id)));
     }
     
     @GET
