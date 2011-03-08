@@ -43,7 +43,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.bind.JAXBElement;
 
 import uk.me.doitto.webapp.beans.TrackService;
 import uk.me.doitto.webapp.entity.Track;
@@ -71,7 +70,7 @@ public class TrackRest extends RestCrudBase<Track> {
     private UriInfo uriInfo;
 
 	@Override
-	protected Track overlay(Track incoming, Track existing) {
+	protected Track overlay (Track incoming, Track existing) {
     	if (incoming.getName() != null) {
     		existing.setName(incoming.getName());
     	}
@@ -86,8 +85,8 @@ public class TrackRest extends RestCrudBase<Track> {
 
     @POST
     @Override
-    public Response create (final JAXBElement<Track> jaxb) {
-    	Track combined = overlay(jaxb.getValue(), new Track());
+    public Response create (final Track jaxb) {
+    	Track combined = overlay(jaxb, new Track());
     	trackService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
         return Response.created(uri).entity(combined).build();
@@ -96,8 +95,8 @@ public class TrackRest extends RestCrudBase<Track> {
 	@PUT
     @Path("{id}/")
     @Override
-    public Track update (@PathParam("id") final Long id, final JAXBElement<Track> jaxb) {
-    	return trackService.update(overlay(jaxb.getValue(), trackService.find(id)));
+    public Track update (@PathParam("id") final Long id, final Track jaxb) {
+    	return trackService.update(overlay(jaxb, trackService.find(id)));
     }
     
     @GET

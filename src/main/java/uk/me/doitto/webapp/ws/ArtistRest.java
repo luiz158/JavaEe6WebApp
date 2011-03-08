@@ -89,8 +89,8 @@ public class ArtistRest extends RestCrudBase<Artist> {
     
     @POST
     @Override
-    public Response create (final JAXBElement<Artist> jaxb) {
-    	Artist combined = overlay(jaxb.getValue(), new Artist());
+    public Response create (final Artist jaxb) {
+    	Artist combined = overlay(jaxb, new Artist());
     	artistService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
         return Response.created(uri).entity(combined).build();
@@ -99,8 +99,8 @@ public class ArtistRest extends RestCrudBase<Artist> {
 	@PUT
     @Path("{id}/")
     @Override
-    public Artist update (@PathParam("id") final Long id, final JAXBElement<Artist> jaxb) {
-    	return artistService.update(overlay(jaxb.getValue(), artistService.find(id)));
+    public Artist update (@PathParam("id") final Long id, final Artist jaxb) {
+    	return artistService.update(overlay(jaxb, artistService.find(id)));
     }
     
     @GET

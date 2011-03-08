@@ -39,9 +39,9 @@ import uk.me.doitto.webapp.dao.IDb;
  */
 public interface IRestCrud<T extends AbstractEntity, PK extends Serializable> extends IDb<PK> {
 
-    Response create (JAXBElement<T> jaxb) ;
+    Response create (T jaxb) ;
 
-    T update (PK id, JAXBElement<T> jaxb);
+    T update (PK id, T jaxb);
     
     List<T> getAll ();
 

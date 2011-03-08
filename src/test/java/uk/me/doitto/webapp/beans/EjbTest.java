@@ -36,6 +36,7 @@ import java.util.Map;
 import javax.ejb.embeddable.EJBContainer;
 import javax.naming.Context;
 import javax.naming.NamingException;
+import javax.ws.rs.core.Response;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -79,6 +80,8 @@ public class EjbTest {
 
     private static TrackController trackController;
 
+    private static TrackRest trackRest;
+
     private static EJBContainer ec;
 
     private static Context ctx;
@@ -106,6 +109,7 @@ public class EjbTest {
        
         trackService = (TrackService)ctx.lookup("java:global/classes/TrackService");
         trackController = (TrackController)ctx.lookup("java:global/classes/TrackController");
+    	trackRest = (TrackRest)ctx.lookup("java:global/classes/TrackRest");   	
     }
 
     @AfterClass
@@ -473,13 +477,31 @@ public class EjbTest {
         assertEquals(false, trackController.getItems().contains(trackController.getItem()));
     }
 
+    @Ignore
     @Test
     public void testTrackRest () {
-        try {
-        	TrackRest trackRest = (TrackRest)ctx.lookup("java:global/classes/TrackRest");
-		} catch (NamingException e) {
-			e.printStackTrace();
-			fail("Should not reach here!");
-		}
+    	List<Track> tracks = trackRest.getAll();
+    	
+    	Track t = new Track();
+        t.setName(STRING_1);
+        assertTrue("", t.isNew());
+
+    	Response response = trackRest.create(t);
+        assertFalse("", t.isNew());
+
+        Track s = trackService.find(t.getId());
+        assertEquals(STRING_1, s.getName());
+
+        s.setName(STRING_2);
+        trackRest.update(1L, s);
+        s = trackService.find(t.getId());
+        assertEquals(STRING_2, s.getName());
+
+        List<Track> list1 = trackService.findAll();
+        assertEquals(true, list1.contains(s));
+
+        trackRest.delete(s.getId());
+        List<Track> list3 = trackService.findAll();
+        assertEquals(false, list3.contains(s));
     }
 }

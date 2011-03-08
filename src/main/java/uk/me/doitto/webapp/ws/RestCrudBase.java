@@ -11,5 +11,11 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
 @SuppressWarnings("serial")
 public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCrud<T, Long> {
 	
+	/**
+	 * Copies selected fields from the returned object to a local object
+	 * @param incoming edited entity from client
+	 * @param existing destination object for updated fields
+	 * @return the updated destination object
+	 */
 	protected abstract T overlay (final T incoming, final T existing);
 }

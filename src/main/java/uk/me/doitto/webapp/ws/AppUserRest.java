@@ -71,7 +71,7 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     private UriInfo uriInfo;
 
 	@Override
-	protected AppUser overlay(AppUser incoming, AppUser existing) {
+	protected AppUser overlay (AppUser incoming, AppUser existing) {
     	if (incoming.getName() != null) {
     		existing.setName(incoming.getName());
     	}
@@ -86,8 +86,8 @@ public class AppUserRest extends RestCrudBase<AppUser> {
 
     @POST
     @Override
-    public Response create (final JAXBElement<AppUser> jaxb) {
-    	AppUser combined = overlay(jaxb.getValue(), new AppUser());
+    public Response create (final AppUser jaxb) {
+    	AppUser combined = overlay(jaxb, new AppUser());
     	appUserService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
         return Response.created(uri).entity(combined).build();
@@ -96,8 +96,8 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     @PUT
     @Path("{id}/")
     @Override
-    public AppUser update (@PathParam("id") final Long id, final JAXBElement<AppUser> jaxb) {
-    	return appUserService.update(overlay(jaxb.getValue(), appUserService.find(id)));
+    public AppUser update (@PathParam("id") final Long id, final AppUser jaxb) {
+    	return appUserService.update(overlay(jaxb, appUserService.find(id)));
     }
     
     @GET
