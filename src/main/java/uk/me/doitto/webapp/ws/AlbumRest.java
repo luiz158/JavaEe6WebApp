@@ -47,7 +47,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.bind.JAXBElement;
 
 import uk.me.doitto.webapp.beans.AlbumService;
 import uk.me.doitto.webapp.entity.Album;
@@ -76,7 +75,7 @@ public class AlbumRest extends RestCrudBase<Album> {
     private UriInfo uriInfo;
 
 	@Override
-	protected Album overlay (Album incoming, Album existing) {
+	protected Album overlay (final Album incoming, final Album existing) {
     	if (incoming.getName() != null) {
     		existing.setName(incoming.getName());
     	}
@@ -94,8 +93,8 @@ public class AlbumRest extends RestCrudBase<Album> {
 
     @POST
     @Override
-    public Response create (final Album jaxb) {
-    	Album combined = overlay(jaxb, new Album());
+    public Response create (final Album album) {
+    	Album combined = overlay(album, new Album());
     	albumService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
         return Response.created(uri).entity(combined).build();
@@ -104,8 +103,8 @@ public class AlbumRest extends RestCrudBase<Album> {
     @PUT
     @Path("{id}/")
     @Override
-    public Album update (@PathParam("id") final Long id, final Album jaxb) {
-    	return albumService.update(overlay(jaxb, albumService.find(id)));
+    public Album update (@PathParam("id") final Long id, final Album album) {
+    	return albumService.update(overlay(album, albumService.find(id)));
     }
     
     @GET

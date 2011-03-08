@@ -43,7 +43,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.bind.JAXBElement;
 
 import uk.me.doitto.webapp.beans.AppUserService;
 import uk.me.doitto.webapp.entity.AppUser;
@@ -71,7 +70,7 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     private UriInfo uriInfo;
 
 	@Override
-	protected AppUser overlay (AppUser incoming, AppUser existing) {
+	protected AppUser overlay (final AppUser incoming, final AppUser existing) {
     	if (incoming.getName() != null) {
     		existing.setName(incoming.getName());
     	}
@@ -86,8 +85,8 @@ public class AppUserRest extends RestCrudBase<AppUser> {
 
     @POST
     @Override
-    public Response create (final AppUser jaxb) {
-    	AppUser combined = overlay(jaxb, new AppUser());
+    public Response create (final AppUser appUser) {
+    	AppUser combined = overlay(appUser, new AppUser());
     	appUserService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
         return Response.created(uri).entity(combined).build();
@@ -96,8 +95,8 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     @PUT
     @Path("{id}/")
     @Override
-    public AppUser update (@PathParam("id") final Long id, final AppUser jaxb) {
-    	return appUserService.update(overlay(jaxb, appUserService.find(id)));
+    public AppUser update (@PathParam("id") final Long id, final AppUser appUser) {
+    	return appUserService.update(overlay(appUser, appUserService.find(id)));
     }
     
     @GET

@@ -73,7 +73,7 @@ public class TrackRest extends RestCrudBase<Track> {
 	 * {@inheritDoc}
 	 */
 	@Override
-	protected Track overlay (Track incoming, Track existing) {
+	protected Track overlay (final Track incoming, final Track existing) {
     	if (incoming.getName() != null) {
     		existing.setName(incoming.getName());
     	}
@@ -88,8 +88,8 @@ public class TrackRest extends RestCrudBase<Track> {
 
     @POST
     @Override
-    public Response create (final Track jaxb) {
-    	Track combined = overlay(jaxb, new Track());
+    public Response create (final Track track) {
+    	Track combined = overlay(track, new Track());
     	trackService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
         return Response.created(uri).entity(combined).build();
@@ -98,8 +98,8 @@ public class TrackRest extends RestCrudBase<Track> {
 	@PUT
     @Path("{id}/")
     @Override
-    public Track update (@PathParam("id") final Long id, final Track jaxb) {
-    	return trackService.update(overlay(jaxb, trackService.find(id)));
+    public Track update (@PathParam("id") final Long id, final Track track) {
+    	return trackService.update(overlay(track, trackService.find(id)));
     }
     
     @GET

@@ -47,7 +47,6 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
-import javax.xml.bind.JAXBElement;
 
 import uk.me.doitto.webapp.beans.ArtistService;
 import uk.me.doitto.webapp.entity.Artist;
@@ -89,8 +88,8 @@ public class ArtistRest extends RestCrudBase<Artist> {
     
     @POST
     @Override
-    public Response create (final Artist jaxb) {
-    	Artist combined = overlay(jaxb, new Artist());
+    public Response create (final Artist artist) {
+    	Artist combined = overlay(artist, new Artist());
     	artistService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
         return Response.created(uri).entity(combined).build();
@@ -99,8 +98,8 @@ public class ArtistRest extends RestCrudBase<Artist> {
 	@PUT
     @Path("{id}/")
     @Override
-    public Artist update (@PathParam("id") final Long id, final Artist jaxb) {
-    	return artistService.update(overlay(jaxb, artistService.find(id)));
+    public Artist update (@PathParam("id") final Long id, final Artist artist) {
+    	return artistService.update(overlay(artist, artistService.find(id)));
     }
     
     @GET
