@@ -27,11 +27,11 @@ import javax.persistence.metamodel.StaticMetamodel;
 
 import org.eclipse.persistence.internal.jpa.metamodel.CollectionAttributeImpl;
 
-import uk.me.doitto.webapp.dao.AbstractEntity;
+import uk.me.doitto.webapp.dao.AbstractEntity_;
 
 @Generated("EclipseLink-2.0.1.v20100213-r6600 @ Sat Nov 27 13:00:49 GMT 2010")
 @StaticMetamodel(Album.class)
-public class Album_ extends AbstractEntity {
+public class Album_ extends AbstractEntity_ {
 
 	public static volatile SingularAttribute<Album, Date> releaseDate;
 	public static volatile SingularAttribute<Album, String> label;
