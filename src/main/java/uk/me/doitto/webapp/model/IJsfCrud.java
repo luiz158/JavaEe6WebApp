@@ -27,12 +27,14 @@ import java.io.Serializable;
 
 import javax.ejb.Local;
 
+import uk.me.doitto.webapp.dao.IDb;
+
 /**
  *
  * @author ian
  */
 @Local
-public interface IJsfCrud extends Serializable {
+public interface IJsfCrud<PK extends Serializable> extends IDb<PK> {
 
     Object jsfList ();
 
@@ -40,7 +42,7 @@ public interface IJsfCrud extends Serializable {
 
     Object jsfCreate ();
 
-    Object jsfEdit (Long id);
+    Object jsfEdit (PK id);
 
-    Object jsfDelete (Long id);
+    Object jsfDelete (PK id);
 }

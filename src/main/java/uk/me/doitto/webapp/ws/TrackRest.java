@@ -69,6 +69,9 @@ public class TrackRest extends RestCrudBase<Track> {
     @Context
     private UriInfo uriInfo;
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	protected Track overlay (Track incoming, Track existing) {
     	if (incoming.getName() != null) {

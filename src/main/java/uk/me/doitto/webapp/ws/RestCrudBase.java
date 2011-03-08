@@ -13,6 +13,7 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 	
 	/**
 	 * Copies selected fields from the returned object to a local object
+	 * 
 	 * @param incoming edited entity from client
 	 * @param existing destination object for updated fields
 	 * @return the updated destination object

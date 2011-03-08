@@ -34,7 +34,7 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
  * @author ian
  */
 @SuppressWarnings("serial")
-public abstract class ControllerBase<T extends AbstractEntity> implements IJsfCrud,IPager {
+public abstract class ControllerBase<T extends AbstractEntity> implements IJsfCrud<Long>,IPager {
 
     protected enum Pager {
     	FIRST {
