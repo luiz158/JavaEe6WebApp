@@ -27,9 +27,6 @@ import java.util.logging.Level;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.faces.bean.ManagedBean;
 
 import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.Album;
@@ -38,9 +35,7 @@ import uk.me.doitto.webapp.entity.Album;
  *
  * @author ian
  */
-//@ManagedBean
 @Stateless
-//@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class AlbumService extends Crud<Album> {
 
 	private static final long serialVersionUID = 1L;

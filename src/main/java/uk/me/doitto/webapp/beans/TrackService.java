@@ -24,9 +24,6 @@
 package uk.me.doitto.webapp.beans;
 
 import javax.ejb.Stateless;
-import javax.ejb.TransactionAttribute;
-import javax.ejb.TransactionAttributeType;
-import javax.faces.bean.ManagedBean;
 
 import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.Track;
@@ -35,9 +32,7 @@ import uk.me.doitto.webapp.entity.Track;
  *
  * @author ian
  */
-//@ManagedBean
 @Stateless
-//@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class TrackService extends Crud<Track> {
 
 	private static final long serialVersionUID = 1L;
