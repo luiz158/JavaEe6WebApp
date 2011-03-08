@@ -41,8 +41,6 @@ public interface IRestCrud<T extends AbstractEntity, PK extends Serializable> ex
 
     Response create (JAXBElement<T> jaxb) ;
 
-//    T update (JAXBElement<T> jaxb);
-    
     T update (PK id, JAXBElement<T> jaxb);
     
     List<T> getAll ();

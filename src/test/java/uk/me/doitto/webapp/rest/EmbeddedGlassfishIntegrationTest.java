@@ -41,7 +41,10 @@ import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import uk.me.doitto.webapp.ws.AlbumRest;
+import uk.me.doitto.webapp.ws.AppUserRest;
 import uk.me.doitto.webapp.ws.ArtistRest;
+import uk.me.doitto.webapp.ws.TrackRest;
 
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
 import com.gargoylesoftware.htmlunit.HttpMethod;
@@ -207,44 +210,74 @@ public class EmbeddedGlassfishIntegrationTest {
         }
     }
     
-//    @Test
-//    public void testDeployed() {
-//        WebResource webResource = resource();
-//        String s = webResource.get(String.class);
-//        assertFalse(s.length() == 0);
-//    }
-
     @Test
     public void testAppUserRest () throws FailingHttpStatusCodeException, IOException {
     	WebRequest request;
     	WebResponse response;
-//        try {
-        	request = new WebRequest(new URL(REST_URL + "/appuser"), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
+        	String location;
+        	
+        	// get all, JSON & XML
+        	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH), HttpMethod.GET);
+        	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+            assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
+            assertTrue("No content!", response.getContentAsString().length() > 0);
 
-        	request = new WebRequest(new URL(REST_URL + "/appuser/create/testuser/testpassword"), HttpMethod.PUT);
+        	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH), HttpMethod.GET);
+        	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+            response = webClient.getPage(request).getWebResponse();
+            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+            assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
+            assertTrue("No content!", response.getContentAsString().length() > 0);
+
+            // create
+        	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH), HttpMethod.POST);
+        	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+        	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+        	request.setRequestBody("{\"name\":\"testuser\",\"password\":\"testpassword\"}");
+        	request.setCharset(ENCODING);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.CREATED.getStatusCode(), response.getStatusCode());
-            String location = response.getResponseHeaderValue("Location");
+            location = response.getResponseHeaderValue(LOCATION);
+            assertTrue(location.matches(".*" + REST_URL + AppUserRest.PATH + ".*"));
+            assertTrue("No content!", response.getContentAsString().length() > 0);
             
+        	// get by ID, JSON & XML
         	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
+        	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+            assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
+            assertTrue("No content!", response.getContentAsString().length() > 0);
             
+        	request = new WebRequest(new URL(location), HttpMethod.GET);
+        	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+            response = webClient.getPage(request).getWebResponse();
+            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+            assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
+            assertTrue("No content!", response.getContentAsString().length() > 0);
+            
+            //delete
             request = new WebRequest(new URL(location), HttpMethod.DELETE);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+            assertTrue("Should be no content!", response.getContentAsString().length() == 0);
             
-        	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
+        	// get all, JSON & XML
+        	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH), HttpMethod.GET);
+        	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
             response = webClient.getPage(request).getWebResponse();
             assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
-//        } catch (Exception e) {
-//            fail("Unexpected exception in test: " + e);
-//        }
+            assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
+            assertTrue("No content!", response.getContentAsString().length() > 0);
+
+        	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH), HttpMethod.GET);
+        	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+            response = webClient.getPage(request).getWebResponse();
+            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+            assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
+            assertTrue("No content!", response.getContentAsString().length() > 0);
     }
     
     @Test
@@ -321,65 +354,139 @@ public class EmbeddedGlassfishIntegrationTest {
     public void testAlbumRest () throws FailingHttpStatusCodeException, IOException {
     	WebRequest request;
     	WebResponse response;
-//        try {
-        	request = new WebRequest(new URL(REST_URL + "/album"), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+    	String location;
+    	
+    	// get all, JSON & XML
+    	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
 
-        	request = new WebRequest(new URL(REST_URL + "/album/create/testalbum"), HttpMethod.PUT);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.CREATED.getStatusCode(), response.getStatusCode());
-            String location = response.getResponseHeaderValue("Location");
-            
-        	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
-            
-            request = new WebRequest(new URL(location), HttpMethod.DELETE);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
-            
-        	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
-//        } catch (Exception e) {
-//            fail("Unexpected exception in test: " + e);
-//        }
+    	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+
+        // create
+    	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH), HttpMethod.POST);
+    	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setRequestBody("{\"name\":\"testalbum\"}");
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.CREATED.getStatusCode(), response.getStatusCode());
+        location = response.getResponseHeaderValue(LOCATION);
+        assertTrue(location.matches(".*" + REST_URL + AlbumRest.PATH + ".*"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+    	// get by ID, JSON & XML
+    	request = new WebRequest(new URL(location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+    	request = new WebRequest(new URL(location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+        //delete
+        request = new WebRequest(new URL(location), HttpMethod.DELETE);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertTrue("Should be no content!", response.getContentAsString().length() == 0);
+        
+    	// get all, JSON & XML
+    	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+
+    	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
     }
     
     @Test
     public void testTrackRest () throws FailingHttpStatusCodeException, IOException {
     	WebRequest request;
     	WebResponse response;
-//        try {
-        	request = new WebRequest(new URL(REST_URL + "/track"), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+    	String location;
+    	
+    	// get all, JSON & XML
+    	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
 
-        	request = new WebRequest(new URL(REST_URL + "/track/create/testtrack"), HttpMethod.PUT);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.CREATED.getStatusCode(), response.getStatusCode());
-            String location = response.getResponseHeaderValue("Location");
-            
-        	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
-            
-            request = new WebRequest(new URL(location), HttpMethod.DELETE);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
-            
-        	request = new WebRequest(new URL(location), HttpMethod.GET);
-        	request.setAdditionalHeader("Accept", MediaType.APPLICATION_JSON);
-            response = webClient.getPage(request).getWebResponse();
-            assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
-//        } catch (Exception e) {
-//            fail("Unexpected exception in test: " + e);
-//        }
+    	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+
+        // create
+    	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.POST);
+    	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setRequestBody("{\"name\":\"testtrack\"}");
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.CREATED.getStatusCode(), response.getStatusCode());
+        location = response.getResponseHeaderValue(LOCATION);
+        assertTrue(location.matches(".*" + REST_URL + TrackRest.PATH + ".*"));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+    	// get by ID, JSON & XML
+    	request = new WebRequest(new URL(location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+    	request = new WebRequest(new URL(location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+        
+        //delete
+        request = new WebRequest(new URL(location), HttpMethod.DELETE);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertTrue("Should be no content!", response.getContentAsString().length() == 0);
+        
+    	// get all, JSON & XML
+    	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
+
+    	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+        response = webClient.getPage(request).getWebResponse();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
+        assertTrue("No content!", response.getContentAsString().length() > 0);
     }
 }
