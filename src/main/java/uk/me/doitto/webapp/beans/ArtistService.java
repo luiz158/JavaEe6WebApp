@@ -38,9 +38,9 @@ import uk.me.doitto.webapp.entity.Artist;
  *
  * @author ian
  */
-@ManagedBean
+//@ManagedBean
 @Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+//@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class ArtistService extends Crud<Artist> {
 
 	private static final long serialVersionUID = 1L;

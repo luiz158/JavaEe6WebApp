@@ -35,9 +35,9 @@ import uk.me.doitto.webapp.entity.Track;
  *
  * @author ian
  */
-@ManagedBean
+//@ManagedBean
 @Stateless
-@TransactionAttribute(TransactionAttributeType.REQUIRED)
+//@TransactionAttribute(TransactionAttributeType.REQUIRED)
 public class TrackService extends Crud<Track> {
 
 	private static final long serialVersionUID = 1L;

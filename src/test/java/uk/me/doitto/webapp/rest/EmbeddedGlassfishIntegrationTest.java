@@ -425,10 +425,12 @@ public class EmbeddedGlassfishIntegrationTest {
     	WebRequest request;
     	WebResponse response;
     	String location;
+    	String content;
     	
     	// get all, JSON & XML
     	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	
         response = webClient.getPage(request).getWebResponse();
         assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
         assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
@@ -436,6 +438,7 @@ public class EmbeddedGlassfishIntegrationTest {
 
     	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+    	
         response = webClient.getPage(request).getWebResponse();
         assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
         assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
@@ -445,31 +448,51 @@ public class EmbeddedGlassfishIntegrationTest {
     	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.POST);
     	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
-    	request.setRequestBody("{\"name\":\"testtrack\"}");
+    	request.setRequestBody("{\"name\":\"testtrack1\"}");
     	request.setCharset(ENCODING);
+    	
         response = webClient.getPage(request).getWebResponse();
-        assertEquals("Incorrect response!", Response.Status.CREATED.getStatusCode(), response.getStatusCode());
         location = response.getResponseHeaderValue(LOCATION);
-        assertTrue(location.matches(".*" + REST_URL + TrackRest.PATH + ".*"));
-        assertTrue("No content!", response.getContentAsString().length() > 0);
+        content = response.getContentAsString();
+        assertEquals("Incorrect response!", Response.Status.CREATED.getStatusCode(), response.getStatusCode());
+        assertTrue("Bad location!", location.matches(".*" + REST_URL + TrackRest.PATH + ".*"));
+        assertTrue("No content!", content.length() > 0);
         
-    	// get by ID, JSON & XML
+    	// get by ID, JSON
     	request = new WebRequest(new URL(location), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	
         response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
         assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
         assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
-        assertTrue("No content!", response.getContentAsString().length() > 0);
+        assertTrue("No content!", content.length() > 0);
         
+        // modify
+    	request = new WebRequest(new URL(location), HttpMethod.PUT);
+    	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setRequestBody("{\"name\":\"testtrack2\"}");
+    	request.setCharset(ENCODING);
+    	
+        response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
+        assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
+        assertTrue("No content!", content.length() > 0);
+        
+    	// get by ID, XML
     	request = new WebRequest(new URL(location), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+    	
         response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
         assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
         assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
-        assertTrue("No content!", response.getContentAsString().length() > 0);
+        assertTrue("No content!", content.length() > 0);
         
         //delete
         request = new WebRequest(new URL(location), HttpMethod.DELETE);
+        
         response = webClient.getPage(request).getWebResponse();
         assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
         assertTrue("Should be no content!", response.getContentAsString().length() == 0);
@@ -477,16 +500,20 @@ public class EmbeddedGlassfishIntegrationTest {
     	// get all, JSON & XML
     	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	
         response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
         assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
         assertEquals("Wrong media type!", MediaType.APPLICATION_JSON, response.getResponseHeaderValue(CONTENT_TYPE));
-        assertTrue("No content!", response.getContentAsString().length() > 0);
+        assertTrue("No content!", content.length() > 0);
 
     	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_XML);
+    	
         response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
         assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
         assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
-        assertTrue("No content!", response.getContentAsString().length() > 0);
+        assertTrue("No content!", content.length() > 0);
     }
 }
