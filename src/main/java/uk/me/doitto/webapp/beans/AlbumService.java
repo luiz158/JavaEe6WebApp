@@ -41,7 +41,7 @@ public class AlbumService extends Crud<Album> {
 	private static final long serialVersionUID = 1L;
 
     @EJB
-    private TrackService trackService;
+    private final TrackService trackService = new TrackService();
 
     public AlbumService() {
         super(Album.class);
