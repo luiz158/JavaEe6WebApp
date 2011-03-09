@@ -51,9 +51,7 @@ public interface PersistentEntity<PK extends Serializable> extends IDb<PK> {
 	 * Has the entity been stored in the database yet?
 	 * 
 	 * @return true if it has, false if not
-	 * @deprecated
 	 */
-	@Deprecated
 	boolean isNew ();
 
 	String getName ();

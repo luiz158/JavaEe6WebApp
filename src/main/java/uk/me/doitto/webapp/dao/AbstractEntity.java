@@ -30,7 +30,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.Temporal;
 import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -64,20 +63,17 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 */
 	protected String name;
 
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-	private Date created;
+	private long created;
 
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-	private Date modified;
+	private long modified;
 
-	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-	private Date accessed;
+	private long accessed;
 
 	protected AbstractEntity () {
 		Date date = new Date();
-		created = date;
-		modified = date;
-		accessed = date;
+		created = date.getTime();
+		modified = date.getTime();
+		accessed = date.getTime();
 	}
 
 	protected AbstractEntity (final String name) {
@@ -90,12 +86,14 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 * @param entity
 	 */
 	protected AbstractEntity (final AbstractEntity entity) {
-		this.id = entity.id;
+		if (! isNew()) {
+			this.id = new Long(id.longValue());
+		}
 		this.version = entity.version;
 		this.name = entity.name;
-		this.created = new Date(entity.created.getTime());
-		this.modified = new Date(entity.modified.getTime());
-		this.accessed = new Date(entity.accessed.getTime());
+		this.created = entity.created;
+		this.modified = entity.modified;
+		this.accessed = entity.accessed;
 	}
 	
 	/**
@@ -140,32 +138,32 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 
 	@Override
 	public Date getAccessed () {
-		return new Date(accessed.getTime());
+		return new Date(accessed);
 	}
 
 	@Override
 	public void setAccessed (final Date accessed) {
-		this.accessed = new Date(accessed.getTime());
+		this.accessed = accessed.getTime();
 	}
 
 	@Override
 	public Date getCreated () {
-		return new Date(created.getTime());
+		return new Date(created);
 	}
 
 	@Override
-	public void setCreated (Date created) {
-		this.created = new Date(created.getTime());
+	public void setCreated (final Date created) {
+		this.created = created.getTime();
 	}
 
 	@Override
 	public Date getModified () {
-		return new Date(modified.getTime());
+		return new Date(modified);
 	}
 
 	@Override
 	public void setModified (final Date modified) {
-		this.modified = new Date(modified.getTime());
+		this.modified = modified.getTime();
 	}
 
 	/**
@@ -196,31 +194,6 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 			}
 		}
 	}
-
-//	@Override
-//	public boolean equals (final Object obj) {
-//		if (this == obj) {
-//			return true;
-//		}
-//		if (obj == null) {
-//			return false;
-//		}
-//		if (getClass() != obj.getClass()) {
-//			return false;
-//		}
-//		final AbstractEntity other = (AbstractEntity) obj;
-//		if ((this.name == null) ? (other.name != null) : !this.name.equals(other.name)) {
-//			return false;
-//		}
-//		return true;
-//	}
-//
-//	@Override
-//	public int hashCode () {
-//		int hash = 5;
-//		hash = 67 * hash + (this.name != null ? this.name.hashCode() : 0);
-//		return hash;
-//	}
 
 	@Override
 	public String toString () {
