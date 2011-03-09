@@ -33,7 +33,6 @@ import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
 import javax.persistence.metamodel.SingularAttribute;
-import javax.validation.constraints.NotNull;
 
 
 /**
@@ -47,14 +46,15 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 	
     public static final Logger LOGGER = Logger.getLogger("uk.me.doitto.jpadao");
     
-    @NotNull
+    private static final int INT_DISABLED = -1;
+    
     @PersistenceContext
     private EntityManager em;
     
-    @NotNull
     private final Class<T> type;
 
     protected Crud (final Class<T> type) {
+    	assert type != null;
         this.type = type;
     }
 
@@ -63,6 +63,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
      */
     protected Crud (final Class<T> type, final EntityManager em) {
         this(type);
+    	assert em != null;
         this.em = em;
     }
 
@@ -75,19 +76,22 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 	}
 
 	@Override
-    public void create (@NotNull final T t) {
+    public void create (final T t) {
+		assert t != null;
 		LOGGER.log(Level.FINE, "create(" + t + ") " + type);
         em.persist(t);
     }
 
     @Override
-    public void delete (@NotNull final Long id) {
+    public void delete (final Long id) {
+		assert id != null;
     	LOGGER.log(Level.FINE, "delete(" + id + ") " + type);
         em.remove(find(id));
     }
 
     @Override
-    public T update (@NotNull final T t) {
+    public T update (final T t) {
+		assert t != null;
     	LOGGER.log(Level.FINE, "update(" + t + ") " + type);
         Date date = new Date();
         t.setModified(date);
@@ -96,7 +100,8 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
 
     @Override
-    public T find (@NotNull final Long id) {
+    public T find (final Long id) {
+		assert id != null;
     	LOGGER.log(Level.FINE, "find(" + id + ") " + type);
         T t = em.find(type, id);
         if (t != null) {
@@ -115,6 +120,8 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
 	public List<T> findRange (final int first, final int max) {
+		assert first >= INT_DISABLED;
+		assert max >= INT_DISABLED;
     	LOGGER.log(Level.FINE, "findAll(first, max) " + type);
     	CriteriaQuery<T> cq = em.getCriteriaBuilder().createQuery(type);
         cq.select(cq.from(type));
@@ -122,25 +129,29 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
     
     @Override
-    public List<T> findByNamedQuery (@NotNull final String queryName, @NotNull final Map<String, Object> parameters, @NotNull int first, @NotNull int max) {
+    public List<T> findByNamedQuery (final String queryName, final Map<String, Object> parameters, int first, int max) {
+		assert queryName != null;
+		assert parameters != null;
+		assert first >= INT_DISABLED;
+		assert max >= INT_DISABLED;
     	LOGGER.log(Level.FINE, "findByNamedQuery(" + queryName + ") " + type);
         TypedQuery<T> query = em.createNamedQuery(queryName, type);
-        if (first > 0) {
+        if (first > INT_DISABLED) {
             query.setFirstResult(first);
         }
-        if (max > 0) {
+        if (max > INT_DISABLED) {
             query.setMaxResults(max);
         }
-        if (parameters != null) {
-            for (Entry<String, Object> entry : parameters.entrySet()) {
-                query.setParameter(entry.getKey(), entry.getValue());
-            }
+        for (Entry<String, Object> entry : parameters.entrySet()) {
+            query.setParameter(entry.getKey(), entry.getValue());
         }
         return query.getResultList();
     }
 
     @Override
 	public List<T> before (final SingularAttribute<? super T, Date> attribute, final Date date) {
+		assert attribute != null;
+		assert date != null;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
@@ -150,6 +161,8 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     
     @Override
 	public List<T> since (final SingularAttribute<? super T, Date> attribute, final Date date) {
+		assert attribute != null;
+		assert date != null;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
@@ -159,6 +172,9 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     
     @Override
 	public List<T> during (final SingularAttribute<? super T, Date> attribute, final Date date1, final Date date2) {
+		assert attribute != null;
+		assert date1 != null;
+		assert date2 != null;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
@@ -168,6 +184,9 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     
 	@Override
 	public List<T> notDuring (final SingularAttribute<? super T, Date> attribute, final Date date1, final Date date2) {
+		assert attribute != null;
+		assert date1 != null;
+		assert date2 != null;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
@@ -177,6 +196,8 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
 	public List<T> search (final SingularAttribute<? super T, String> attribute, final String queryString) {
+		assert attribute != null;
+		assert queryString != null;
     	LOGGER.log(Level.FINE, "search() " + type);
     	CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(type);

@@ -139,6 +139,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 
 	@Override
 	public void setAccessed (final Date accessed) {
+		assert accessed != null;
 		this.accessed = accessed.getTime();
 	}
 
@@ -149,6 +150,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 
 	@Override
 	public void setCreated (final Date created) {
+		assert created != null;
 		this.created = created.getTime();
 	}
 
@@ -159,6 +161,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 
 	@Override
 	public void setModified (final Date modified) {
+		assert modified != null;
 		this.modified = modified.getTime();
 	}
 
@@ -198,6 +201,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 
 	@Override
 	public int compareTo (final AbstractEntity obj) {
+		assert obj != null;
 		if (this == obj) {
 			return 0;
 		}

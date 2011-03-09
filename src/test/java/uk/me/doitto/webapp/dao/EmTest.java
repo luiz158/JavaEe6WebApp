@@ -33,6 +33,7 @@ import static org.junit.Assert.fail;
 
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import javax.persistence.EntityManager;
@@ -195,7 +196,7 @@ public class EmTest {
         assertEquals(true, list1.contains(simpleEntity));
 
         tx.begin();
-        List<SimpleEntity> list2 = dao.findByNamedQuery(SimpleEntity.FIND_ALL, null, 0, 0);
+        List<SimpleEntity> list2 = dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), -1, -1);
         tx.commit();
     	assertEquals("Should be " + (entityCount + 1) + " instances", entityCount + 1, list2.size());
         assertEquals(true, list2.contains(simpleEntity));
@@ -267,13 +268,13 @@ public class EmTest {
     	// find all
     	assertEquals("Should be " + newCount + " instances", newCount, dao.findAll().size());
     	assertEquals("Should be " + newCount + " instances", newCount, dao.findRange(0, dao.count()).size());
-    	assertEquals("Should be " + newCount + " instances", newCount, dao.findByNamedQuery(SimpleEntity.FIND_ALL, null, 0, 0).size());
+    	assertEquals("Should be " + newCount + " instances", newCount, dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), 0, 0).size());
     	// find first number
     	assertEquals("Should be " + number + " instances", number, dao.findRange(0, number).size());
-    	assertEquals("Should be " + number + " instances", number, dao.findByNamedQuery(SimpleEntity.FIND_ALL, null, 0, number).size());
+    	assertEquals("Should be " + number + " instances", number, dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), 0, number).size());
     	// find last number
     	assertEquals("Should be " + number + " instances", number, dao.findRange(dao.count() - number, number).size());
-    	assertEquals("Should be " + number + " instances", number, dao.findByNamedQuery(SimpleEntity.FIND_ALL, null, dao.count() - number, number).size());
+    	assertEquals("Should be " + number + " instances", number, dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), dao.count() - number, number).size());
     }
     
     @Test
