@@ -109,6 +109,13 @@ public class TrackRest extends RestCrudBase<Track> {
     }
 
     @GET
+    @Path("{first}/{max}/")
+	@Override
+	public List<Track> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
+		return trackService.findRange(first, max);
+	}
+
+    @GET
     @Path("{id}/")
     @Override
     public Track getById (@PathParam("id") final Long id) {
@@ -122,4 +129,11 @@ public class TrackRest extends RestCrudBase<Track> {
     	trackService.delete(id);
         return Response.ok().build();
     }
+
+    @GET
+    @Path(COUNT)
+	@Override
+	public int count () {
+		return trackService.count();
+	}
 }

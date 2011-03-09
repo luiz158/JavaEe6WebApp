@@ -62,20 +62,15 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	/**
 	 * for default equals(Object) & hashCode()
 	 */
-//	@Size(min = 1)
-//	@XmlElement
 	protected String name;
 
 	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-//	@XmlElement
 	private Date created;
 
 	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-//	@XmlElement
 	private Date modified;
 
 	@Temporal(javax.persistence.TemporalType.TIMESTAMP)
-//	@XmlElement
 	private Date accessed;
 
 	protected AbstractEntity () {

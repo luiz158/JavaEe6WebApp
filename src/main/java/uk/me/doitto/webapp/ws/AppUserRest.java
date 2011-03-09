@@ -106,6 +106,13 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     }
 
     @GET
+    @Path("{first}/{max}/")
+	@Override
+	public List<AppUser> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
+		return appUserService.findRange(first, max);
+	}
+
+    @GET
     @Path("{id}/")
     @Override
     public AppUser getById (@PathParam("id") final Long id) {
@@ -119,4 +126,11 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     	appUserService.delete(id);
         return Response.ok().build();
     }
+
+    @GET
+    @Path(COUNT)
+	@Override
+	public int count () {
+		return appUserService.count();
+	}
 }

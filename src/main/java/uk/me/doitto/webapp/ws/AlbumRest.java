@@ -114,6 +114,13 @@ public class AlbumRest extends RestCrudBase<Album> {
     }
 
     @GET
+    @Path("{first}/{max}/")
+	@Override
+	public List<Album> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
+		return albumService.findRange(first, max);
+	}
+
+    @GET
     @Path("{id}/")
     @Override
     public Album getById (@PathParam("id") final Long id) {
@@ -165,4 +172,11 @@ public class AlbumRest extends RestCrudBase<Album> {
         albumService.unlinkTrack(id, trackId);
         return Response.ok().build();
     }
+
+    @GET
+    @Path(COUNT)
+	@Override
+	public int count () {
+		return albumService.count();
+	}
 }
