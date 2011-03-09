@@ -132,8 +132,9 @@ public class TrackRest extends RestCrudBase<Track> {
 
     @GET
     @Path(COUNT)
+    @Produces(MediaType.TEXT_PLAIN)
 	@Override
-	public int count () {
-		return trackService.count();
+	public String count () {
+		return String.valueOf(trackService.count());
 	}
 }

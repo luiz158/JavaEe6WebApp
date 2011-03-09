@@ -175,8 +175,9 @@ public class AlbumRest extends RestCrudBase<Album> {
 
     @GET
     @Path(COUNT)
+    @Produces(MediaType.TEXT_PLAIN)
 	@Override
-	public int count () {
-		return albumService.count();
+	public String count () {
+		return String.valueOf(albumService.count());
 	}
 }

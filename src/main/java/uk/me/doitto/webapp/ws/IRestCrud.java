@@ -50,5 +50,5 @@ public interface IRestCrud<T extends AbstractEntity, PK extends Serializable> ex
 
     Response delete (PK id);
     
-	int count();
+	String count();
 }

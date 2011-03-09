@@ -129,8 +129,9 @@ public class AppUserRest extends RestCrudBase<AppUser> {
 
     @GET
     @Path(COUNT)
+    @Produces(MediaType.TEXT_PLAIN)
 	@Override
-	public int count () {
-		return appUserService.count();
+	public String count () {
+		return String.valueOf(appUserService.count());
 	}
 }

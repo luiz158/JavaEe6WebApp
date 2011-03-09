@@ -159,8 +159,9 @@ public class ArtistRest extends RestCrudBase<Artist> {
 
     @GET
     @Path(COUNT)
+    @Produces(MediaType.TEXT_PLAIN)
 	@Override
-	public int count () {
-		return artistService.count();
+	public String count () {
+		return String.valueOf(artistService.count());
 	}
 }
