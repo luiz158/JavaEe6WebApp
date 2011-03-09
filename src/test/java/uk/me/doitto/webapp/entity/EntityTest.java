@@ -26,6 +26,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
@@ -186,8 +187,13 @@ public class EntityTest {
 			fail("Should not reach here!");
 		}
 		assert entity != null;
-		assertNotSame("Same object!", this.entity, entity);
 		assertEquals("Wrong class!", entity.getClass(), this.entity.getClass());
+		assertNotSame("Same object!", this.entity, entity);
+		// NOTE entity has null ID set because it is new
+		assertSame("Same object!", this.entity.getId(), entity.getId());
+		assertNotSame("Same object!", this.entity.getCreated(), entity.getCreated());
+		assertNotSame("Same object!", this.entity.getModified(), entity.getModified());
+		assertNotSame("Same object!", this.entity.getAccessed(), entity.getAccessed());
 	}
 	
 	@SuppressWarnings("unused")

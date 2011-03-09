@@ -26,9 +26,12 @@ package uk.me.doitto.webapp.dao;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
@@ -108,19 +111,19 @@ public class EmTest {
         assertTrue("EM should contain " + entity, em.contains(entity));
 
         tx.begin();
-        SimpleEntity s = em.find(SimpleEntity.class, entity.getId());
+        SimpleEntity simpleEntity = em.find(SimpleEntity.class, entity.getId());
         tx.commit();
-        assertEquals("Field should be equal", TEST_STRING_1, s.getName());
-        assertEquals("Instance should be equal", entity, s);
+        assertEquals("Field should be equal", TEST_STRING_1, simpleEntity.getName());
+        assertEquals("Instance should be equal", entity, simpleEntity);
 
-        s.setName(TEST_STRING_2);
+        simpleEntity.setName(TEST_STRING_2);
         tx.begin();
-        em.merge(s);
+        em.merge(simpleEntity);
         tx.commit();
         tx.begin();
-        s = em.find(SimpleEntity.class, entity.getId());
+        simpleEntity = em.find(SimpleEntity.class, entity.getId());
         tx.commit();
-        assertEquals(TEST_STRING_2, s.getName());
+        assertEquals(TEST_STRING_2, simpleEntity.getName());
 
         tx.begin();
         em.remove(entity);
@@ -133,6 +136,33 @@ public class EmTest {
      }
     
     @Test
+    public void testDeepCopy () {
+        assertTrue("Should be new!", entity.isNew());
+
+        tx.begin();
+        em.persist(entity);
+        tx.commit();
+        assertFalse("Should NOT be new!", entity.isNew());
+        assertTrue("EM should contain " + entity, em.contains(entity));
+        
+		AbstractEntity newEntity = null;
+		try {
+			newEntity = entity.deepCopy();
+		} catch (IOException e) {
+			fail("Should not reach here!");
+		} catch (ClassNotFoundException e) {
+			fail("Should not reach here!");
+		}
+		assert newEntity != null;
+		assertEquals("Wrong class!", newEntity.getClass(), entity.getClass());
+		assertNotSame("Same object!", entity, newEntity);
+		assertNotSame("Same object!", entity.getId(), newEntity.getId());
+		assertNotSame("Same object!", entity.getCreated(), newEntity.getCreated());
+		assertNotSame("Same object!", entity.getModified(), newEntity.getModified());
+		assertNotSame("Same object!", entity.getAccessed(), newEntity.getAccessed());
+    }
+
+    @Test
     public void testCrud () {
         assertTrue("", entity.isNew());
 
@@ -143,35 +173,35 @@ public class EmTest {
         assertTrue("EM should contain " + entity, em.contains(entity));
 
         tx.begin();
-        SimpleEntity s = dao.find(entity.getId());
+        SimpleEntity simpleEntity = dao.find(entity.getId());
         tx.commit();
-        assertNotNull("Should NOT be null!", s);
-        assertEquals(TEST_STRING_1, s.getName());
+        assertNotNull("Should NOT be null!", simpleEntity);
+        assertEquals(TEST_STRING_1, simpleEntity.getName());
 
-        s.setName(TEST_STRING_2);
+        simpleEntity.setName(TEST_STRING_2);
         tx.begin();
-        dao.update(s);
+        dao.update(simpleEntity);
         tx.commit();
         tx.begin();
-        s = dao.find(entity.getId());
+        simpleEntity = dao.find(entity.getId());
         tx.commit();
-        assertNotNull("Should NOT be null!", s);
-        assertEquals(TEST_STRING_2, s.getName());
+        assertNotNull("Should NOT be null!", simpleEntity);
+        assertEquals(TEST_STRING_2, simpleEntity.getName());
 
         tx.begin();
         List<SimpleEntity> list1 = dao.findAll();
         tx.commit();
     	assertEquals("Should be " + (entityCount + 1) + " instances", entityCount + 1, list1.size());
-        assertEquals(true, list1.contains(s));
+        assertEquals(true, list1.contains(simpleEntity));
 
         tx.begin();
         List<SimpleEntity> list2 = dao.findByNamedQuery(SimpleEntity.FIND_ALL, null, 0, 0);
         tx.commit();
     	assertEquals("Should be " + (entityCount + 1) + " instances", entityCount + 1, list2.size());
-        assertEquals(true, list2.contains(s));
+        assertEquals(true, list2.contains(simpleEntity));
 
         tx.begin();
-        dao.delete(s.getId());
+        dao.delete(simpleEntity.getId());
         tx.commit();
         tx.begin();
         SimpleEntity u = dao.find(entity.getId());
@@ -182,7 +212,7 @@ public class EmTest {
         List<SimpleEntity> list3 = dao.findAll();
         tx.commit();
     	assertEquals("Should be " + entityCount + " instances", entityCount, list3.size());
-        assertEquals(false, list3.contains(s));
+        assertEquals(false, list3.contains(simpleEntity));
      }
     
     @Test
@@ -202,7 +232,8 @@ public class EmTest {
     	query = builder.createQuery(SimpleEntity.class);
     	root = query.from(SimpleEntity.class);
     	query.select(root).where(builder.equal(root.get(AbstractEntity_.name), TEST_STRING_1));
-    	assertEquals(1, em.createQuery(query).getResultList().size());
+//    	assertEquals("", entityCount + 1, em.createQuery(query).getResultList().size());
+    	assertEquals("Should be " + 2 + " instances", 2, em.createQuery(query).getResultList().size());
     }
 
     @Test

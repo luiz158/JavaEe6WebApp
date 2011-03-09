@@ -169,7 +169,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 * @throws IOException
 	 */
 	@Override
-	public AbstractEntity deepCopy () throws IOException, ClassNotFoundException {
+	public final AbstractEntity deepCopy () throws IOException, ClassNotFoundException {
 		ObjectOutputStream oos = null;
 		try {
 			// Write the object out to a byte array
