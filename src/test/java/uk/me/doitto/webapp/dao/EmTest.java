@@ -211,7 +211,9 @@ public class EmTest {
     	int number = 7;
         tx.begin();
     	for (int i = 0; i < number; i++) {
-            em.persist(new SimpleEntity("TestCount" + i));
+    		SimpleEntity entity = new SimpleEntity();
+    		entity.setName("TestCount" + i);
+            em.persist(entity);
     	}
         tx.commit();
         int newCount = entityCount + number;
@@ -224,7 +226,9 @@ public class EmTest {
     	final int number = 11;
         tx.begin();
     	for (int i = 0; i < number; i++) {
-            em.persist(new SimpleEntity("TestFindRange" + i));
+    		SimpleEntity entity = new SimpleEntity();
+    		entity.setName("TestFindRange" + i);
+            em.persist(entity);
     	}
         tx.commit();
         final int newCount = entityCount + number;

@@ -53,11 +53,6 @@ public class Artist extends AbstractEntity {
     public Artist () {
     }
 
-    // for searching
-    public Artist (final String name) {
-        super(name);
-    }
-
     // Copy constructor
     public Artist (final Artist artist) {
     	super(artist);

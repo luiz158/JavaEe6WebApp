@@ -73,7 +73,9 @@ public class UserTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		user = new AppUser(USERNAME, PASSWORD);
+		user = new AppUser();
+		user.setName(USERNAME);
+		user.setPassword(PASSWORD);
 	}
 
 	/**
@@ -147,7 +149,9 @@ public class UserTest {
 	public void testUserStringString() {
 		String username = "user";
 		String password = "pass";
-		AppUser appUser = new AppUser(username, password);
+		AppUser appUser = new AppUser();
+		appUser.setName(username);
+		appUser.setPassword(password);
 		assertNotSame("", user, appUser);
 		assertEquals("", username, appUser.getName());
 		assertEquals("", password, appUser.getPassword());
@@ -159,15 +163,15 @@ public class UserTest {
 	@Ignore
 	@Test
 	public void testEqualsObject() {
-		AppUser user1 = new AppUser("ua", "pa");
-		AppUser user2 = new AppUser("ub", "pa");
-		AppUser user3 = new AppUser("ua", "pb");
-		AppUser user4 = new AppUser("ub", "pb");
-		AppUser user5 = new AppUser("ua", "pa");
-		assertEquals("", user1, user3);
-		assertEquals("", user1, user5);
-		assertFalse("", user1.equals(user2));
-		assertFalse("", user1.equals(user4));
+//		AppUser user1 = new AppUser("ua", "pa");
+//		AppUser user2 = new AppUser("ub", "pa");
+//		AppUser user3 = new AppUser("ua", "pb");
+//		AppUser user4 = new AppUser("ub", "pb");
+//		AppUser user5 = new AppUser("ua", "pa");
+//		assertEquals("", user1, user3);
+//		assertEquals("", user1, user5);
+//		assertFalse("", user1.equals(user2));
+//		assertFalse("", user1.equals(user4));
 	}
 
 	/**

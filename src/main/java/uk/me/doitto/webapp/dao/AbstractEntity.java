@@ -76,16 +76,12 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		accessed = date.getTime();
 	}
 
-	protected AbstractEntity (final String name) {
-		this();
-		this.name = name;
-	}
-
 	/**
 	 * Copy constructor
 	 * @param entity
 	 */
 	protected AbstractEntity (final AbstractEntity entity) {
+		assert entity != null;
 		if (! isNew()) {
 			this.id = new Long(id.longValue());
 		}

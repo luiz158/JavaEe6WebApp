@@ -72,7 +72,8 @@ public class TrackTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		track = new Track(NAME);
+		track = new Track();
+		track.setName(NAME);
 	}
 
 	/**
@@ -114,7 +115,8 @@ public class TrackTest {
 	@Test
 	public void testtrackString () {
 		String name = "track";
-		Track track = new Track(name);
+		Track track = new Track();
+		track.setName(name);
 		assertNotSame("", this.track, track);
 		assertEquals("", name, track.getName());
 	}
@@ -122,15 +124,15 @@ public class TrackTest {
 	@Ignore
 	@Test
 	public void testEqualsObject() {
-		Track track1 = new Track("uapa");
-		Track track2 = new Track("ubpa");
-		Track track3 = new Track("uapb");
-		Track track4 = new Track("ubpb");
-		Track track5 = new Track("uapa");
-		assertEquals("", track1, track5);
-		assertFalse("", track1.equals(track2));
-		assertFalse("", track1.equals(track3));
-		assertFalse("", track1.equals(track4));
+//		Track track1 = new Track("uapa");
+//		Track track2 = new Track("ubpa");
+//		Track track3 = new Track("uapb");
+//		Track track4 = new Track("ubpb");
+//		Track track5 = new Track("uapa");
+//		assertEquals("", track1, track5);
+//		assertFalse("", track1.equals(track2));
+//		assertFalse("", track1.equals(track3));
+//		assertFalse("", track1.equals(track4));
 	}
 
 	@Ignore

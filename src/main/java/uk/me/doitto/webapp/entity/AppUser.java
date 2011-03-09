@@ -48,19 +48,7 @@ public class AppUser extends AbstractEntity {
     
     private String comments;
 
-    /**
-     *
-     */
     public AppUser () {
-    }
-
-    /**
-     * @param username
-     * @param password
-     */
-    public AppUser (final String username, final String password) {
-        super(username);
-        this.password = password;
     }
 
     public AppUser(AppUser artist) {

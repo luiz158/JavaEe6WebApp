@@ -47,11 +47,6 @@ public class Track extends AbstractEntity {
     public Track () {
     }
 
-    // for searching
-    public Track (final String name) {
-        super(name);
-    }
-
     // Copy constructor
     public Track (final Track track) {
     	super(track);

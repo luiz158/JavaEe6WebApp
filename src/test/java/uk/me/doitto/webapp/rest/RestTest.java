@@ -130,7 +130,9 @@ public class RestTest extends JerseyTest {
     public void testArtistRestCrud () {
         WebResource webResource = resource();
         webResource = webResource.path(ArtistRest.PATH);
-        Response response = webResource.post(Response.class, new Artist("test artist"));
+        Artist artist = new Artist();
+        artist.setName("test artist");
+        Response response = webResource.post(Response.class, artist);
         
         @SuppressWarnings("unchecked")
 		List<Artist> responseMsg = webResource.get(List.class);

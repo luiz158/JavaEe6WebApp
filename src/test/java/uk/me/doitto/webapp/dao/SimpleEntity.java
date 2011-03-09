@@ -36,10 +36,6 @@ public class SimpleEntity extends AbstractEntity {
 		super();
 	}
 	
-	public SimpleEntity (final String name) {
-		super(name);
-	}
-
 	public SimpleEntity(SimpleEntity entity) {
 		super(entity);
 	}

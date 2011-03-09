@@ -70,7 +70,8 @@ public class ArtistTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		artist = new Artist(NAME);
+		artist = new Artist();
+		artist.setName(NAME);
 	}
 
 	/**
@@ -112,7 +113,8 @@ public class ArtistTest {
 	@Test
 	public void testArtistString () {
 		String name = "artist";
-		Artist artist = new Artist(name);
+		Artist artist = new Artist();
+		artist.setName(name);
 		assertNotSame("", this.artist, artist);
 		assertEquals("", name, artist.getName());
 	}
@@ -120,15 +122,15 @@ public class ArtistTest {
 	@Ignore
 	@Test
 	public void testEqualsObject() {
-		Artist artist1 = new Artist("uapa");
-		Artist artist2 = new Artist("ubpa");
-		Artist artist3 = new Artist("uapb");
-		Artist artist4 = new Artist("ubpb");
-		Artist artist5 = new Artist("uapa");
-		assertEquals("", artist1, artist5);
-		assertFalse("", artist1.equals(artist2));
-		assertFalse("", artist1.equals(artist3));
-		assertFalse("", artist1.equals(artist4));
+//		Artist artist1 = new Artist("uapa");
+//		Artist artist2 = new Artist("ubpa");
+//		Artist artist3 = new Artist("uapb");
+//		Artist artist4 = new Artist("ubpb");
+//		Artist artist5 = new Artist("uapa");
+//		assertEquals("", artist1, artist5);
+//		assertFalse("", artist1.equals(artist2));
+//		assertFalse("", artist1.equals(artist3));
+//		assertFalse("", artist1.equals(artist4));
 	}
 
 	@Ignore

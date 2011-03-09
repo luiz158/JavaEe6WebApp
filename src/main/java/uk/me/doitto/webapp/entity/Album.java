@@ -66,11 +66,6 @@ public class Album extends AbstractEntity {
     public Album () {
     }
 
-    // for searching
-    public Album (final String name) {
-        super(name);
-    }
-
     // Copy constructor
     public Album (final Album album) {
     	super(album);

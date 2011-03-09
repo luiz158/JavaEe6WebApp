@@ -73,7 +73,8 @@ public class AlbumTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		album = new Album(NAME);
+		album = new Album();
+		album.setName(NAME);
 	}
 
 	/**
@@ -112,26 +113,18 @@ public class AlbumTest {
 		assertNull("", album.getName());
 	}
 
-	@Test
-	public void testalbumString () {
-		String name = "album";
-		Album album = new Album(name);
-		assertNotSame("", this.album, album);
-		assertEquals("", name, album.getName());
-	}
-
 	@Ignore
 	@Test
 	public void testEqualsObject() {
-		Album album1 = new Album("uapa");
-		Album album2 = new Album("ubpa");
-		Album album3 = new Album("uapb");
-		Album album4 = new Album("ubpb");
-		Album album5 = new Album("uapa");
-		assertEquals("", album1, album5);
-		assertFalse("", album1.equals(album2));
-		assertFalse("", album1.equals(album3));
-		assertFalse("", album1.equals(album4));
+//		Album album1 = new Album("uapa");
+//		Album album2 = new Album("ubpa");
+//		Album album3 = new Album("uapb");
+//		Album album4 = new Album("ubpb");
+//		Album album5 = new Album("uapa");
+//		assertEquals("", album1, album5);
+//		assertFalse("", album1.equals(album2));
+//		assertFalse("", album1.equals(album3));
+//		assertFalse("", album1.equals(album4));
 	}
 
 	@Ignore

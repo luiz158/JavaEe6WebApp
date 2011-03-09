@@ -74,7 +74,8 @@ public class EntityTest {
 	 */
 	@Before
 	public void setUp() throws Exception {
-		entity = new SimpleEntity(NAME);
+		entity = new SimpleEntity();
+		entity.setName(NAME);
 	}
 
 	/**
@@ -126,7 +127,8 @@ public class EntityTest {
 	@Test
 	public void testEntityString () {
 		String name = "entity";
-		SimpleEntity entity = new SimpleEntity(name);
+		SimpleEntity entity = new SimpleEntity();
+		entity.setName(name);
 		assertNotSame("", this.entity, entity);
 		assertEquals("", name, entity.getName());
 	}
@@ -134,33 +136,33 @@ public class EntityTest {
 	@Ignore
 	@Test
 	public void testCompareToObject() {
-		SimpleEntity track1 = new SimpleEntity("uapa");
-		SimpleEntity track2 = new SimpleEntity("ubpa");
-		SimpleEntity track3 = new SimpleEntity("uapb");
-		SimpleEntity track4 = new SimpleEntity("ubpb");
-		SimpleEntity track5 = new SimpleEntity("uapa");
-		assertEquals("", 0, track1.compareTo(track1));
-		assertEquals("", 0, track1.compareTo(track5));
-		assertEquals("", 1, track3.compareTo(track1));
-		assertEquals("", -1, track1.compareTo(track2));
-		assertEquals("", -1, track1.compareTo(track3));
-		assertEquals("", -1, track1.compareTo(track4));
+//		SimpleEntity track1 = new SimpleEntity("uapa");
+//		SimpleEntity track2 = new SimpleEntity("ubpa");
+//		SimpleEntity track3 = new SimpleEntity("uapb");
+//		SimpleEntity track4 = new SimpleEntity("ubpb");
+//		SimpleEntity track5 = new SimpleEntity("uapa");
+//		assertEquals("", 0, track1.compareTo(track1));
+//		assertEquals("", 0, track1.compareTo(track5));
+//		assertEquals("", 1, track3.compareTo(track1));
+//		assertEquals("", -1, track1.compareTo(track2));
+//		assertEquals("", -1, track1.compareTo(track3));
+//		assertEquals("", -1, track1.compareTo(track4));
 	}
 
 	@Ignore
 	@Test
 	public void testEqualsObject() {
-		SimpleEntity track1 = new SimpleEntity("uapa");
-		SimpleEntity track2 = new SimpleEntity("ubpa");
-		SimpleEntity track3 = new SimpleEntity("uapb");
-		SimpleEntity track4 = new SimpleEntity("ubpb");
-		SimpleEntity track5 = new SimpleEntity("uapa");
-		assertEquals("", track1, track5);
-		assertFalse("", track1.equals(track2));
-		assertFalse("", track1.equals(track3));
-		assertFalse("", track1.equals(track4));
-		assertFalse("", track1.equals(null));
-		assertFalse("", track1.equals(new Object()));
+//		SimpleEntity track1 = new SimpleEntity("uapa");
+//		SimpleEntity track2 = new SimpleEntity("ubpa");
+//		SimpleEntity track3 = new SimpleEntity("uapb");
+//		SimpleEntity track4 = new SimpleEntity("ubpb");
+//		SimpleEntity track5 = new SimpleEntity("uapa");
+//		assertEquals("", track1, track5);
+//		assertFalse("", track1.equals(track2));
+//		assertFalse("", track1.equals(track3));
+//		assertFalse("", track1.equals(track4));
+//		assertFalse("", track1.equals(null));
+//		assertFalse("", track1.equals(new Object()));
 	}
 
 	@Test
