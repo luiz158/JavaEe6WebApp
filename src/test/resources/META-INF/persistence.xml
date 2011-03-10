@@ -24,9 +24,8 @@
 	xmlns="http://java.sun.com/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/xml/ns/persistence/persistence_2_0.xsd">
 
-    <persistence-unit name="testPU" transaction-type="RESOURCE_LOCAL">
+    <persistence-unit name="memoryPU" transaction-type="RESOURCE_LOCAL">
         <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
-<!--        <class>uk.me.doitto.jpadao.SimpleEntity</class>-->
         <exclude-unlisted-classes>false</exclude-unlisted-classes>
         <properties>
             <property name="eclipselink.target-database" value="DERBY"/>
@@ -35,6 +34,21 @@
 
             <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
             <property name="javax.persistence.jdbc.url" value="jdbc:derby:memory:testDB;create=true" />
+            <property name="javax.persistence.jdbc.user" value="APP" />
+            <property name="javax.persistence.jdbc.password" value="APP" />
+        </properties>
+    </persistence-unit>
+
+    <persistence-unit name="filesystemPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.eclipse.persistence.jpa.PersistenceProvider</provider>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+        <properties>
+            <property name="eclipselink.target-database" value="DERBY"/>
+            <property name="eclipselink.ddl-generation" value="drop-and-create-tables" />
+            <property name="eclipselink.logging.level" value="FINEST"/>
+
+            <property name="javax.persistence.jdbc.driver" value="org.apache.derby.jdbc.EmbeddedDriver" />
+            <property name="javax.persistence.jdbc.url" value="jdbc:derby:derby;create=true" />
             <property name="javax.persistence.jdbc.user" value="APP" />
             <property name="javax.persistence.jdbc.password" value="APP" />
         </properties>

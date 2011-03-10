@@ -55,6 +55,13 @@ import org.junit.Test;
  * @author ian
  */
 public class EmTest {
+	/**
+	 * Persistence Units - refer to src/test/resources/META-INF/persistence.xml for members
+	 * @author ian
+	 */
+	private enum TestPU {
+		memoryPU, filesystemPU;
+	}
 
     private static EntityManagerFactory emf;
 
@@ -75,7 +82,7 @@ public class EmTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        emf = Persistence.createEntityManagerFactory("testPU");
+        emf = Persistence.createEntityManagerFactory(TestPU.filesystemPU.toString());
         em = emf.createEntityManager();
         dao = new SimpleDao(em);
     }

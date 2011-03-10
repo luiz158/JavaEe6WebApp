@@ -329,6 +329,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
+				<version>2.7.2</version>
 				<configuration>
 					<!-- <forkMode>perTest</forkMode> -->
 					<excludes>
@@ -402,7 +403,7 @@
 				<configuration>
 					<app>${project.build.directory}/${project.build.finalName}.war</app>
 					<configFile>${basedir}/glassfish/domains/domain1/config/domain.xml</configFile>
-					<autoDelete>true</autoDelete>
+					<autoDelete>false</autoDelete>
                     <systemProperties> 
                         <property>java.util.logging.config.file=logging.properties</property> 
                     </systemProperties> 

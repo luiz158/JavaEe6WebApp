@@ -45,7 +45,7 @@
   <resources>
     <jdbc-resource pool-name="__TimerPool" jndi-name="jdbc/__TimerPool" object-type="system-admin"/>
     <jdbc-resource pool-name="DerbyPool" jndi-name="jdbc/__default"/>
-    <jdbc-resource jndi-name="jdbc/sample" pool-name="WebAppPool" />   
+    <jdbc-resource jndi-name="jdbc/sample" pool-name="FileSystemDbPool" />   
     <jdbc-connection-pool name="__TimerPool" datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource">
       <property value="${com.sun.aas.instanceRoot}/lib/databases/ejbtimer" name="databaseName"/>
       <property value=";create=true" name="connectionAttributes"/>
@@ -54,8 +54,12 @@
       <property name="databaseName" value="${com.sun.aas.instanceRoot}/lib/databases/embedded_default"/>
       <property name="connectionAttributes" value=";create=true"/>
     </jdbc-connection-pool>
-    <jdbc-connection-pool name="WebAppPool" datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource">
+    <jdbc-connection-pool name="MemoryDbPool" datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource">
        <property name="databaseName" value="memory:testdb" />
+       <property name="connectionAttributes" value=";create=true" />
+     </jdbc-connection-pool>
+    <jdbc-connection-pool name="FileSystemDbPool" datasource-classname="org.apache.derby.jdbc.EmbeddedXADataSource" res-type="javax.sql.XADataSource">
+       <property name="databaseName" value="${com.sun.aas.instanceRoot}/lib/databases/default" />
        <property name="connectionAttributes" value=";create=true" />
      </jdbc-connection-pool>
   </resources>
