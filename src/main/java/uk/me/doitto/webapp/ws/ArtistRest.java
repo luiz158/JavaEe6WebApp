@@ -68,9 +68,9 @@ public class ArtistRest extends RestCrudBase<Artist> {
 
     public static final String PATH = "/artist";
     
-    public static final String LINK_ALBUM = "/linkalbum";
+    public static final String LINK_ALBUM = "linkalbum";
     
-    public static final String UNLINK_ALBUM = "/unlinkalbum";
+    public static final String UNLINK_ALBUM = "unlinkalbum";
     
     @EJB
     private ArtistService artistService;
@@ -89,6 +89,7 @@ public class ArtistRest extends RestCrudBase<Artist> {
     @POST
     @Override
     public Response create (final Artist artist) {
+		assert artist != null;
     	Artist combined = overlay(artist, new Artist());
     	artistService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
@@ -96,9 +97,11 @@ public class ArtistRest extends RestCrudBase<Artist> {
     }
 
 	@PUT
-    @Path("{id}/")
+    @Path("{id}")
     @Override
     public Artist update (@PathParam("id") final Long id, final Artist artist) {
+		assert id >= 0;
+		assert artist != null;
     	return artistService.update(overlay(artist, artistService.find(id)));
     }
     
@@ -109,23 +112,27 @@ public class ArtistRest extends RestCrudBase<Artist> {
     }
 
     @GET
-    @Path("{first}/{max}/")
+    @Path("{first}/{max}")
 	@Override
 	public List<Artist> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
+		assert first >= 0;
+		assert max >= 0;
 		return artistService.findRange(first, max);
 	}
 
     @GET
-    @Path("/{id}")
+    @Path("{id}")
     @Override
     public Artist getById (@PathParam("id") final Long id) {
+		assert id >= 0;
          return artistService.find(id);
     }
 
     @DELETE
-    @Path("/{id}")
+    @Path("{id}")
     @Override
     public Response delete (@PathParam("id") final Long id) {
+		assert id >= 0;
     	artistService.delete(id);
         return Response.ok().build();
     }
@@ -143,6 +150,8 @@ public class ArtistRest extends RestCrudBase<Artist> {
     @Path(LINK_ALBUM)
     @Produces(MediaType.TEXT_HTML)
     public Response linkAlbum(@QueryParam("artistid") final Long id, @QueryParam("albumid") final Long albumId) {
+		assert id >= 0;
+		assert albumId >= 0;
     	Globals.LOGGER.log(Level.FINE, "Linking Artist: {0} to Album: {1}", new Object[]{id, albumId});
         artistService.linkAlbum(id, albumId);
         return Response.ok().build();
@@ -152,6 +161,8 @@ public class ArtistRest extends RestCrudBase<Artist> {
     @Path(UNLINK_ALBUM)
     @Produces(MediaType.TEXT_HTML)
     public Response unlinkAlbum(@QueryParam("artistid") final Long id, @QueryParam("albumid") final Long albumId) {
+		assert id >= 0;
+		assert albumId >= 0;
     	Globals.LOGGER.log(Level.FINE, "Unlinking Artist: {0} from Album: {1}", new Object[]{id, albumId});
         artistService.unlinkAlbum(id, albumId);
         return Response.ok().build();

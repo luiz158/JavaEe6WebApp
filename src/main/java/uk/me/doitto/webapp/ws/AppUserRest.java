@@ -71,6 +71,8 @@ public class AppUserRest extends RestCrudBase<AppUser> {
 
 	@Override
 	protected AppUser overlay (final AppUser incoming, final AppUser existing) {
+		assert incoming != null;
+		assert existing != null;
     	if (incoming.getName() != null) {
     		existing.setName(incoming.getName());
     	}
@@ -86,6 +88,7 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     @POST
     @Override
     public Response create (final AppUser appUser) {
+		assert appUser != null;
     	AppUser combined = overlay(appUser, new AppUser());
     	appUserService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
@@ -93,9 +96,11 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     }
 
     @PUT
-    @Path("{id}/")
+    @Path("{id}")
     @Override
     public AppUser update (@PathParam("id") final Long id, final AppUser appUser) {
+		assert id >= 0;
+		assert appUser != null;
     	return appUserService.update(overlay(appUser, appUserService.find(id)));
     }
     
@@ -106,23 +111,27 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     }
 
     @GET
-    @Path("{first}/{max}/")
+    @Path("{first}/{max}")
 	@Override
 	public List<AppUser> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
+		assert first >= 0;
+		assert max >= 0;
 		return appUserService.findRange(first, max);
 	}
 
     @GET
-    @Path("{id}/")
+    @Path("{id}")
     @Override
     public AppUser getById (@PathParam("id") final Long id) {
-         return appUserService.find(id);
+		assert id >= 0;
+		return appUserService.find(id);
     }
 
     @DELETE
-    @Path("{id}/")
+    @Path("{id}")
     @Override
     public Response delete (@PathParam("id") final Long id) {
+		assert id >= 0;
     	appUserService.delete(id);
         return Response.ok().build();
     }

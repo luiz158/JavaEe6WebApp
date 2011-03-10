@@ -11,7 +11,7 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
 @SuppressWarnings("serial")
 public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCrud<T, Long> {
 	
-    public static final String COUNT = "/count";
+    public static final String COUNT = "count";
     
 	/**
 	 * Copies selected fields from the returned object to a local object

@@ -68,6 +68,10 @@ public class AlbumRest extends RestCrudBase<Album> {
 
     public static final String PATH = "/album";
     
+    public static final String LINK_TRACK = "linktrack";
+    
+    public static final String UNLINK_TRACK = "unlinktrack";
+    
     @EJB
     private AlbumService albumService;
 
@@ -94,6 +98,7 @@ public class AlbumRest extends RestCrudBase<Album> {
     @POST
     @Override
     public Response create (final Album album) {
+    	assert album != null;
     	Album combined = overlay(album, new Album());
     	albumService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
@@ -101,9 +106,11 @@ public class AlbumRest extends RestCrudBase<Album> {
     }
 
     @PUT
-    @Path("{id}/")
+    @Path("{id}")
     @Override
     public Album update (@PathParam("id") final Long id, final Album album) {
+		assert id >= 0;
+    	assert album != null;
     	return albumService.update(overlay(album, albumService.find(id)));
     }
     
@@ -114,29 +121,33 @@ public class AlbumRest extends RestCrudBase<Album> {
     }
 
     @GET
-    @Path("{first}/{max}/")
+    @Path("{first}/{max}")
 	@Override
 	public List<Album> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
+		assert first >= 0;
+		assert max >= 0;
 		return albumService.findRange(first, max);
 	}
 
     @GET
-    @Path("{id}/")
+    @Path("{id}")
     @Override
     public Album getById (@PathParam("id") final Long id) {
-         return albumService.find(id);
+		assert id >= 0;
+		return albumService.find(id);
     }
 
     @DELETE
-    @Path("{id}/")
+    @Path("{id}")
     @Override
     public Response delete (@PathParam("id") final Long id) {
+		assert id >= 0;
     	albumService.delete(id);
         return Response.ok().build();
     }
 
     @GET
-    @Path("/titleidmap")
+    @Path("titleidmap")
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String, Long> getTitleIdMap() {
     	Globals.LOGGER.log(Level.FINE, "");
@@ -148,26 +159,31 @@ public class AlbumRest extends RestCrudBase<Album> {
     }
 
     @GET
-    @Path("/tracks/{id}")
+    @Path("tracks/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Map<String, Long> getTracks(@PathParam("id") final Long id) {
+		assert id >= 0;
     	Globals.LOGGER.log(Level.FINE, "");
         return albumService.find(id).getTrackIdMap();
     }
 
     @GET
-    @Path("/linktrack")
+    @Path(LINK_TRACK)
     @Produces(MediaType.TEXT_HTML)
     public Response linkTrack(@QueryParam("albumid") final Long id, @QueryParam("trackid") final Long trackId) {
+		assert id >= 0;
+		assert trackId >= 0;
     	Globals.LOGGER.log(Level.FINE, "Linking Album: {0} to Track: {1}", new Object[]{id, trackId});
         albumService.linkTrack(id, trackId);
         return Response.ok().build();
     }
 
     @GET
-    @Path("/unlinktrack")
+    @Path(UNLINK_TRACK)
     @Produces(MediaType.TEXT_HTML)
     public Response unlinkTrack(@QueryParam("albumid") final Long id, @QueryParam("trackid") final Long trackId) {
+		assert id >= 0;
+		assert trackId >= 0;
     	Globals.LOGGER.log(Level.FINE, "Unlinking Album: {0} from Track: {1}", new Object[]{id, trackId});
         albumService.unlinkTrack(id, trackId);
         return Response.ok().build();

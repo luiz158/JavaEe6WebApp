@@ -89,6 +89,7 @@ public class TrackRest extends RestCrudBase<Track> {
     @POST
     @Override
     public Response create (final Track track) {
+    	assert track != null;
     	Track combined = overlay(track, new Track());
     	trackService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
@@ -96,9 +97,11 @@ public class TrackRest extends RestCrudBase<Track> {
     }
 
 	@PUT
-    @Path("{id}/")
+    @Path("{id}")
     @Override
     public Track update (@PathParam("id") final Long id, final Track track) {
+		assert id >= 0;
+    	assert track != null;
     	return trackService.update(overlay(track, trackService.find(id)));
     }
     
@@ -109,23 +112,27 @@ public class TrackRest extends RestCrudBase<Track> {
     }
 
     @GET
-    @Path("{first}/{max}/")
+    @Path("{first}/{max}")
 	@Override
 	public List<Track> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
+		assert first >= 0;
+		assert max >= 0;
 		return trackService.findRange(first, max);
 	}
 
     @GET
-    @Path("{id}/")
+    @Path("{id}")
     @Override
     public Track getById (@PathParam("id") final Long id) {
-         return trackService.find(id);
+		assert id >= 0;
+		return trackService.find(id);
     }
 
     @DELETE
-    @Path("{id}/")
+    @Path("{id}")
     @Override
     public Response delete (@PathParam("id") final Long id) {
+		assert id >= 0;
     	trackService.delete(id);
         return Response.ok().build();
     }
