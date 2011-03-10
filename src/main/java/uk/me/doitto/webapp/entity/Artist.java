@@ -22,10 +22,10 @@
  */
 package uk.me.doitto.webapp.entity;
 
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -46,8 +46,11 @@ public class Artist extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
+    /**
+     * Intentionally mutable field, so use a concurrent collection
+     */
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<Album> albums = new HashSet<Album>();
+    private Set<Album> albums = new ConcurrentSkipListSet<Album>();
 
     // for hibernate
     public Artist () {
@@ -56,19 +59,19 @@ public class Artist extends AbstractEntity {
     // Copy constructor
     public Artist (final Artist artist) {
     	super(artist);
-        albums = new HashSet<Album>(artist.albums);
+        // intentionally mutable, just pass reference
+        albums = artist.albums;
     }
 
     public Set<Album> getAlbums () {
+        // intentionally mutable, just return reference
         return albums;
     }
 
     public void setAlbums (final Set<Album> albums) {
+    	assert albums != null;
+        // intentionally mutable, just pass reference
         this.albums = albums;
-    }
-
-    public boolean isLinked () {
-        return (!getAlbums().isEmpty());
     }
 
     public Map<String, Long> getAlbumIdMap () {
@@ -85,6 +88,7 @@ public class Artist extends AbstractEntity {
      * @param album
      */
     public void addAlbum (final Album album) {
+    	assert album != null;
         albums.add(album);
     }
 
@@ -94,6 +98,7 @@ public class Artist extends AbstractEntity {
      * @param album
      */
     public void removeAlbum (final Album album) {
+    	assert album != null;
         albums.remove(album);
     }
 }

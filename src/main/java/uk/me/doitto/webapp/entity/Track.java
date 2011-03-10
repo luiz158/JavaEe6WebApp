@@ -59,6 +59,7 @@ public class Track extends AbstractEntity {
 	}
 
 	public void setDuration (int duration) {
+		assert duration >= 0;
 		this.duration = duration;
 	}
 
@@ -67,6 +68,7 @@ public class Track extends AbstractEntity {
     }
 
     public void setUrl (final String url) {
+    	assert url != null;
         this.url = url;
     }
 }

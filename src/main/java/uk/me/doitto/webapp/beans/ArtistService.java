@@ -48,11 +48,15 @@ public class ArtistService extends Crud<Artist> {
     }
     
     public void linkAlbum (final Long id, final Long albumId) {
+    	assert id != null;
+    	assert albumId != null;
         LOGGER.log(Level.FINE, "Linking Artist: {0} to Album: {1}", new Object[]{id, albumId});
         find(id).addAlbum(albumService.find(albumId));
     }
 
     public void unlinkAlbum (final Long id, final Long albumId) {
+    	assert id != null;
+    	assert albumId != null;
     	LOGGER.log(Level.FINE, "Unlinking Artist: {0} from Album: {1}", new Object[]{id, albumId});
         find(id).removeAlbum(albumService.find(albumId));
     }

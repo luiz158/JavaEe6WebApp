@@ -48,11 +48,15 @@ public class AlbumService extends Crud<Album> {
     }
     
     public void linkTrack(final Long id, final Long trackId) {
+    	assert id != null;
+    	assert trackId != null;
     	LOGGER.log(Level.FINE, "Linking Album: {0} to Track: {1}", new Object[]{id, trackId});
         find(id).addToTrackListing(trackService.find(trackId));
     }
 
     public void unlinkTrack(final Long id, final Long trackId) {
+    	assert id != null;
+    	assert trackId != null;
     	LOGGER.log(Level.FINE, "Unlinking Album: {0} from Track: {1}", new Object[]{id, trackId});
         find(id).removeFromTrackListing(trackService.find(trackId));
     }

@@ -23,10 +23,10 @@
 package uk.me.doitto.webapp.entity;
 
 import java.util.Date;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
+import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -59,8 +59,11 @@ public class Album extends AbstractEntity {
     @Past
     private Date releaseDate;
     
+    /**
+     * Intentionally mutable field, so use a concurrent collection
+     */
     @OneToMany(fetch = FetchType.EAGER)
-    private Set<Track> tracks = new HashSet<Track>();
+    private Set<Track> tracks = new ConcurrentSkipListSet<Track>();
 
     // for hibernate
     public Album () {
@@ -71,10 +74,12 @@ public class Album extends AbstractEntity {
     	super(album);
         label = album.label;
         catId = album.catId;
-        if (album.releaseDate != null) {
-            releaseDate = new Date(album.releaseDate.getTime());
+        Date albumReleaseDate = album.releaseDate;
+        if (albumReleaseDate != null) {
+            releaseDate = new Date(albumReleaseDate.getTime());
         }
-        tracks = new HashSet<Track>(album.tracks);
+        // intentionally mutable, just pass reference
+        tracks = album.tracks;
     }
 
     /**
@@ -90,6 +95,7 @@ public class Album extends AbstractEntity {
      * @param label
      */
     public void setLabel (final String label) {
+    	assert label != null;
         this.label = label;
     }
 
@@ -106,6 +112,7 @@ public class Album extends AbstractEntity {
      * @param catId
      */
     public void setCatId (final String catId) {
+    	assert catId != null;
         this.catId = catId;
     }
 
@@ -117,6 +124,7 @@ public class Album extends AbstractEntity {
         if (releaseDate == null) {
             return null;
         }
+    	// make defensive copy
         return new Date(releaseDate.getTime());
     }
 
@@ -125,14 +133,19 @@ public class Album extends AbstractEntity {
      * @param releaseDate
      */
     public void setDate (final Date date) {
+    	assert date != null;
+    	// make defensive copy
         this.releaseDate = new Date(date.getTime());
     }
 
     public Set<Track> getTracks () {
+        // intentionally mutable, just return reference
         return tracks;
     }
 
     public void setTracks (final Set<Track> tracks) {
+    	assert tracks != null;
+        // intentionally mutable, just pass reference
         this.tracks = tracks;
     }
 
@@ -150,6 +163,7 @@ public class Album extends AbstractEntity {
      * @param track
      */
     public void addToTrackListing (final Track track) {
+    	assert track != null;
         tracks.add(track);
     }
 
@@ -159,6 +173,7 @@ public class Album extends AbstractEntity {
      * @param track
      */
     public void removeFromTrackListing (final Track track) {
+    	assert track != null;
         tracks.remove(track);
     }
 }
