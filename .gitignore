@@ -11,4 +11,7 @@ foo.txt
 target
 glassfish
 derby*
+.classpath
+.project
+.settings
 #
