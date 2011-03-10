@@ -91,12 +91,14 @@ public class TrackController extends ControllerBase<Track> {
 
     @Override
     public Object jsfEdit (final Long id) {
+    	assert id != null;
         item = trackService.find(id);
         return Navigation.EDIT.getPage();
     }
 
     @Override
     public Object jsfDelete (final Long id) {
+    	assert id != null;
         trackService.delete(id);
         return jsfList();
     }
