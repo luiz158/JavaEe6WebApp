@@ -1,0 +1,6 @@
+#!/bin/sh
+set -x
+arguments=$*
+
+mvn embedded-glassfish:admin -DcommandLine=\"asadmin $arguments\"
+
