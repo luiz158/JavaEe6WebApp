@@ -1,4 +1,5 @@
 # Lines starting with '#' are considered comments.
 lib
 META-INF
+*_jdbc_ra.rar
 #
