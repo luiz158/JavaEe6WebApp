@@ -45,6 +45,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import uk.me.doitto.webapp.beans.TrackService;
+import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.Track;
 
 /**
@@ -52,8 +53,6 @@ import uk.me.doitto.webapp.entity.Track;
  * @author ian
  */
 @Path(TrackRest.PATH)
-@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -87,6 +86,8 @@ public class TrackRest extends RestCrudBase<Track> {
 	}
 
     @POST
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final Track track) {
     	assert track != null;
@@ -96,52 +97,72 @@ public class TrackRest extends RestCrudBase<Track> {
         return Response.created(uri).entity(combined).build();
     }
 
-	@PUT
-    @Path("{id}")
-    @Override
-    public Track update (@PathParam("id") final Long id, final Track track) {
-		assert id >= 0;
-    	assert track != null;
-    	return trackService.update(overlay(track, trackService.find(id)));
-    }
-    
-    @GET
-    @Override
-    public List<Track> getAll() {
-        return trackService.findAll();
-    }
+//	@PUT
+//    @Path("{id}")
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    @Override
+//    public Track update (@PathParam("id") final Long id, final Track track) {
+//		assert id >= 0;
+//    	assert track != null;
+//    	return trackService.update(overlay(track, trackService.find(id)));
+//    }
+//    
+//    @GET
+//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    @Override
+//    public List<Track> getAll() {
+//        return trackService.findAll();
+//    }
+//
+//    @GET
+//    @Path("{first}/{max}")
+//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//	@Override
+//	public List<Track> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
+//		assert first >= 0;
+//		assert max >= 0;
+//		return trackService.findAll(first, max);
+//	}
+//
+//    @GET
+//    @Path("{id}")
+//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    @Override
+//    public Track getById (@PathParam("id") final Long id) {
+//		assert id >= 0;
+//		return trackService.find(id);
+//    }
+//
+//    @DELETE
+//    @Path("{id}")
+//    @Override
+//    public Response delete (@PathParam("id") final Long id) {
+//		assert id >= 0;
+//    	trackService.delete(id);
+//        return Response.ok().build();
+//    }
+//
+//    @GET
+//    @Path(COUNT)
+//    @Produces(MediaType.TEXT_PLAIN)
+//	@Override
+//	public String count () {
+//		return String.valueOf(trackService.count());
+//	}
 
-    @GET
-    @Path("{first}/{max}")
 	@Override
-	public List<Track> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
-		assert first >= 0;
-		assert max >= 0;
-		return trackService.findAll(first, max);
+	protected Crud<Track> getService() {
+		return trackService;
 	}
 
-    @GET
-    @Path("{id}")
-    @Override
-    public Track getById (@PathParam("id") final Long id) {
-		assert id >= 0;
-		return trackService.find(id);
-    }
-
-    @DELETE
-    @Path("{id}")
-    @Override
-    public Response delete (@PathParam("id") final Long id) {
-		assert id >= 0;
-    	trackService.delete(id);
-        return Response.ok().build();
-    }
-
-    @GET
-    @Path(COUNT)
-    @Produces(MediaType.TEXT_PLAIN)
 	@Override
-	public String count () {
-		return String.valueOf(trackService.count());
+	protected Track newInstance() {
+		return new Track();
+	}
+
+	@Override
+	protected UriInfo getUriInfo() {
+		return uriInfo;
 	}
 }

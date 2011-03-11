@@ -49,6 +49,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import uk.me.doitto.webapp.beans.ArtistService;
+import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.Artist;
 import uk.me.doitto.webapp.util.Globals;
 
@@ -57,8 +58,8 @@ import uk.me.doitto.webapp.util.Globals;
  * @author ian
  */
 @Path(ArtistRest.PATH)
-@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -96,46 +97,46 @@ public class ArtistRest extends RestCrudBase<Artist> {
         return Response.created(uri).entity(combined).build();
     }
 
-	@PUT
-    @Path("{id}")
-    @Override
-    public Artist update (@PathParam("id") final Long id, final Artist artist) {
-		assert id >= 0;
-		assert artist != null;
-    	return artistService.update(overlay(artist, artistService.find(id)));
-    }
-    
-    @GET
-    @Override
-    public List<Artist> getAll() {
-        return artistService.findAll();
-    }
-
-    @GET
-    @Path("{first}/{max}")
-	@Override
-	public List<Artist> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
-		assert first >= 0;
-		assert max >= 0;
-		return artistService.findAll(first, max);
-	}
-
-    @GET
-    @Path("{id}")
-    @Override
-    public Artist getById (@PathParam("id") final Long id) {
-		assert id >= 0;
-         return artistService.find(id);
-    }
-
-    @DELETE
-    @Path("{id}")
-    @Override
-    public Response delete (@PathParam("id") final Long id) {
-		assert id >= 0;
-    	artistService.delete(id);
-        return Response.ok().build();
-    }
+//	@PUT
+//    @Path("{id}")
+//    @Override
+//    public Artist update (@PathParam("id") final Long id, final Artist artist) {
+//		assert id >= 0;
+//		assert artist != null;
+//    	return artistService.update(overlay(artist, artistService.find(id)));
+//    }
+//    
+//    @GET
+//    @Override
+//    public List<Artist> getAll() {
+//        return artistService.findAll();
+//    }
+//
+//    @GET
+//    @Path("{first}/{max}")
+//	@Override
+//	public List<Artist> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
+//		assert first >= 0;
+//		assert max >= 0;
+//		return artistService.findAll(first, max);
+//	}
+//
+//    @GET
+//    @Path("{id}")
+//    @Override
+//    public Artist getById (@PathParam("id") final Long id) {
+//		assert id >= 0;
+//         return artistService.find(id);
+//    }
+//
+//    @DELETE
+//    @Path("{id}")
+//    @Override
+//    public Response delete (@PathParam("id") final Long id) {
+//		assert id >= 0;
+//    	artistService.delete(id);
+//        return Response.ok().build();
+//    }
 
     public Map<String, Long> getArtistNameIdMap() {
         Globals.LOGGER.log(Level.FINE, "");
@@ -168,11 +169,29 @@ public class ArtistRest extends RestCrudBase<Artist> {
         return Response.ok().build();
     }
 
-    @GET
-    @Path(COUNT)
-    @Produces(MediaType.TEXT_PLAIN)
 	@Override
-	public String count () {
-		return String.valueOf(artistService.count());
+	protected Artist newInstance() {
+		// TODO Auto-generated method stub
+		return new Artist();
 	}
+
+	@Override
+	protected Crud<Artist> getService() {
+		// TODO Auto-generated method stub
+		return artistService;
+	}
+
+	@Override
+	protected UriInfo getUriInfo() {
+		// TODO Auto-generated method stub
+		return uriInfo;
+	}
+
+//    @GET
+//    @Path(COUNT)
+//    @Produces(MediaType.TEXT_PLAIN)
+//	@Override
+//	public String count () {
+//		return String.valueOf(artistService.count());
+//	}
 }
