@@ -57,6 +57,10 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 //        return Response.created(uri).entity(combined).build();
 //    }
 
+//	@POST
+//	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Override
 	public abstract Response create (final T t);
 	
 	@PUT

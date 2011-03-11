@@ -97,6 +97,8 @@ public class AlbumRest extends RestCrudBase<Album> {
 	}
 
     @POST
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final Album album) {
     	assert album != null;

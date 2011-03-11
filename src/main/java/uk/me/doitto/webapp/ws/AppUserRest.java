@@ -105,6 +105,8 @@ public class AppUserRest extends RestCrudBase<AppUser> {
 	}
 
     @POST
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final AppUser appUser) {
 		assert appUser != null;
