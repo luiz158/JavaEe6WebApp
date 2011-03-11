@@ -24,7 +24,6 @@
 package uk.me.doitto.webapp.ws;
 
 import java.net.URI;
-import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
 import java.util.logging.Level;
@@ -35,12 +34,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -58,8 +54,6 @@ import uk.me.doitto.webapp.util.Globals;
  * @author ian
  */
 @Path(ArtistRest.PATH)
-//@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -99,47 +93,6 @@ public class ArtistRest extends RestCrudBase<Artist> {
         return Response.created(uri).entity(combined).build();
     }
 
-//	@PUT
-//    @Path("{id}")
-//    @Override
-//    public Artist update (@PathParam("id") final Long id, final Artist artist) {
-//		assert id >= 0;
-//		assert artist != null;
-//    	return artistService.update(overlay(artist, artistService.find(id)));
-//    }
-//    
-//    @GET
-//    @Override
-//    public List<Artist> getAll() {
-//        return artistService.findAll();
-//    }
-//
-//    @GET
-//    @Path("{first}/{max}")
-//	@Override
-//	public List<Artist> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
-//		assert first >= 0;
-//		assert max >= 0;
-//		return artistService.findAll(first, max);
-//	}
-//
-//    @GET
-//    @Path("{id}")
-//    @Override
-//    public Artist getById (@PathParam("id") final Long id) {
-//		assert id >= 0;
-//         return artistService.find(id);
-//    }
-//
-//    @DELETE
-//    @Path("{id}")
-//    @Override
-//    public Response delete (@PathParam("id") final Long id) {
-//		assert id >= 0;
-//    	artistService.delete(id);
-//        return Response.ok().build();
-//    }
-
     public Map<String, Long> getArtistNameIdMap() {
         Globals.LOGGER.log(Level.FINE, "");
         Map<String, Long> artistNameMap = new TreeMap<String, Long>();
@@ -173,27 +126,16 @@ public class ArtistRest extends RestCrudBase<Artist> {
 
 	@Override
 	protected Artist newInstance() {
-		// TODO Auto-generated method stub
 		return new Artist();
 	}
 
 	@Override
 	protected Crud<Artist> getService() {
-		// TODO Auto-generated method stub
 		return artistService;
 	}
 
 	@Override
 	protected UriInfo getUriInfo() {
-		// TODO Auto-generated method stub
 		return uriInfo;
 	}
-
-//    @GET
-//    @Path(COUNT)
-//    @Produces(MediaType.TEXT_PLAIN)
-//	@Override
-//	public String count () {
-//		return String.valueOf(artistService.count());
-//	}
 }
