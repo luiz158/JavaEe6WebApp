@@ -286,11 +286,6 @@ public class EmTest {
     
     @Test
     public void testDates () throws InterruptedException {
-    	dao.before(AbstractEntity_.created, new Date());
-    	dao.since(AbstractEntity_.created, new Date());
-    	dao.during(AbstractEntity_.created, new Date(), new Date());
-    	dao.notDuring(AbstractEntity_.created, new Date(), new Date());
-    	
         SimpleEntity entityA = new SimpleEntity();
         entityA.setName("Entity A");
         tx.begin();
