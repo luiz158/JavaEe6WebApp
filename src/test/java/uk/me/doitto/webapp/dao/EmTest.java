@@ -82,7 +82,7 @@ public class EmTest {
 
     @BeforeClass
     public static void setUpClass() throws Exception {
-        emf = Persistence.createEntityManagerFactory(TestPU.filesystemPU.toString());
+        emf = Persistence.createEntityManagerFactory(TestPU.memoryPU.toString());
         em = emf.createEntityManager();
         dao = new SimpleDao(em);
     }
