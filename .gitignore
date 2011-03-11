@@ -9,7 +9,6 @@ foo.txt
 *.[oa]
 #
 target
-glassfish
 derby*
 .classpath
 .project

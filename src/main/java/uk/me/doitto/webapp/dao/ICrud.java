@@ -38,14 +38,18 @@ public interface ICrud<T, PK extends Serializable> extends IDb<PK> {
 
     void delete (PK id);
 
+    T update (T t);
+   
+	int count();
+	
     T find (PK id);
 
     List<T> findAll ();
 
-    List<T> findRange (int first, int max);
+    List<T> findAll (int first, int max);
 
-    T update (T t);
-
+    List<T> findByNamedQuery (String queryName, Map<String, Object> parameters);
+    
     List<T> findByNamedQuery (String queryName, Map<String, Object> parameters, int first, int max);
     
     List<T> before (SingularAttribute<? super T, Date> attribute, Date date);
@@ -57,6 +61,4 @@ public interface ICrud<T, PK extends Serializable> extends IDb<PK> {
     List<T> notDuring (SingularAttribute<? super T, Date> attribute, Date date1, Date date2);
     
     List<T> search (SingularAttribute<? super T, String> attribute, String queryString);
-    
-	int count();
 }

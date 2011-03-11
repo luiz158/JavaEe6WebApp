@@ -1,0 +1,4 @@
+# Lines starting with '#' are considered comments.
+lib
+META-INF
+#

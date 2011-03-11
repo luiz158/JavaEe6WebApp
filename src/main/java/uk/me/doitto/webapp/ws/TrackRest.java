@@ -117,7 +117,7 @@ public class TrackRest extends RestCrudBase<Track> {
 	public List<Track> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
 		assert first >= 0;
 		assert max >= 0;
-		return trackService.findRange(first, max);
+		return trackService.findAll(first, max);
 	}
 
     @GET

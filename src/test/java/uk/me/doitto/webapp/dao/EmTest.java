@@ -79,7 +79,7 @@ public class EmTest {
     private static final String TEST_STRING_1 = "Hello World!";
 
     private static final String TEST_STRING_2 = "Goodbye World!";
-
+    
     @BeforeClass
     public static void setUpClass() throws Exception {
         emf = Persistence.createEntityManagerFactory(TestPU.memoryPU.toString());
@@ -203,7 +203,7 @@ public class EmTest {
         assertEquals(true, list1.contains(simpleEntity));
 
         tx.begin();
-        List<SimpleEntity> list2 = dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), -1, -1);
+        List<SimpleEntity> list2 = dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>());
         tx.commit();
     	assertEquals("Should be " + (entityCount + 1) + " instances", entityCount + 1, list2.size());
         assertEquals(true, list2.contains(simpleEntity));
@@ -274,22 +274,64 @@ public class EmTest {
     	assertEquals("Should be " + newCount + " instances", newCount, dao.count());
     	// find all
     	assertEquals("Should be " + newCount + " instances", newCount, dao.findAll().size());
-    	assertEquals("Should be " + newCount + " instances", newCount, dao.findRange(0, dao.count()).size());
+    	assertEquals("Should be " + newCount + " instances", newCount, dao.findAll(0, dao.count()).size());
     	assertEquals("Should be " + newCount + " instances", newCount, dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), 0, 0).size());
     	// find first number
-    	assertEquals("Should be " + number + " instances", number, dao.findRange(0, number).size());
+    	assertEquals("Should be " + number + " instances", number, dao.findAll(0, number).size());
     	assertEquals("Should be " + number + " instances", number, dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), 0, number).size());
     	// find last number
-    	assertEquals("Should be " + number + " instances", number, dao.findRange(dao.count() - number, number).size());
+    	assertEquals("Should be " + number + " instances", number, dao.findAll(dao.count() - number, number).size());
     	assertEquals("Should be " + number + " instances", number, dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), dao.count() - number, number).size());
     }
     
     @Test
-    public void testDates () {
+    public void testDates () throws InterruptedException {
     	dao.before(AbstractEntity_.created, new Date());
     	dao.since(AbstractEntity_.created, new Date());
     	dao.during(AbstractEntity_.created, new Date(), new Date());
     	dao.notDuring(AbstractEntity_.created, new Date(), new Date());
+    	
+        SimpleEntity entityA = new SimpleEntity();
+        entityA.setName("Entity A");
+        tx.begin();
+        em.persist(entityA);
+        tx.commit();
+        
+        Thread.sleep(100);
+        Date date1 = new Date();
+        Thread.sleep(100);
+        
+        SimpleEntity entityB = new SimpleEntity();
+        entityB.setName("Entity B");
+        tx.begin();
+        em.persist(entityB);
+        tx.commit();
+        
+        Thread.sleep(100);        
+        Date date2 = new Date();
+        Thread.sleep(100);
+        
+        SimpleEntity entityC = new SimpleEntity();
+        entityC.setName("Entity C");
+        tx.begin();
+        em.persist(entityC);
+        tx.commit();
+        
+        // Date 1
+        assertTrue("Wrong contents! ", dao.before(AbstractEntity_.created, date1).contains(entityA));
+        assertFalse("Wrong contents! ", dao.before(AbstractEntity_.accessed, date1).contains(entityB) || dao.before(AbstractEntity_.modified, date1).contains(entityC));
+        assertTrue("Wrong contents! ", dao.since(AbstractEntity_.created, date1).contains(entityB) && dao.since(AbstractEntity_.modified, date1).contains(entityC));
+        assertFalse("Wrong contents! ", dao.since(AbstractEntity_.accessed, date1).contains(entityA));
+        // Date 2
+        assertTrue("Wrong contents! ", dao.before(AbstractEntity_.created, date2).contains(entityA) && dao.before(AbstractEntity_.modified, date2).contains(entityB));
+        assertFalse("Wrong contents! ", dao.before(AbstractEntity_.accessed, date2).contains(entityC));
+        assertTrue("Wrong contents! ", dao.since(AbstractEntity_.created, date2).contains(entityC));
+        assertFalse("Wrong contents! ", dao.since(AbstractEntity_.accessed, date2).contains(entityA) || dao.since(AbstractEntity_.modified, date2).contains(entityB));
+        // Both dates
+        assertTrue("Wrong contents! ", dao.during(AbstractEntity_.created, date1, date2).contains(entityB));
+        assertFalse("Wrong contents! ", dao.during(AbstractEntity_.accessed, date1, date2).contains(entityA) || dao.during(AbstractEntity_.modified, date1, date2).contains(entityC));
+        assertTrue("Wrong contents! ", dao.notDuring(AbstractEntity_.created, date1, date2).contains(entityA) && dao.notDuring(AbstractEntity_.modified, date1, date2).contains(entityC));
+        assertFalse("Wrong contents! ", dao.notDuring(AbstractEntity_.accessed, date1, date2).contains(entityB));
     }
     
     @Test
