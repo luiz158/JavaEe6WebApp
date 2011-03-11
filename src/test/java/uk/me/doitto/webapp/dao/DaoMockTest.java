@@ -179,10 +179,12 @@ public class DaoMockTest extends EasyMockSupport {
 		parameters.put("p1", "v1");
 //		parameters.put("p2", "v2");
 		expect(mockEm.createNamedQuery(EasyMock.isA(String.class), EasyMock.eq(SimpleEntity.class))).andReturn(mockTq);
-		expect(mockTq.setFirstResult(firstResult)).andReturn(mockTq);
-		expect(mockTq.setMaxResults(noOfResults)).andReturn(mockTq);
+//		expect(mockTq.setFirstResult(firstResult)).andReturn(mockTq);
+//		expect(mockTq.setMaxResults(noOfResults)).andReturn(mockTq);
 		expect(mockTq.setParameter("p1", "v1")).andReturn(mockTq);
 //		expect(mockTq.setParameter("p2", "v2")).andReturn(mockTq);
+		expect(mockTq.setFirstResult(firstResult)).andReturn(mockTq);
+		expect(mockTq.setMaxResults(noOfResults)).andReturn(mockTq);
 		expect(mockTq.getResultList()).andReturn(new ArrayList<SimpleEntity>());
 		replayAll();
 		dao.findByNamedQuery("query string", parameters, firstResult, noOfResults);
@@ -199,6 +201,8 @@ public class DaoMockTest extends EasyMockSupport {
 		expect(mockCq.from(SimpleEntity.class)).andReturn(mockRoot);
 		expect(mockCq.select(mockRoot)).andReturn(mockCq);
 		expect(mockEm.createQuery(EasyMock.isA(CriteriaQuery.class))).andReturn(mockTq);
+		expect(mockTq.setFirstResult(0)).andReturn(mockTq);
+		expect(mockTq.setMaxResults(0)).andReturn(mockTq);
 		expect(mockTq.getResultList()).andReturn(new ArrayList<SimpleEntity>());
 		replayAll();
 		dao.findAll();

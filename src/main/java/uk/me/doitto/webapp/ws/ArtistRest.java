@@ -117,7 +117,7 @@ public class ArtistRest extends RestCrudBase<Artist> {
 	public List<Artist> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
 		assert first >= 0;
 		assert max >= 0;
-		return artistService.findRange(first, max);
+		return artistService.findAll(first, max);
 	}
 
     @GET

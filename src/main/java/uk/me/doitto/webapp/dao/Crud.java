@@ -46,7 +46,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 	
     public static final Logger LOGGER = Logger.getLogger("uk.me.doitto.jpadao");
     
-    private static final int INT_DISABLED = -1;
+//    private static final int INT_DISABLED = -1;
     
     @PersistenceContext
     private EntityManager em;
@@ -112,40 +112,36 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
     public List<T> findAll () {
-    	LOGGER.log(Level.FINE, "findAll() " + type);
-        CriteriaQuery<T> cq = em.getCriteriaBuilder().createQuery(type);
-        cq.select(cq.from(type));
-        return em.createQuery(cq).getResultList();
+        return findAll(0, 0);
     }
 
     @Override
-	public List<T> findRange (final int first, final int max) {
-		assert first >= INT_DISABLED;
-		assert max >= INT_DISABLED;
+	public List<T> findAll (final int first, final int max) {
+		assert first >= 0;
+		assert max >= 0;
     	LOGGER.log(Level.FINE, "findAll(first, max) " + type);
     	CriteriaQuery<T> cq = em.getCriteriaBuilder().createQuery(type);
         cq.select(cq.from(type));
-        return em.createQuery(cq).setMaxResults(max).setFirstResult(first).getResultList();
+        return em.createQuery(cq).setFirstResult(first).setMaxResults(max).getResultList();
     }
     
+    @Override
+    public List<T> findByNamedQuery (final String queryName, final Map<String, Object> parameters) {
+        return findByNamedQuery(queryName, parameters, 0, 0);
+    }
+
     @Override
     public List<T> findByNamedQuery (final String queryName, final Map<String, Object> parameters, int first, int max) {
 		assert queryName != null;
 		assert parameters != null;
-		assert first >= INT_DISABLED;
-		assert max >= INT_DISABLED;
+		assert first >= 0;
+		assert max >= 0;
     	LOGGER.log(Level.FINE, "findByNamedQuery(" + queryName + ") " + type);
         TypedQuery<T> query = em.createNamedQuery(queryName, type);
-        if (first > INT_DISABLED) {
-            query.setFirstResult(first);
-        }
-        if (max > INT_DISABLED) {
-            query.setMaxResults(max);
-        }
         for (Entry<String, Object> entry : parameters.entrySet()) {
             query.setParameter(entry.getKey(), entry.getValue());
         }
-        return query.getResultList();
+        return query.setFirstResult(first).setMaxResults(max).getResultList();
     }
 
     @Override

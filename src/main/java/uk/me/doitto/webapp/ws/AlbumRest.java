@@ -126,7 +126,7 @@ public class AlbumRest extends RestCrudBase<Album> {
 	public List<Album> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
 		assert first >= 0;
 		assert max >= 0;
-		return albumService.findRange(first, max);
+		return albumService.findAll(first, max);
 	}
 
     @GET

@@ -30,6 +30,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.Temporal;
 import javax.persistence.Version;
 import javax.xml.bind.annotation.XmlElement;
 
@@ -63,17 +64,20 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 */
 	protected String name;
 
-	private long created;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	private Date created;
 
-	private long modified;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	private Date modified;
 
-	private long accessed;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+	private Date accessed;
 
 	protected AbstractEntity () {
-		Date date = new Date();
-		created = date.getTime();
-		modified = date.getTime();
-		accessed = date.getTime();
+		final Date date = new Date();
+		created = new Date(date.getTime());
+		modified = new Date(date.getTime());
+		accessed = new Date(date.getTime());
 	}
 
 	/**
@@ -87,9 +91,9 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		}
 		this.version = entity.version;
 		this.name = entity.name;
-		this.created = entity.created;
-		this.modified = entity.modified;
-		this.accessed = entity.accessed;
+		this.created = new Date(entity.created.getTime());
+		this.modified = new Date(entity.modified.getTime());
+		this.accessed = new Date(entity.accessed.getTime());
 	}
 	
 	/**
@@ -134,35 +138,35 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 
 	@Override
 	public Date getAccessed () {
-		return new Date(accessed);
+		return new Date(accessed.getTime());
 	}
 
 	@Override
 	public void setAccessed (final Date accessed) {
 		assert accessed != null;
-		this.accessed = accessed.getTime();
+		this.accessed = new Date(accessed.getTime());
 	}
 
 	@Override
 	public Date getCreated () {
-		return new Date(created);
+		return new Date(created.getTime());
 	}
 
 	@Override
 	public void setCreated (final Date created) {
 		assert created != null;
-		this.created = created.getTime();
+		this.created = new Date(created.getTime());
 	}
 
 	@Override
 	public Date getModified () {
-		return new Date(modified);
+		return new Date(modified.getTime());
 	}
 
 	@Override
 	public void setModified (final Date modified) {
 		assert modified != null;
-		this.modified = modified.getTime();
+		this.modified = new Date(modified.getTime());
 	}
 
 	/**

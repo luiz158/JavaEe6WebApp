@@ -116,7 +116,7 @@ public class AppUserRest extends RestCrudBase<AppUser> {
 	public List<AppUser> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
 		assert first >= 0;
 		assert max >= 0;
-		return appUserService.findRange(first, max);
+		return appUserService.findAll(first, max);
 	}
 
     @GET
