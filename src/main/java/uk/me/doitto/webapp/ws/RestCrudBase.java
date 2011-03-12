@@ -37,9 +37,6 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 	
 	protected abstract Crud<T> getService ();
 	
-//	@Override
-//	public abstract Response create (final T t);
-	
 	@PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
