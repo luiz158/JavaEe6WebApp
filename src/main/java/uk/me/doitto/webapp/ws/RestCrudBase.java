@@ -11,7 +11,6 @@ import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import javax.ws.rs.core.UriInfo;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
 import uk.me.doitto.webapp.dao.Crud;
@@ -36,16 +35,10 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 	 */
 	protected abstract T overlay (final T incoming, final T existing);
 	
-	protected abstract T newInstance ();
-	
 	protected abstract Crud<T> getService ();
 	
-	protected abstract UriInfo getUriInfo ();
-	
-	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-	@Override
-	public abstract Response create (final T t);
+//	@Override
+//	public abstract Response create (final T t);
 	
 	@PUT
     @Path("{id}")

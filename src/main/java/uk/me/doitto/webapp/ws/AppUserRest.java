@@ -30,9 +30,12 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
@@ -77,6 +80,8 @@ public class AppUserRest extends RestCrudBase<AppUser> {
 	}
 
     @POST
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final AppUser appUser) {
 		assert appUser != null;
@@ -88,17 +93,7 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     }
 
 	@Override
-	protected AppUser newInstance() {
-		return new AppUser();
-	}
-
-	@Override
 	protected Crud<AppUser> getService() {
 		return appUserService;
-	}
-
-	@Override
-	protected UriInfo getUriInfo() {
-		return uriInfo;
 	}
 }

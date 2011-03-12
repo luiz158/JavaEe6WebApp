@@ -31,6 +31,7 @@ import javax.ejb.LocalBean;
 import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
+import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -88,6 +89,8 @@ public class AlbumRest extends RestCrudBase<Album> {
 	}
 
     @POST
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final Album album) {
     	assert album != null;
@@ -121,17 +124,7 @@ public class AlbumRest extends RestCrudBase<Album> {
     }
 
 	@Override
-	protected Album newInstance() {
-		return new Album();
-	}
-
-	@Override
 	protected Crud<Album> getService() {
 		return albumService;
-	}
-
-	@Override
-	protected UriInfo getUriInfo() {
-		return uriInfo;
 	}
 }
