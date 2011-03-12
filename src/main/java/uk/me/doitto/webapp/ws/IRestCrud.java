@@ -24,8 +24,10 @@
 package uk.me.doitto.webapp.ws;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
+import javax.persistence.metamodel.SingularAttribute;
 import javax.ws.rs.core.Response;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -49,6 +51,14 @@ public interface IRestCrud<T extends AbstractEntity, PK extends Serializable> ex
     T getById (PK id);
 
     Response delete (PK id);
+    
+    List<T> before (String attribute, long date);
+    
+    List<T> since (String attribute, long date);
+    
+    List<T> during (String attribute, long date1, long date2);
+    
+    List<T> notDuring (String attribute, long date1, long date2);
     
 	String count();
 }
