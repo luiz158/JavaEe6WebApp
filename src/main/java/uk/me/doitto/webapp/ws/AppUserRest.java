@@ -24,7 +24,6 @@
 package uk.me.doitto.webapp.ws;
 
 import java.net.URI;
-import java.util.List;
 
 import javax.ejb.EJB;
 import javax.ejb.LocalBean;
@@ -32,12 +31,8 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
@@ -45,6 +40,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import uk.me.doitto.webapp.beans.AppUserService;
+import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.AppUser;
 
 /**
@@ -52,8 +48,6 @@ import uk.me.doitto.webapp.entity.AppUser;
  * @author ian
  */
 @Path(AppUserRest.PATH)
-@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -86,6 +80,8 @@ public class AppUserRest extends RestCrudBase<AppUser> {
 	}
 
     @POST
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final AppUser appUser) {
 		assert appUser != null;
@@ -95,52 +91,18 @@ public class AppUserRest extends RestCrudBase<AppUser> {
         return Response.created(uri).entity(combined).build();
     }
 
-    @PUT
-    @Path("{id}")
-    @Override
-    public AppUser update (@PathParam("id") final Long id, final AppUser appUser) {
-		assert id >= 0;
-		assert appUser != null;
-    	return appUserService.update(overlay(appUser, appUserService.find(id)));
-    }
-    
-    @GET
-    @Override
-    public List<AppUser> getAll() {
-        return appUserService.findAll();
-    }
-
-    @GET
-    @Path("{first}/{max}")
 	@Override
-	public List<AppUser> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
-		assert first >= 0;
-		assert max >= 0;
-		return appUserService.findAll(first, max);
+	protected AppUser newInstance() {
+		return new AppUser();
 	}
 
-    @GET
-    @Path("{id}")
-    @Override
-    public AppUser getById (@PathParam("id") final Long id) {
-		assert id >= 0;
-		return appUserService.find(id);
-    }
-
-    @DELETE
-    @Path("{id}")
-    @Override
-    public Response delete (@PathParam("id") final Long id) {
-		assert id >= 0;
-    	appUserService.delete(id);
-        return Response.ok().build();
-    }
-
-    @GET
-    @Path(COUNT)
-    @Produces(MediaType.TEXT_PLAIN)
 	@Override
-	public String count () {
-		return String.valueOf(appUserService.count());
+	protected Crud<AppUser> getService() {
+		return appUserService;
+	}
+
+	@Override
+	protected UriInfo getUriInfo() {
+		return uriInfo;
 	}
 }

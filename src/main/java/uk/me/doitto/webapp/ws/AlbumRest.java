@@ -24,9 +24,6 @@
 package uk.me.doitto.webapp.ws;
 
 import java.net.URI;
-import java.util.List;
-import java.util.Map;
-import java.util.TreeMap;
 import java.util.logging.Level;
 
 import javax.ejb.EJB;
@@ -35,12 +32,9 @@ import javax.ejb.Stateless;
 import javax.ejb.TransactionAttribute;
 import javax.ejb.TransactionAttributeType;
 import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.Context;
@@ -49,6 +43,7 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 
 import uk.me.doitto.webapp.beans.AlbumService;
+import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.Album;
 import uk.me.doitto.webapp.util.Globals;
 
@@ -57,8 +52,6 @@ import uk.me.doitto.webapp.util.Globals;
  * @author ian
  */
 @Path(AlbumRest.PATH)
-@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 @Stateless
 @LocalBean
 @TransactionAttribute(TransactionAttributeType.NEVER)
@@ -96,6 +89,8 @@ public class AlbumRest extends RestCrudBase<Album> {
 	}
 
     @POST
+//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final Album album) {
     	assert album != null;
@@ -103,68 +98,6 @@ public class AlbumRest extends RestCrudBase<Album> {
     	albumService.create(combined);
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
         return Response.created(uri).entity(combined).build();
-    }
-
-    @PUT
-    @Path("{id}")
-    @Override
-    public Album update (@PathParam("id") final Long id, final Album album) {
-		assert id >= 0;
-    	assert album != null;
-    	return albumService.update(overlay(album, albumService.find(id)));
-    }
-    
-    @GET
-    @Override
-    public List<Album> getAll() {
-        return albumService.findAll();
-    }
-
-    @GET
-    @Path("{first}/{max}")
-	@Override
-	public List<Album> getRange(@PathParam("first") final int first, @PathParam("max") final int max) {
-		assert first >= 0;
-		assert max >= 0;
-		return albumService.findAll(first, max);
-	}
-
-    @GET
-    @Path("{id}")
-    @Override
-    public Album getById (@PathParam("id") final Long id) {
-		assert id >= 0;
-		return albumService.find(id);
-    }
-
-    @DELETE
-    @Path("{id}")
-    @Override
-    public Response delete (@PathParam("id") final Long id) {
-		assert id >= 0;
-    	albumService.delete(id);
-        return Response.ok().build();
-    }
-
-    @GET
-    @Path("titleidmap")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, Long> getTitleIdMap() {
-    	Globals.LOGGER.log(Level.FINE, "");
-        Map<String, Long> albumTitleMap = new TreeMap<String, Long>();
-        for (Album album : albumService.findAll()) {
-            albumTitleMap.put(album.getName(), album.getId());
-        }
-        return albumTitleMap;
-    }
-
-    @GET
-    @Path("tracks/{id}")
-    @Produces(MediaType.APPLICATION_JSON)
-    public Map<String, Long> getTracks(@PathParam("id") final Long id) {
-		assert id >= 0;
-    	Globals.LOGGER.log(Level.FINE, "");
-        return albumService.find(id).getTrackIdMap();
     }
 
     @GET
@@ -189,11 +122,18 @@ public class AlbumRest extends RestCrudBase<Album> {
         return Response.ok().build();
     }
 
-    @GET
-    @Path(COUNT)
-    @Produces(MediaType.TEXT_PLAIN)
 	@Override
-	public String count () {
-		return String.valueOf(albumService.count());
+	protected Album newInstance() {
+		return new Album();
+	}
+
+	@Override
+	protected Crud<Album> getService() {
+		return albumService;
+	}
+
+	@Override
+	protected UriInfo getUriInfo() {
+		return uriInfo;
 	}
 }
