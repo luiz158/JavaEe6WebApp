@@ -42,19 +42,6 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 	
 	protected abstract UriInfo getUriInfo ();
 	
-//    @POST
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    @Override
-//    public Response create (final T t) {
-//    	assert t != null;
-//    	T combined = overlay(t, newInstance());
-//    	getService().create(combined);
-//        URI uri = getUriInfo().getAbsolutePathBuilder().path(combined.getId().toString()).build();
-//        return Response.created(uri).entity(combined).build();
-//    }
-
-//	@POST
 	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Override
