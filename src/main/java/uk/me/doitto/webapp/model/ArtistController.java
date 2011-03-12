@@ -91,22 +91,28 @@ public class ArtistController extends ControllerBase<Artist> {
 
     @Override
 	public Object jsfEdit (final Long id) {
+    	assert id != null;
     	item = artistService.find(id);
         return Navigation.EDIT.getPage();
     }
 
     @Override
 	public Object jsfDelete (final Long id) {
+    	assert id != null;
     	artistService.delete(id);
         return jsfList();
     }
     
 	public Object linkAlbum (final Long id, final Long albumId) {
+    	assert id != null;
+    	assert albumId != null;
     	artistService.linkAlbum(id, albumId);
         return Navigation.EDIT.getPage();
     }
     
 	public Object unlinkAlbum (final Long id, final Long albumId) {
+    	assert id != null;
+    	assert albumId != null;
     	artistService.unlinkAlbum(id, albumId);
         return Navigation.EDIT.getPage();
     }

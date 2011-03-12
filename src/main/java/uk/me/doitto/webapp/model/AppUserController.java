@@ -101,12 +101,14 @@ public class AppUserController extends ControllerBase<AppUser> {
 
     @Override
 	public Object jsfEdit (final Long id) {
+    	assert id != null;
     	item = service.find(id);
         return Navigation.EDIT.getPage();
     }
 
     @Override
 	public Object jsfDelete (final Long id) {
+    	assert id != null;
         service.delete(id);
         return jsfList();
     }
@@ -115,15 +117,17 @@ public class AppUserController extends ControllerBase<AppUser> {
         return password;
     }
 
-    public void setPassword(String password) {
+    public void setPassword (final String password) {
+    	assert password != null;
         this.password = password;
     }
 
-    public String getPasswordConf() {
+    public String getPasswordConf () {
         return passwordConf;
     }
 
-    public void setPasswordConf(String passwordConf) {
+    public void setPasswordConf (final String passwordConf) {
+    	assert passwordConf != null;
         this.passwordConf = passwordConf;
     }
 
