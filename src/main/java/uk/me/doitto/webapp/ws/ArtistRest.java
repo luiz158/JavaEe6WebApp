@@ -82,13 +82,14 @@ public class ArtistRest extends RestCrudBase<Artist> {
     }
     
     @POST
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final Artist artist) {
 		assert artist != null;
     	Artist combined = overlay(artist, new Artist());
     	artistService.create(combined);
+    	assert !combined.isNew();
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
         return Response.created(uri).entity(combined).build();
     }
@@ -125,17 +126,7 @@ public class ArtistRest extends RestCrudBase<Artist> {
     }
 
 	@Override
-	protected Artist newInstance() {
-		return new Artist();
-	}
-
-	@Override
 	protected Crud<Artist> getService() {
 		return artistService;
-	}
-
-	@Override
-	protected UriInfo getUriInfo() {
-		return uriInfo;
 	}
 }

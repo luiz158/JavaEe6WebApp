@@ -89,13 +89,14 @@ public class AlbumRest extends RestCrudBase<Album> {
 	}
 
     @POST
-//    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-//    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final Album album) {
     	assert album != null;
     	Album combined = overlay(album, new Album());
     	albumService.create(combined);
+    	assert !combined.isNew();
         URI uri = uriInfo.getAbsolutePathBuilder().path(combined.getId().toString()).build();
         return Response.created(uri).entity(combined).build();
     }
@@ -123,17 +124,7 @@ public class AlbumRest extends RestCrudBase<Album> {
     }
 
 	@Override
-	protected Album newInstance() {
-		return new Album();
-	}
-
-	@Override
 	protected Crud<Album> getService() {
 		return albumService;
-	}
-
-	@Override
-	protected UriInfo getUriInfo() {
-		return uriInfo;
 	}
 }
