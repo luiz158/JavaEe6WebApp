@@ -45,6 +45,10 @@ import javax.xml.bind.annotation.XmlElement;
 @MappedSuperclass
 public abstract class AbstractEntity implements PersistentEntity<Long>, Comparable<AbstractEntity> {
 
+	/**
+	 * Maps each string date attribute name from a web request to a JPA2 metamodel field
+	 * @author ian
+	 */
 	public enum TimeStamp {
 		created(AbstractEntity_.created),
 		modified(AbstractEntity_.modified),
@@ -56,6 +60,9 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 			this.attribute = attribute;
 		}
 		
+		/**
+		 * @return the metamodel field for this enum instance
+		 */
 		public SingularAttribute<AbstractEntity, Date> getAttribute () {
 			return attribute;
 		}
