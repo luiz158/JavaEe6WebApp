@@ -32,6 +32,7 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.Version;
+import javax.persistence.metamodel.SingularAttribute;
 import javax.xml.bind.annotation.XmlElement;
 
 /**
@@ -44,6 +45,22 @@ import javax.xml.bind.annotation.XmlElement;
 @MappedSuperclass
 public abstract class AbstractEntity implements PersistentEntity<Long>, Comparable<AbstractEntity> {
 
+	public enum TimeStamp {
+		created(AbstractEntity_.created),
+		modified(AbstractEntity_.modified),
+		accessed(AbstractEntity_.accessed);
+		
+		private final SingularAttribute<AbstractEntity, Date> attribute;
+
+		TimeStamp (final SingularAttribute<AbstractEntity, Date> attribute) {
+			this.attribute = attribute;
+		}
+		
+		public SingularAttribute<AbstractEntity, Date> getAttribute () {
+			return attribute;
+		}
+	}
+	
 	/**
 	 * For use by persistence provider
 	 */

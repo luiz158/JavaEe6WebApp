@@ -24,10 +24,9 @@
 package uk.me.doitto.webapp.ws;
 
 import java.io.Serializable;
-import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import javax.persistence.metamodel.SingularAttribute;
 import javax.ws.rs.core.Response;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -44,14 +43,20 @@ public interface IRestCrud<T extends AbstractEntity, PK extends Serializable> ex
 
     T update (PK id, T t);
     
+    Response delete (PK id);
+    
+	String count();
+    
+    T getById (PK id);
+
     List<T> getAll ();
     
     List<T> getRange (int first, int max);
-
-    T getById (PK id);
-
-    Response delete (PK id);
     
+    List<T> getByNamedQuery (String queryName, Map<String, Object> parameters);
+
+    List<T> getByNamedQuery (String queryName, Map<String, Object> parameters, int first, int max);
+
     List<T> before (String attribute, long date);
     
     List<T> since (String attribute, long date);
@@ -59,6 +64,5 @@ public interface IRestCrud<T extends AbstractEntity, PK extends Serializable> ex
     List<T> during (String attribute, long date1, long date2);
     
     List<T> notDuring (String attribute, long date1, long date2);
-    
-	String count();
-}
+
+    List<T> search (String attribute, String queryString);}

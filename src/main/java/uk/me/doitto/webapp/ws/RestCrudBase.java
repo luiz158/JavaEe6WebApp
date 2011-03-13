@@ -2,8 +2,8 @@ package uk.me.doitto.webapp.ws;
 
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
-import javax.persistence.metamodel.SingularAttribute;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -28,23 +28,9 @@ import uk.me.doitto.webapp.dao.Crud;
 @SuppressWarnings("serial")
 public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCrud<T, Long> {
 	
-	private enum TimeStamp {
-		created(AbstractEntity_.created),
-		modified(AbstractEntity_.modified),
-		accessed(AbstractEntity_.accessed);
-		
-		private final SingularAttribute<AbstractEntity, Date> attribute;
-
-		TimeStamp (final SingularAttribute<AbstractEntity, Date> attribute) {
-			this.attribute = attribute;
-		}
-		
-		public SingularAttribute<AbstractEntity, Date> getAttribute() {
-			return attribute;
-		}
-	}
-	
     public static final String COUNT = "count";
+    
+    public static final String NAMED = "named";
     
     public static final String BEFORE = "before";
     
@@ -53,6 +39,8 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     public static final String DURING = "during";
     
     public static final String NOT_DURING = "notduring";
+    
+    public static final String SEARCH = "search";
     
 	/**
 	 * Copies selected fields from the returned object to a local object
@@ -69,6 +57,14 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 	 */
 	protected abstract Crud<T> getService ();
 	
+    @GET
+    @Path(COUNT)
+    @Produces(MediaType.TEXT_PLAIN)
+	@Override
+	public String count () {
+		return String.valueOf(getService().count());
+	}
+
 	@PUT
     @Path("{id}")
     @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -80,6 +76,24 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     	return getService().update(overlay(t, getService().find(id)));
     }
     
+    @DELETE
+    @Path("{id}")
+    @Override
+    public Response delete (@PathParam("id") final Long id) {
+		assert id >= 0;
+		getService().delete(id);
+        return Response.ok().build();
+    }
+
+    @GET
+    @Path("{id}")
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Override
+    public T getById (@PathParam("id") final Long id) {
+		assert id >= 0;
+		return getService().find(id);
+    }
+
     @GET
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
@@ -97,30 +111,33 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 		return getService().findAll(first, max);
 	}
 
-    @GET
-    @Path("{id}")
+    @PUT
+    @Path(NAMED)
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
-    @Override
-    public T getById (@PathParam("id") final Long id) {
-		assert id >= 0;
-		return getService().find(id);
-    }
+	@Override
+	public List<T> getByNamedQuery (final String queryName, final Map<String, Object> parameters) {
+		return getByNamedQuery(queryName, parameters, 0, 0);
+	}
 
-    @DELETE
-    @Path("{id}")
-    @Override
-    public Response delete (@PathParam("id") final Long id) {
-		assert id >= 0;
-		getService().delete(id);
-        return Response.ok().build();
-    }
+    @PUT
+    @Path(NAMED + "/{first}/{max}")
+    @Consumes({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Override
+	public List<T> getByNamedQuery (final String queryName, Map<String, Object> parameters, @PathParam("first") final int first, @PathParam("first") final int max) {
+		assert parameters != null;
+		assert first >= 0;
+		assert max >= 0;
+		return getService().findByNamedQuery(queryName, parameters, first, max);
+	}
 
     @GET
     @Path(BEFORE)
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
 	public List<T> before (@QueryParam("attribute") final String attribute, @QueryParam("date") final long date) {
-    	return getService().before(TimeStamp.valueOf(attribute).getAttribute(), new Date(date));
+    	return getService().before(AbstractEntity.TimeStamp.valueOf(attribute).getAttribute(), new Date(date));
     }
     
     @GET
@@ -128,7 +145,7 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
 	public List<T> since (@QueryParam("attribute") final String attribute, @QueryParam("date") final long date) {
-    	return getService().since(TimeStamp.valueOf(attribute).getAttribute(), new Date(date));
+    	return getService().since(AbstractEntity.TimeStamp.valueOf(attribute).getAttribute(), new Date(date));
     }
     
     @GET
@@ -136,7 +153,7 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
 	public List<T> during (@QueryParam("attribute") final String attribute, @QueryParam("date1") final long date1, @QueryParam("date2") final long date2) {
-    	return getService().during(TimeStamp.valueOf(attribute).getAttribute(), new Date(date1), new Date(date2));
+    	return getService().during(AbstractEntity.TimeStamp.valueOf(attribute).getAttribute(), new Date(date1), new Date(date2));
     }
     
     @GET
@@ -144,14 +161,14 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
 	public List<T> notDuring (@QueryParam("attribute") final String attribute, @QueryParam("date1") final long date1, @QueryParam("date2") final long date2) {
-    	return getService().notDuring(TimeStamp.valueOf(attribute).getAttribute(), new Date(date1), new Date(date2));
+    	return getService().notDuring(AbstractEntity.TimeStamp.valueOf(attribute).getAttribute(), new Date(date1), new Date(date2));
     }
     
     @GET
-    @Path(COUNT)
-    @Produces(MediaType.TEXT_PLAIN)
+    @Path(SEARCH)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Override
-	public String count () {
-		return String.valueOf(getService().count());
+	public List<T> search (@QueryParam("attribute") final String attribute, @QueryParam("querystring") final String queryString) {
+		return getService().search(AbstractEntity_.name, queryString);
 	}
 }
