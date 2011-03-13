@@ -75,10 +75,7 @@ public class ArtistRest extends RestCrudBase<Artist> {
     
     @Override
 	protected Artist overlay (final Artist incoming, final Artist existing) {
-    	if (incoming.getName() != null) {
-    		existing.setName(incoming.getName());
-    	}
-    	return existing;
+		return super.overlay(incoming, existing);
     }
     
     @POST

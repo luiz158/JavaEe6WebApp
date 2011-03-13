@@ -73,9 +73,7 @@ public class AlbumRest extends RestCrudBase<Album> {
 
 	@Override
 	protected Album overlay (final Album incoming, final Album existing) {
-    	if (incoming.getName() != null) {
-    		existing.setName(incoming.getName());
-    	}
+		super.overlay(incoming, existing);
     	if (incoming.getLabel() != null) {
     		existing.setLabel(incoming.getLabel());
     	}

@@ -43,13 +43,20 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     public static final String SEARCH = "search";
     
 	/**
-	 * Copies selected fields from the returned object to a local object
+	 * Copies selected fields from the returned object to a local object, should be overridden and called from subclasses
 	 * 
 	 * @param incoming edited entity from client
 	 * @param existing destination object for updated fields
 	 * @return the updated destination object
 	 */
-	protected abstract T overlay (final T incoming, final T existing);
+	protected T overlay (final T incoming, final T existing) {
+		assert incoming != null;
+		assert existing != null;
+    	if (incoming.getName() != null) {
+    		existing.setName(incoming.getName());
+    	}
+		return existing;
+	}
 	
 	/**
 	 * Subclass provides the service

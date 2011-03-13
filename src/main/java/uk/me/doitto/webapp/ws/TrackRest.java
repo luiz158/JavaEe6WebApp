@@ -68,9 +68,7 @@ public class TrackRest extends RestCrudBase<Track> {
 	 */
 	@Override
 	protected Track overlay (final Track incoming, final Track existing) {
-    	if (incoming.getName() != null) {
-    		existing.setName(incoming.getName());
-    	}
+		super.overlay(incoming, existing);
     	if (incoming.getDuration() != 0) {
     		existing.setDuration(incoming.getDuration());
     	}

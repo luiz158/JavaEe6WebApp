@@ -65,11 +65,7 @@ public class AppUserRest extends RestCrudBase<AppUser> {
 
 	@Override
 	protected AppUser overlay (final AppUser incoming, final AppUser existing) {
-		assert incoming != null;
-		assert existing != null;
-    	if (incoming.getName() != null) {
-    		existing.setName(incoming.getName());
-    	}
+		super.overlay(incoming, existing);
     	if (incoming.getPassword() != null) {
     		existing.setPassword(incoming.getPassword());
     	}
