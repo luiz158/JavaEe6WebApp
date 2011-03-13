@@ -137,6 +137,8 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
 	public List<T> before (@QueryParam("attribute") final String attribute, @QueryParam("date") final long date) {
+		assert attribute != null;
+		assert date > 0;
     	return getService().before(AbstractEntity.TimeStamp.valueOf(attribute).getAttribute(), new Date(date));
     }
     
@@ -145,6 +147,8 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
 	public List<T> since (@QueryParam("attribute") final String attribute, @QueryParam("date") final long date) {
+		assert attribute != null;
+		assert date > 0;
     	return getService().since(AbstractEntity.TimeStamp.valueOf(attribute).getAttribute(), new Date(date));
     }
     
@@ -153,6 +157,9 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
 	public List<T> during (@QueryParam("attribute") final String attribute, @QueryParam("date1") final long date1, @QueryParam("date2") final long date2) {
+		assert attribute != null;
+		assert date1 > 0;
+		assert date2 > 0;
     	return getService().during(AbstractEntity.TimeStamp.valueOf(attribute).getAttribute(), new Date(date1), new Date(date2));
     }
     
@@ -161,6 +168,9 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
 	public List<T> notDuring (@QueryParam("attribute") final String attribute, @QueryParam("date1") final long date1, @QueryParam("date2") final long date2) {
+		assert attribute != null;
+		assert date1 > 0;
+		assert date2 > 0;
     	return getService().notDuring(AbstractEntity.TimeStamp.valueOf(attribute).getAttribute(), new Date(date1), new Date(date2));
     }
     
@@ -169,6 +179,8 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
 	@Override
 	public List<T> search (@QueryParam("attribute") final String attribute, @QueryParam("querystring") final String queryString) {
+		assert attribute != null;
+		assert queryString != null;
 		return getService().search(AbstractEntity_.name, queryString);
 	}
 }
