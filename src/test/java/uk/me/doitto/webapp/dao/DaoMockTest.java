@@ -35,6 +35,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.Expression;
 import javax.persistence.criteria.Root;
 
 import org.easymock.EasyMock;
@@ -62,6 +63,12 @@ public class DaoMockTest extends EasyMockSupport {
 	
 	private CriteriaQuery<SimpleEntity> mockCq;
 	
+	private CriteriaQuery<Long> mockCqLong;
+	
+	private TypedQuery<Long> mockTqLong;
+	
+	private Expression<Long> expLong;
+	
 	private CriteriaBuilder mockCb;
 	
 	private Root<SimpleEntity> mockRoot;
@@ -88,8 +95,11 @@ public class DaoMockTest extends EasyMockSupport {
 		mockEm = createStrictMock(EntityManager.class);
 		mockCb = createStrictMock(CriteriaBuilder.class);
 		mockCq = createStrictMock(CriteriaQuery.class);
+		mockCqLong = createStrictMock(CriteriaQuery.class);
 		mockRoot = createStrictMock(Root.class);
 		mockTq = createStrictMock(TypedQuery.class);
+		mockTqLong = createStrictMock(TypedQuery.class);
+		expLong = createStrictMock(Expression.class);
 		dao = new SimpleDao(mockEm);
 		entity = new SimpleEntity();
 		entity.id = 1L;
@@ -176,6 +186,7 @@ public class DaoMockTest extends EasyMockSupport {
 		int firstResult = 1;
 		int noOfResults = 100;
 		Map<String, Object> parameters = new HashMap<String, Object>();
+//		mockEm.checkOrder(mockEm, false);
 		parameters.put("p1", "v1");
 //		parameters.put("p2", "v2");
 		expect(mockEm.createNamedQuery(EasyMock.isA(String.class), EasyMock.eq(SimpleEntity.class))).andReturn(mockTq);
@@ -206,6 +217,22 @@ public class DaoMockTest extends EasyMockSupport {
 		expect(mockTq.getResultList()).andReturn(new ArrayList<SimpleEntity>());
 		replayAll();
 		dao.findAll();
+		verifyAll();
+	}
+	/**
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#count()}.
+	 */
+	@Test
+	public final void testCount () {
+		expect(mockEm.getCriteriaBuilder()).andReturn(mockCb);
+		expect(mockCb.createQuery(Long.class)).andReturn(mockCqLong);
+		expect(mockCqLong.from(SimpleEntity.class)).andReturn(mockRoot);
+		expect(mockCb.count(mockRoot)).andReturn(expLong);
+		expect(mockCqLong.select(expLong)).andReturn(mockCqLong);
+		expect(mockEm.createQuery(EasyMock.isA(CriteriaQuery.class))).andReturn(mockTqLong);
+		expect(mockTqLong.getSingleResult()).andReturn(new Long(42));
+		replayAll();
+		dao.count();
 		verifyAll();
 	}
 }
