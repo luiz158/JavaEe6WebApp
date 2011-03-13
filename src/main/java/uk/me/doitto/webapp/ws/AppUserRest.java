@@ -70,6 +70,9 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     	if (incoming.getName() != null) {
     		existing.setName(incoming.getName());
     	}
+    	if (incoming.getPassword() != null) {
+    		existing.setPassword(incoming.getPassword());
+    	}
     	if (incoming.getRealName() != null) {
     		existing.setRealName(incoming.getRealName());
     	}

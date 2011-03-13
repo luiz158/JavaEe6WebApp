@@ -5,17 +5,21 @@ port="${2:-9090}"
 
 for i in 0 1 2 3 4 5 6 7 8 9
 do
-	curl -X POST --data-binary "{\"name\":\"user$i\",\"password\":\"password$i\"}" -H "Content-Type: application/json" -H "Accept: application/json" http://$host:$port/jee6webapp/resources/appuser
+	curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" \
+		--data-binary "{\"name\":\"user$i\",\"password\":\"password$i\",\"realName\":\"User $i\",\"comments\":\"No comment\"}" \
+		http://$host:$port/jee6webapp/resources/appuser
 	echo ""
 done
 curl -i -H "Accept: application/json" -X GET http://$host:$port/jee6webapp/resources/appuser
 echo ""
-
+exit 1
 while read a b c d e f g h
 do
 	if [ -n "$h" ]
 	then
-		curl -X POST --data-binary "{\"name\":\"$h\"}" -H "Content-Type: application/json" -H "Accept: application/json" http://$host:$port/jee6webapp/resources/artist
+		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" \
+			--data-binary "{\"name\":\"$h\"}" \
+			http://$host:$port/jee6webapp/resources/artist
 		echo ""
 	fi
 done < <(ls -l /home/*/QNAP/Public/Freecom400GB/jukebox/playlist)
@@ -26,7 +30,9 @@ while read a b c d e f g h
 do
 	if [ -n "$h" ]
 	then
-		curl -X POST --data-binary "{\"name\":\"$h\"}" -H "Content-Type: application/json" -H "Accept: application/json" http://$host:$port/jee6webapp/resources/album
+		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" \
+			--data-binary "{\"name\":\"$h\"}" \
+			http://$host:$port/jee6webapp/resources/album
 		echo ""
 	fi
 done < <(ls -l /home/*/QNAP/Public/Freecom400GB/jukebox/playlist/*)
@@ -37,7 +43,9 @@ while read a b c d e f g h
 do
 	if [ -n "$h" ]
 	then
-		curl -X POST --data-binary "{\"name\":\"$h\"}" -H "Content-Type: application/json" -H "Accept: application/json" http://$host:$port/jee6webapp/resources/track
+		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" \
+			--data-binary "{\"name\":\"$h\"}" \
+			http://$host:$port/jee6webapp/resources/track
 		echo ""
 	fi
 done < <(ls -l /home/*/QNAP/Public/Freecom400GB/jukebox/playlist/*/*)
