@@ -43,6 +43,19 @@
         <servlet-name>ServletAdaptor</servlet-name>
         <url-pattern>/resources/*</url-pattern>
     </servlet-mapping>
+	<servlet>
+	  <servlet-name>dwr-invoker</servlet-name>
+<!--	  <display-name>DWR Servlet</display-name>-->
+	  <servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+	  <init-param>
+	     <param-name>debug</param-name>
+	     <param-value>true</param-value>
+	  </init-param>
+	</servlet>	
+	<servlet-mapping>
+	  <servlet-name>dwr-invoker</servlet-name>
+	  <url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
