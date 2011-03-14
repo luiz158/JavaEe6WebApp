@@ -23,6 +23,8 @@ import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
 
+import org.eclipse.persistence.internal.jpa.metamodel.CollectionAttributeImpl;
+
 import uk.me.doitto.webapp.dao.AbstractEntity_;
 
 @Generated("EclipseLink-2.0.1.v20100213-r6600 @ Sat Nov 27 13:00:49 GMT 2010")
@@ -31,5 +33,6 @@ public class Track_ extends AbstractEntity_ {
 
 	public static volatile SingularAttribute<Track, Integer> duration;
 	public static volatile SingularAttribute<Track, String> url;
+	public static volatile CollectionAttributeImpl<Track, Album> albums;
 
 }

@@ -30,7 +30,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
-import javax.persistence.OneToMany;
+import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -62,7 +62,7 @@ public class Album extends AbstractEntity {
     /**
      * Intentionally mutable field, so use a concurrent collection
      */
-    @OneToMany(fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Track> tracks = new ConcurrentSkipListSet<Track>();
 
     // for hibernate

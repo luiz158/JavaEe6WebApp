@@ -30,6 +30,7 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -50,6 +51,7 @@ public class Artist extends AbstractEntity {
      * Intentionally mutable field, so use a concurrent collection
      */
     @OneToMany(fetch = FetchType.EAGER)
+    @OrderBy("name ASC")
     private Set<Album> albums = new ConcurrentSkipListSet<Album>();
 
     // for hibernate
