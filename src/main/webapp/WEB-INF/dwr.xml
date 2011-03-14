@@ -6,6 +6,10 @@
 			<param name="class" value="java.util.Date" />
 		</create>
 		
+		<create creator="new" javascript="Clock">
+			<param name="class" value="uk.me.doitto.webapp.util.Clock" />
+		</create>
+		
 		<create creator="new" javascript="AppUserService">
 			<param name="class" value="uk.me.doitto.webapp.beans.AppUserService" />
 		</create>

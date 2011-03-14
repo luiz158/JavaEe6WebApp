@@ -36,6 +36,8 @@
     </h:head>
 
     <h:body>
+<!--		<body onload="dwr.engine.setActiveReverseAjax(true); Tabs.init('tabList', 'tabContents');" />-->
+		
         <f:loadBundle basename="uk.me.doitto.webapp.entity.General" var="msg" />
         
         <h:messages styleClass="errorMessage" showDetail="true" tooltip="true" />
@@ -77,6 +79,11 @@
                 <ui:insert name="footer">
                     <h:outputText value="#{templateController.world}" />
                 </ui:insert>
+  <div id="demoDiv">
+    <input type="button" value="Start / Stop" onclick="Clock.toggle();"/>
+    <p></p>
+    <h2 id="clockDisplay"></h2>
+  </div>
             </div>
             
             <div id="debug" class="span-24 last">
