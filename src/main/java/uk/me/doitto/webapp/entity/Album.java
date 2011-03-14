@@ -165,6 +165,7 @@ public class Album extends AbstractEntity {
     public void addToTrackListing (final Track track) {
     	assert track != null;
         tracks.add(track);
+        track.getAlbums().add(this);
     }
 
     /**
@@ -175,5 +176,6 @@ public class Album extends AbstractEntity {
     public void removeFromTrackListing (final Track track) {
     	assert track != null;
         tracks.remove(track);
+        track.getAlbums().remove(this);
     }
 }
