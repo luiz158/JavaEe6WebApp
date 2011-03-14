@@ -42,13 +42,11 @@ import javax.xml.bind.annotation.XmlElement;
  * @author Ian Smith
  */
 @SuppressWarnings("serial")
-//@Entity
-//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @MappedSuperclass
 public abstract class AbstractEntity implements PersistentEntity<Long>, Comparable<AbstractEntity> {
 
 	/**
-	 * Maps each string date attribute name from a web request to a JPA2 metamodel field
+	 * Maps each string date attribute name from an incoming web request to its corresponding JPA2 metamodel field
 	 * @author ian
 	 */
 	public enum TimeStamp {
