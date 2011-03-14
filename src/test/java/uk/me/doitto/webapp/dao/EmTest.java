@@ -105,11 +105,15 @@ public class EmTest {
     public void tearDown() {
     }
 
+    @Test
+    public void testEmStarted () {
+    }
+    
     /**
      * Test of create method, of class Dao.
      */
     @Test
-    public void testEm () {
+    public void testEmSanity () {
         assertTrue("Should be new!", entity.isNew());
 
         tx.begin();

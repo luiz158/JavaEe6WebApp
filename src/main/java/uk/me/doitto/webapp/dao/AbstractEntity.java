@@ -42,6 +42,8 @@ import javax.xml.bind.annotation.XmlElement;
  * @author Ian Smith
  */
 @SuppressWarnings("serial")
+//@Entity
+//@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
 @MappedSuperclass
 public abstract class AbstractEntity implements PersistentEntity<Long>, Comparable<AbstractEntity> {
 
