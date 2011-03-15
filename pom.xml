@@ -201,7 +201,7 @@
 						<version>2.1.2</version>
 						<executions>
 							<execution>
-								<id> -o-  ATTACH SOURCE JAR  -o- </id>
+								<id>-o-  SOURCE: ATTACH JAR  -o-</id>
 								<goals>
 									<goal>jar-no-fork</goal>
 								</goals>
@@ -215,7 +215,7 @@
 						<version>2.7</version>
 						<executions>
 							<execution>
-								<id> -o-  ATTACH JAVADOC JAR  -o- </id>
+								<id>-o-  JAVADOC: ATTACH JAR  -o-</id>
 								<goals>
 									<goal>jar</goal>
 								</goals>
@@ -242,7 +242,7 @@
 						<version>1.3.5</version>
 						<executions>
 							<execution>
-								<id>process</id>
+								<id>-o-  PROCESSOR: GENERATE JPA2 METAMODEL CLASSES  -o-</id>
 								<goals>
 									<goal>process</goal>
 								</goals>
@@ -360,7 +360,7 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id> -o-  INTEGRATION TESTS  -o- </id>
+						<id> -o-  SUREFIRE: INTEGRATION TESTS  -o- </id>
 						<phase>integration-test</phase>
 						<goals>
 							<goal>test</goal>
@@ -432,28 +432,28 @@
 				</configuration>
 				<executions>
 					<execution>
-						<id> -o-  START GLASSFISH  -o- </id>
+						<id>-o-  GLASSFISH: START  -o-</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>start</goal>
 						</goals>
 					</execution>
 					<execution>
-						<id> -o-  DEPLOY WEB APPLICATION  -o- </id>
+						<id>-o-  GLASSFISH: DEPLOY APPLICATION  -o-</id>
 						<phase>pre-integration-test</phase>
 						<goals>
 							<goal>deploy</goal>
 						</goals>
 					</execution>
 					<execution>
-						<id> -o-  UNDEPLOY WEB APPLICATION  -o- </id>
+						<id>-o-  GLASSFISH: UNDEPLOY APPLICATION  -o-</id>
 						<phase>post-integration-test</phase>
 						<goals>
 							<goal>undeploy</goal>
 						</goals>
 					</execution>
 					<execution>
-						<id> -o-  STOP GLASSFISH  -o- </id>
+						<id>-o-  GLASSFISH: STOP  -o-</id>
 						<phase>post-integration-test</phase>
 						<goals>
 							<goal>stop</goal>
