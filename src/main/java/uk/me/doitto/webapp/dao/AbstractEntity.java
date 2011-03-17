@@ -85,14 +85,12 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	protected Long id;
 
 	@XmlID
-//	@XmlElement
 	protected String xmlId;
 	
 	/**
 	 * For use by persistence provider
 	 */
 	@Version
-//	@XmlElement
 	protected int version;
 
 	/**
