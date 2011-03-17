@@ -25,6 +25,8 @@ package uk.me.doitto.webapp.entity;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -34,10 +36,11 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
  *
  */
 @Entity
-@XmlRootElement
 @NamedQueries({
     @NamedQuery(name = "AppUser.ALL", query = "SELECT a FROM AppUser a")
 })
+@XmlRootElement
+//@XmlAccessorType(XmlAccessType.FIELD)
 public class AppUser extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;

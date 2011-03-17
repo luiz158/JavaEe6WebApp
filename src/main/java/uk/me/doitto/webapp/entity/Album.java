@@ -33,6 +33,9 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Past;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -47,6 +50,7 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
  */
 @Entity
 @XmlRootElement
+//@XmlAccessorType(XmlAccessType.FIELD)
 public class Album extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
@@ -63,6 +67,7 @@ public class Album extends AbstractEntity {
      * Intentionally mutable field, so use a concurrent collection
      */
     @ManyToMany(fetch = FetchType.EAGER)
+//    @XmlIDREF
     private Set<Track> tracks = new ConcurrentSkipListSet<Track>();
 
     // for hibernate
@@ -165,7 +170,7 @@ public class Album extends AbstractEntity {
     public void addToTrackListing (final Track track) {
     	assert track != null;
         tracks.add(track);
-        track.getAlbums().add(this);
+//        track.getAlbums().add(this);
     }
 
     /**
@@ -176,6 +181,6 @@ public class Album extends AbstractEntity {
     public void removeFromTrackListing (final Track track) {
     	assert track != null;
         tracks.remove(track);
-        track.getAlbums().remove(this);
+//        track.getAlbums().remove(this);
     }
 }

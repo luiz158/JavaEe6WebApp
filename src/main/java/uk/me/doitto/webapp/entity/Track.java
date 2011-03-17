@@ -28,6 +28,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -40,6 +42,7 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
  */
 @Entity
 @XmlRootElement
+//@XmlAccessorType(XmlAccessType.FIELD)
 public class Track extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
@@ -51,8 +54,8 @@ public class Track extends AbstractEntity {
     /**
      * Intentionally mutable field, so use a concurrent collection
      */
-    @ManyToMany(mappedBy = "tracks", fetch = FetchType.EAGER)
-    private Set<Album> albums = new ConcurrentSkipListSet<Album>();
+//    @ManyToMany(mappedBy = "tracks", fetch = FetchType.EAGER)
+//    private Set<Album> albums = new ConcurrentSkipListSet<Album>();
     
     // for hibernate
     public Track () {
@@ -83,13 +86,13 @@ public class Track extends AbstractEntity {
         this.url = url;
     }
 
-	public Set<Album> getAlbums () {
-        // intentionally mutable, just return reference
-		return albums;
-	}
-
-	public void setAlbums (final Set<Album> albums) {
-        // intentionally mutable, just pass reference
-		this.albums = albums;
-	}
+//	public Set<Album> getAlbums () {
+//        // intentionally mutable, just return reference
+//		return albums;
+//	}
+//
+//	public void setAlbums (final Set<Album> albums) {
+//        // intentionally mutable, just pass reference
+//		this.albums = albums;
+//	}
 }

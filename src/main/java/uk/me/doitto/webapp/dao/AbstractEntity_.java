@@ -29,6 +29,7 @@ import javax.persistence.metamodel.StaticMetamodel;
 public abstract class AbstractEntity_ { 
 
 	public static volatile SingularAttribute<AbstractEntity, Long> id;
+	public static volatile SingularAttribute<AbstractEntity, String> xmlId;
 	public static volatile SingularAttribute<AbstractEntity, Date> accessed;
 	public static volatile SingularAttribute<AbstractEntity, Date> created;
 	public static volatile SingularAttribute<AbstractEntity, String> name;

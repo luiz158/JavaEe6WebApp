@@ -33,7 +33,10 @@ import javax.persistence.MappedSuperclass;
 import javax.persistence.Temporal;
 import javax.persistence.Version;
 import javax.persistence.metamodel.SingularAttribute;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
 
 /**
  * Abstract implementation of PersistentEntity, in which the primary key type
@@ -43,6 +46,7 @@ import javax.xml.bind.annotation.XmlElement;
  */
 @SuppressWarnings("serial")
 @MappedSuperclass
+@XmlAccessorType(XmlAccessType.FIELD)
 public abstract class AbstractEntity implements PersistentEntity<Long>, Comparable<AbstractEntity> {
 
 	/**
@@ -73,9 +77,11 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@XmlElement
 	protected Long id;
 
+//	@XmlID
+//	public String xmlId;
+	
 	/**
 	 * For use by persistence provider
 	 */
@@ -127,6 +133,14 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	public Long getId () {
 		return id;
 	}
+
+//	public String getXmlId () {
+//		return xmlId;
+//	}
+//
+//	public void setXmlId (final String xmlId) {
+//		this.xmlId = xmlId;
+//	}
 
 	/**
 	 * {@inheritDoc}
