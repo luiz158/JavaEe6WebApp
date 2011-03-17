@@ -616,6 +616,7 @@ public class EmbeddedGlassfishIntegrationTest {
     	request.setCharset(ENCODING);
         response = webClient.getPage(request).getWebResponse();
         content = response.getContentAsString();
+        System.out.println(content);
         
     	// get track by ID, JSON
     	request = new WebRequest(new URL(tracklocation), HttpMethod.GET);
@@ -623,6 +624,7 @@ public class EmbeddedGlassfishIntegrationTest {
     	request.setCharset(ENCODING);
         response = webClient.getPage(request).getWebResponse();
         content = response.getContentAsString();
+        System.out.println(content);
 
         assertTrue("", true);
     }

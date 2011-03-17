@@ -36,6 +36,7 @@ import javax.validation.constraints.Past;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -67,7 +68,8 @@ public class Album extends AbstractEntity {
      * Intentionally mutable field, so use a concurrent collection
      */
     @ManyToMany(fetch = FetchType.EAGER)
-//    @XmlIDREF
+    @XmlIDREF
+    @XmlList
     private Set<Track> tracks = new ConcurrentSkipListSet<Track>();
 
     // for hibernate

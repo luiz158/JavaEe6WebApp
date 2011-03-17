@@ -30,6 +30,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
 import javax.persistence.Version;
 import javax.persistence.metamodel.SingularAttribute;
@@ -79,8 +80,9 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	protected Long id;
 
-//	@XmlID
-//	public String xmlId;
+	@XmlID
+	@XmlElement
+	protected String xmlId;
 	
 	/**
 	 * For use by persistence provider
@@ -134,13 +136,18 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		return id;
 	}
 
-//	public String getXmlId () {
-//		return xmlId;
-//	}
-//
-//	public void setXmlId (final String xmlId) {
-//		this.xmlId = xmlId;
-//	}
+	public String getXmlId () {
+		return xmlId;
+	}
+
+	public void setXmlId (final String xmlId) {
+		this.xmlId = xmlId;
+	}
+
+	@PostLoad
+	public void initXmlId () {
+		xmlId = id.toString();
+	}
 
 	/**
 	 * {@inheritDoc}
