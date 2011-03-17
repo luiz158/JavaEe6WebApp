@@ -167,26 +167,28 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
     
     @Override
-	public List<T> during (final SingularAttribute<? super T, Date> attribute, final Date date1, final Date date2) {
+	public List<T> during (final SingularAttribute<? super T, Date> attribute, final Date start, final Date end) {
 		assert attribute != null;
-		assert date1 != null;
-		assert date2 != null;
+		assert start != null;
+		assert end != null;
+		assert end.compareTo(start) > 0;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
-    	query.select(root).where(builder.between(root.get(attribute), date1, date2));
+    	query.select(root).where(builder.between(root.get(attribute), start, end));
     	return em.createQuery(query).getResultList();
     }
     
 	@Override
-	public List<T> notDuring (final SingularAttribute<? super T, Date> attribute, final Date date1, final Date date2) {
+	public List<T> notDuring (final SingularAttribute<? super T, Date> attribute, final Date start, final Date end) {
 		assert attribute != null;
-		assert date1 != null;
-		assert date2 != null;
+		assert start != null;
+		assert end != null;
+		assert end.compareTo(start) > 0;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
-    	query.select(root).where(builder.between(root.get(attribute), date1, date2).not());
+    	query.select(root).where(builder.between(root.get(attribute), start, end).not());
     	return em.createQuery(query).getResultList();
     }
 
@@ -194,6 +196,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 	public List<T> search (final SingularAttribute<? super T, String> attribute, final String queryString) {
 		assert attribute != null;
 		assert queryString != null;
+		assert queryString.length() > 0;
     	LOGGER.log(Level.FINE, "search() " + type);
     	CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(type);
