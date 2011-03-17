@@ -28,7 +28,10 @@ import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -50,6 +53,7 @@ import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.WebResponse;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
+import com.gargoylesoftware.htmlunit.util.NameValuePair;
 
 /**
  * @author ian
@@ -567,5 +571,59 @@ public class EmbeddedGlassfishIntegrationTest {
         assertEquals("Incorrect response!", Response.Status.OK.getStatusCode(), response.getStatusCode());
         assertEquals("Wrong media type!", MediaType.APPLICATION_XML, response.getResponseHeaderValue(CONTENT_TYPE));
         assertTrue("No content!", content.length() > 0);
+    }
+    
+    @Test
+    public void testAlbumTrackLinking () throws FailingHttpStatusCodeException, IOException {
+    	WebRequest request;
+    	WebResponse response;
+    	String content;
+    	
+        // create Album
+    	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH), HttpMethod.POST);
+    	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setRequestBody("{\"name\":\"testalbum2\"}");
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        String albumlocation = response.getResponseHeaderValue(LOCATION);
+        String[] albumArray = albumlocation.split("/");
+        String albumId = albumArray[albumArray.length - 1];
+
+        // create Track
+    	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.POST);
+    	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setRequestBody("{\"name\":\"testtrack2\"}");
+    	request.setCharset(ENCODING);    	
+        response = webClient.getPage(request).getWebResponse();
+        String tracklocation = response.getResponseHeaderValue(LOCATION);
+        String[] trackArray = tracklocation.split("/");
+        String trackId = trackArray[trackArray.length - 1];
+        
+        // link them
+    	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH + "/" + AlbumRest.LINK_TRACK), HttpMethod.GET);
+    	List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+    	parameters.add(new NameValuePair("albumid", albumId));
+    	parameters.add(new NameValuePair("trackid", trackId));
+    	request.setRequestParameters(parameters);
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        
+    	// get album by ID, JSON
+    	request = new WebRequest(new URL(albumlocation), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
+        
+    	// get track by ID, JSON
+    	request = new WebRequest(new URL(tracklocation), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
+
+        assertTrue("", true);
     }
 }
