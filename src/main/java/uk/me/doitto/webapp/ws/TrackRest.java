@@ -57,6 +57,8 @@ public class TrackRest extends RestCrudBase<Track> {
 
     public static final String PATH = "/track";
     
+    public static final String QP_TRACKID = "trackid";
+    
     @EJB
     private TrackService trackService;
 

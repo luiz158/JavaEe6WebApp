@@ -67,8 +67,6 @@ public class AlbumRest extends RestCrudBase<Album> {
     
     public static final String QP_ALBUMID = "albumid";
     
-    public static final String QP_TRACKID = "trackid";
-    
     @EJB
     private AlbumService albumService;
 
@@ -106,7 +104,7 @@ public class AlbumRest extends RestCrudBase<Album> {
     @GET
     @Path(LINK_TRACK)
     @Produces(MediaType.TEXT_HTML)
-    public Response linkTrack(@QueryParam(QP_ALBUMID) final Long id, @QueryParam(QP_TRACKID) final Long trackId) {
+    public Response linkTrack(@QueryParam(QP_ALBUMID) final Long id, @QueryParam(TrackRest.QP_TRACKID) final Long trackId) {
 		assert id >= 0;
 		assert trackId >= 0;
     	Globals.LOGGER.log(Level.FINE, "Linking Album: {0} to Track: {1}", new Object[]{id, trackId});
@@ -117,7 +115,7 @@ public class AlbumRest extends RestCrudBase<Album> {
     @GET
     @Path(UNLINK_TRACK)
     @Produces(MediaType.TEXT_HTML)
-    public Response unlinkTrack(@QueryParam(QP_ALBUMID) final Long id, @QueryParam(QP_TRACKID) final Long trackId) {
+    public Response unlinkTrack(@QueryParam(QP_ALBUMID) final Long id, @QueryParam(TrackRest.QP_TRACKID) final Long trackId) {
 		assert id >= 0;
 		assert trackId >= 0;
     	Globals.LOGGER.log(Level.FINE, "Unlinking Album: {0} from Track: {1}", new Object[]{id, trackId});

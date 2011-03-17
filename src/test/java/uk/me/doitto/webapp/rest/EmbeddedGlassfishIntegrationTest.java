@@ -109,6 +109,10 @@ public class EmbeddedGlassfishIntegrationTest {
         webClient.closeAllWindows();
 	}
 
+	private String getId (final String location) {
+        String[] pieces = location.split("/");
+        return pieces[pieces.length - 1];
+	}
     
 //    @Ignore
     @Test
@@ -574,12 +578,66 @@ public class EmbeddedGlassfishIntegrationTest {
     }
     
     @Test
+    public void testArtistAlbumLinking () throws FailingHttpStatusCodeException, IOException {
+    	WebRequest request;
+    	WebResponse response;
+    	String content;
+    	
+        // create artist
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH), HttpMethod.POST);
+    	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setRequestBody("{\"name\":\"testartist2\"}");
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        String artistlocation = response.getResponseHeaderValue(LOCATION);
+        String artistId = getId(artistlocation);
+
+        // create album
+    	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH), HttpMethod.POST);
+    	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setRequestBody("{\"name\":\"testalbum3\"}");
+    	request.setCharset(ENCODING);    	
+        response = webClient.getPage(request).getWebResponse();
+        String albumlocation = response.getResponseHeaderValue(LOCATION);
+        String albumId = getId(albumlocation);
+        
+        // link them
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH + "/" + ArtistRest.LINK_ALBUM), HttpMethod.GET);
+    	List<NameValuePair> parameters = new ArrayList<NameValuePair>();
+    	parameters.add(new NameValuePair(ArtistRest.QP_ARTISTID, artistId));
+    	parameters.add(new NameValuePair(AlbumRest.QP_ALBUMID, albumId));
+    	request.setRequestParameters(parameters);
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        
+    	// get artist by ID, JSON
+    	request = new WebRequest(new URL(artistlocation), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
+        System.out.println(content);
+        
+    	// get album by ID, JSON
+    	request = new WebRequest(new URL(albumlocation), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
+        System.out.println(content);
+
+        assertTrue("", true);
+    }
+    
+    @Test
     public void testAlbumTrackLinking () throws FailingHttpStatusCodeException, IOException {
     	WebRequest request;
     	WebResponse response;
     	String content;
     	
-        // create Album
+        // create album
     	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH), HttpMethod.POST);
     	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
@@ -590,7 +648,7 @@ public class EmbeddedGlassfishIntegrationTest {
         String[] albumArray = albumlocation.split("/");
         String albumId = albumArray[albumArray.length - 1];
 
-        // create Track
+        // create track
     	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.POST);
     	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
@@ -605,7 +663,7 @@ public class EmbeddedGlassfishIntegrationTest {
     	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH + "/" + AlbumRest.LINK_TRACK), HttpMethod.GET);
     	List<NameValuePair> parameters = new ArrayList<NameValuePair>();
     	parameters.add(new NameValuePair(AlbumRest.QP_ALBUMID, albumId));
-    	parameters.add(new NameValuePair(AlbumRest.QP_TRACKID, trackId));
+    	parameters.add(new NameValuePair(TrackRest.QP_TRACKID, trackId));
     	request.setRequestParameters(parameters);
     	request.setCharset(ENCODING);
         response = webClient.getPage(request).getWebResponse();

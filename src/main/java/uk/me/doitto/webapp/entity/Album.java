@@ -67,9 +67,9 @@ public class Album extends AbstractEntity {
     /**
      * Intentionally mutable field, so use a concurrent collection
      */
-    @ManyToMany(fetch = FetchType.EAGER)
     @XmlIDREF
     @XmlList
+    @ManyToMany(fetch = FetchType.EAGER)
     private Set<Track> tracks = new ConcurrentSkipListSet<Track>();
 
     // for hibernate

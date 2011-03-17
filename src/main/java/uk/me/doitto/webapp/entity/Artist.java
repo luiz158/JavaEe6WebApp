@@ -32,6 +32,8 @@ import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -52,6 +54,8 @@ public class Artist extends AbstractEntity {
     /**
      * Intentionally mutable field, so use a concurrent collection
      */
+    @XmlIDREF
+    @XmlList
     @OneToMany(fetch = FetchType.EAGER)
     private Set<Album> albums = new ConcurrentSkipListSet<Album>();
 
