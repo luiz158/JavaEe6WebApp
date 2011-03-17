@@ -25,10 +25,8 @@ package uk.me.doitto.webapp.rest;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,14 +50,13 @@ import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.WebRequest;
 import com.gargoylesoftware.htmlunit.WebResponse;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 
 /**
  * @author ian
  *
  */
-public class EmbeddedGlassfishIntegrationTest {
+public class RestIntegrationTest {
 
     private WebClient webClient;
     
@@ -113,108 +110,6 @@ public class EmbeddedGlassfishIntegrationTest {
         String[] pieces = location.split("/");
         return pieces[pieces.length - 1];
 	}
-    
-//    @Ignore
-    @Test
-    public void testIndex () {
-    	String url = APP_URL + "/index.xhtml";
-        try {
-//            HtmlPage page = webClient.getPage(url);
-//            assertEquals("HtmlUnit - Welcome to HtmlUnit", page.getTitleText());
-//
-//            final String pageAsXml = page.asXml();
-//            assertTrue(pageAsXml.contains("<body class=\"composite\">"));
-//
-//            final String pageAsText = page.asText();
-//            assertTrue(pageAsText.contains("Support for the HTTP and HTTPS protocols"));
-            url = APP_URL + "/next.xhtml";
-            webClient.getPage(url);
-            url = APP_URL + "/pages/another.xhtml";
-            webClient.getPage(url);
-        } catch (Exception e) {
-            fail("Unexpected exception in test. Is Glassfish Running at " + url + " ? ->" + e);
-        }
-    }
-    
-    @Test
-    public void testAppUserController () {
-    	String url = APP_URL + "/pages/listUsers.xhtml";
-        try {
-            HtmlPage page = webClient.getPage(url);
-            String pageAsText = page.asText();
-            assertTrue("String not found!", pageAsText.contains("LIST"));
-        } catch (Exception e) {
-            fail("Unexpected exception in test. Is Glassfish Running at " + url + " ? ->" + e);
-        }
-    	url = APP_URL + "/pages/editUser.xhtml";
-        try {
-            HtmlPage page = webClient.getPage(url);
-            String pageAsText = page.asText();
-            assertTrue("String not found!", pageAsText.contains("EDIT"));
-        } catch (Exception e) {
-            fail("Unexpected exception in test. Is Glassfish Running at " + url + " ? ->" + e);
-        }
-    }
-    
-    @Test
-    public void testArtistController () {
-    	String url = APP_URL + "/pages/listArtists.xhtml";
-        try {
-            HtmlPage page = webClient.getPage(url);
-            String pageAsText = page.asText();
-            assertTrue("String not found!", pageAsText.contains("LIST"));
-        } catch (Exception e) {
-            fail("Unexpected exception in test. Is Glassfish Running at " + url + " ? ->" + e);
-        }
-    	url = APP_URL + "/pages/editArtist.xhtml";
-        try {
-            HtmlPage page = webClient.getPage(url);
-            String pageAsText = page.asText();
-            assertTrue("String not found!", pageAsText.contains("EDIT"));
-        } catch (Exception e) {
-            fail("Unexpected exception in test. Is Glassfish Running at " + url + " ? ->" + e);
-        }
-    }
-    
-    @Test
-    public void testAlbumController () {
-    	String url = APP_URL + "/pages/listAlbums.xhtml";
-        try {
-            HtmlPage page = webClient.getPage(url);
-            String pageAsText = page.asText();
-            assertTrue("String not found!", pageAsText.contains("LIST"));
-        } catch (Exception e) {
-            fail("Unexpected exception in test. Is Glassfish Running at " + url + " ? ->" + e);
-        }
-    	url = APP_URL + "/pages/editAlbum.xhtml";
-        try {
-            HtmlPage page = webClient.getPage(url);
-            String pageAsText = page.asText();
-            assertTrue("String not found!", pageAsText.contains("EDIT"));
-        } catch (Exception e) {
-            fail("Unexpected exception in test. Is Glassfish Running at " + url + " ? ->" + e);
-        }
-    }
-    
-    @Test
-    public void testTrackController () {
-    	String url = APP_URL + "/pages/listTracks.xhtml";
-        try {
-            HtmlPage page = webClient.getPage(url);
-            String pageAsText = page.asText();
-            assertTrue("String not found!", pageAsText.contains("LIST"));
-        } catch (Exception e) {
-            fail("Unexpected exception in test. Is Glassfish Running at " + url + " ? ->" + e);
-        }
-    	url = APP_URL + "/pages/editTrack.xhtml";
-        try {
-            HtmlPage page = webClient.getPage(url);
-            String pageAsText = page.asText();
-            assertTrue("String not found!", pageAsText.contains("EDIT"));
-        } catch (Exception e) {
-            fail("Unexpected exception in test. Is Glassfish Running at " + url + " ? ->" + e);
-        }
-    }
     
     @Test
     public void testAppUserRest () throws FailingHttpStatusCodeException, IOException {
