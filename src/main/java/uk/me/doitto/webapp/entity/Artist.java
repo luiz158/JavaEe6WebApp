@@ -30,6 +30,8 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -47,6 +49,15 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
 public class Artist extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
+
+    private static final JAXBContext jaxbContext;
+    static {
+    	try {
+    		jaxbContext = JAXBContext.newInstance(Artist.class);
+		} catch (JAXBException e) {
+			throw new RuntimeException(e);
+		}
+    }
 
     /**
      * Intentionally mutable field, so use a concurrent collection
@@ -66,6 +77,11 @@ public class Artist extends AbstractEntity {
         // intentionally mutable, just pass reference
         albums = artist.albums;
     }
+
+    @Override
+	public JAXBContext getJaxbcontext () {
+		return jaxbContext;
+	}
 
     public Set<Album> getAlbums () {
         // intentionally mutable, just return reference

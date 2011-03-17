@@ -23,6 +23,8 @@
 package uk.me.doitto.webapp.entity;
 
 import javax.persistence.Entity;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -38,6 +40,15 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
 public class Track extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
+
+    private static final JAXBContext jaxbContext;
+    static {
+    	try {
+    		jaxbContext = JAXBContext.newInstance(Track.class);
+		} catch (JAXBException e) {
+			throw new RuntimeException(e);
+		}
+    }
 
     private int duration = 0;
     
@@ -59,6 +70,11 @@ public class Track extends AbstractEntity {
     	duration = track.duration;
         url = track.url;
     }
+
+    @Override
+	public JAXBContext getJaxbcontext () {
+		return jaxbContext;
+	}
 
     public int getDuration () {
 		return duration;

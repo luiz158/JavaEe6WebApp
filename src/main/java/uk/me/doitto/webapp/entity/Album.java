@@ -33,6 +33,8 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Past;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -52,6 +54,15 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
 public class Album extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
+
+    private static final JAXBContext jaxbContext;
+    static {
+    	try {
+    		jaxbContext = JAXBContext.newInstance(Album.class);
+		} catch (JAXBException e) {
+			throw new RuntimeException(e);
+		}
+    }
 
     private String label = "UnknownLabel";
 
@@ -85,6 +96,11 @@ public class Album extends AbstractEntity {
         // intentionally mutable, just pass reference
         tracks = album.tracks;
     }
+
+    @Override
+	public JAXBContext getJaxbcontext () {
+		return jaxbContext;
+	}
 
     /**
      * Getter for the label field

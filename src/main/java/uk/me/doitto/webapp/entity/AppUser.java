@@ -25,6 +25,8 @@ package uk.me.doitto.webapp.entity;
 import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -42,7 +44,16 @@ public class AppUser extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private String password;
+    private static final JAXBContext jaxbContext;
+    static {
+    	try {
+    		jaxbContext = JAXBContext.newInstance(AppUser.class);
+		} catch (JAXBException e) {
+			throw new RuntimeException(e);
+		}
+    }
+
+	private String password;
 
     private String realName;
     
@@ -58,6 +69,11 @@ public class AppUser extends AbstractEntity {
 		comments = appUser.comments;
 		password = appUser.password;
 		realName = appUser.realName;
+	}
+
+    @Override
+	public JAXBContext getJaxbcontext () {
+		return jaxbContext;
 	}
 
 	public String getPassword () {

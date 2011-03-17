@@ -24,6 +24,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
+import java.io.StringWriter;
+import java.io.Writer;
 import java.util.Date;
 
 import javax.persistence.GeneratedValue;
@@ -34,9 +36,11 @@ import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
 import javax.persistence.Version;
 import javax.persistence.metamodel.SingularAttribute;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlID;
 
 /**
@@ -81,14 +85,14 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	protected Long id;
 
 	@XmlID
-	@XmlElement
+//	@XmlElement
 	protected String xmlId;
 	
 	/**
 	 * For use by persistence provider
 	 */
 	@Version
-	@XmlElement
+//	@XmlElement
 	protected int version;
 
 	/**
@@ -243,9 +247,24 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		}
 	}
 
+	protected abstract JAXBContext getJaxbcontext ();
+	
+	private String asString () throws JAXBException {
+		Writer writer = new StringWriter();
+		Marshaller marshaller = getJaxbcontext().createMarshaller();
+		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
+		marshaller.marshal(this, writer);
+		return writer.toString();
+	}
+	
 	@Override
 	public String toString () {
-		return "[" + this.getClass().getSimpleName() + ": " + id + " v" + version + " - " + name + "]";
+		
+		try {
+			return asString();
+		} catch (JAXBException e) {
+			return "[" + this.getClass().getSimpleName() + ": " + id + " v" + version + " - " + name + "]";
+		}
 	}
 
 	@Override

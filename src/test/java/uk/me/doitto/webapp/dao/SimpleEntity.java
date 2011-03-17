@@ -21,7 +21,11 @@ package uk.me.doitto.webapp.dao;
 
 import javax.persistence.Entity;
 import javax.persistence.NamedQuery;
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlRootElement;
+
+import uk.me.doitto.webapp.entity.AppUser;
 
 @Entity
 @XmlRootElement
@@ -29,6 +33,15 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class SimpleEntity extends AbstractEntity {
 	
 	private static final long serialVersionUID = 1L;
+
+    private static final JAXBContext jaxbContext;
+    static {
+    	try {
+    		jaxbContext = JAXBContext.newInstance(AppUser.class);
+		} catch (JAXBException e) {
+			throw new RuntimeException(e);
+		}
+    }
 	
     public static final String FIND_ALL = "SimpleEntity.findAll";
 
@@ -38,6 +51,11 @@ public class SimpleEntity extends AbstractEntity {
 	
 	public SimpleEntity(SimpleEntity entity) {
 		super(entity);
+	}
+
+    @Override
+	public JAXBContext getJaxbcontext() {
+		return jaxbContext;
 	}
 }
 
