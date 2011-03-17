@@ -604,8 +604,8 @@ public class EmbeddedGlassfishIntegrationTest {
         // link them
     	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH + "/" + AlbumRest.LINK_TRACK), HttpMethod.GET);
     	List<NameValuePair> parameters = new ArrayList<NameValuePair>();
-    	parameters.add(new NameValuePair("albumid", albumId));
-    	parameters.add(new NameValuePair("trackid", trackId));
+    	parameters.add(new NameValuePair(AlbumRest.QP_ALBUMID, albumId));
+    	parameters.add(new NameValuePair(AlbumRest.QP_TRACKID, trackId));
     	request.setRequestParameters(parameters);
     	request.setCharset(ENCODING);
         response = webClient.getPage(request).getWebResponse();
