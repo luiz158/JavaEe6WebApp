@@ -30,8 +30,6 @@ import java.util.concurrent.ConcurrentSkipListSet;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -46,7 +44,6 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
  */
 @Entity
 @XmlRootElement
-//@XmlAccessorType(XmlAccessType.FIELD)
 public class Artist extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;

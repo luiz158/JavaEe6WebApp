@@ -33,8 +33,6 @@ import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Past;
-import javax.xml.bind.annotation.XmlAccessType;
-import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -51,7 +49,6 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
  */
 @Entity
 @XmlRootElement
-//@XmlAccessorType(XmlAccessType.FIELD)
 public class Album extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
