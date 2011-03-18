@@ -66,6 +66,7 @@ public abstract class ControllerBase<T extends AbstractEntity> implements IJsfCr
             }
         };
 
+        // nb. can't use the class type parameter T as enum instances are static, so we define a generic method 
         protected abstract <U extends AbstractEntity> void setCurrentPage (final ControllerBase<U> base);
     }
 
