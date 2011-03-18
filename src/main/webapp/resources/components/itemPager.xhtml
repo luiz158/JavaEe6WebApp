@@ -71,23 +71,23 @@
             </h:dataTable>
 
             <h:panelGrid columns="7">
-                <h:commandButton value="First" action="#{cc.attrs.controller.firstPage}" disabled="#{cc.attrs.controller.pageNo eq 0}">
+                <h:commandButton value="First" action="#{cc.attrs.controller.firstPage}" disabled="#{cc.attrs.controller.first}">
                     <f:ajax render="table" />
                 </h:commandButton>
 
-                <h:commandLink action="#{cc.attrs.controller.previousPage}" disabled="#{cc.attrs.controller.pageNo eq 0}">
+                <h:commandLink action="#{cc.attrs.controller.previousPage}" disabled="#{cc.attrs.controller.first}">
                     <h:graphicImage library="images" name="icons/list-remove.png" />
                     <f:ajax render="table" />
                 </h:commandLink>
 
                 <h:outputText value=" Page #{cc.attrs.controller.pageNo + 1} of #{cc.attrs.controller.totalPages + 1} " />
 
-                <h:commandLink action="#{cc.attrs.controller.nextPage}" disabled="#{cc.attrs.controller.pageNo eq cc.attrs.controller.totalPages}">
+                <h:commandLink action="#{cc.attrs.controller.nextPage}" disabled="#{cc.attrs.controller.last}">
                     <h:graphicImage library="images" name="icons/add.png" />
                     <f:ajax render="table" />
                 </h:commandLink>
 
-                <h:commandButton value="Last" action="#{cc.attrs.controller.lastPage}" disabled="#{cc.attrs.controller.pageNo eq cc.attrs.controller.totalPages}">
+                <h:commandButton value="Last" action="#{cc.attrs.controller.lastPage}" disabled="#{cc.attrs.controller.last}">
                     <f:ajax render="table" />
                 </h:commandButton>
 

@@ -42,4 +42,8 @@ public interface IPager {
     Object lastPage ();
 
     Object changePageSize ();
+    
+    boolean isFirst ();
+    
+    boolean isLast ();
 }

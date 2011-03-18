@@ -156,4 +156,14 @@ public abstract class ControllerBase<T extends AbstractEntity> implements IJsfCr
         }
         return list;
     }
+    
+	@Override
+	public boolean isFirst() {
+		return pageNo == 0;
+	}
+
+	@Override
+	public boolean isLast() {
+		return pageNo == getTotalPages();
+	}
 }
