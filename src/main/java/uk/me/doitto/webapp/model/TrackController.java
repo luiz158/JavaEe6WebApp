@@ -99,7 +99,7 @@ public class TrackController extends ControllerBase<Track> {
     @Override
     public Object jsfDelete (final Long id) {
     	assert id != null;
-        trackService.delete(id);
+        trackService.remove(id);
         return jsfList();
     }
 

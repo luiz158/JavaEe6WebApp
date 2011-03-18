@@ -105,7 +105,7 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     @Override
     public Response delete (@PathParam(ID) final Long id) {
 		assert id >= 0;
-		getService().delete(id);
+		getService().remove(id);
         return Response.ok().build();
     }
 
@@ -132,7 +132,7 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 	public List<T> getRange(@PathParam(FIRST) final int first, @PathParam(MAX) final int max) {
 		assert first >= 0;
 		assert max >= 0;
-		return getService().findAll(first, max);
+		return getService().findAllRange(first, max);
 	}
 
     @PUT
@@ -153,7 +153,7 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 		assert parameters != null;
 		assert first >= 0;
 		assert max >= 0;
-		return getService().findByNamedQuery(queryName, parameters, first, max);
+		return getService().findByNamedQueryRange(queryName, parameters, first, max);
 	}
 
     private SingularAttribute<AbstractEntity, Date> getMetaModelDateAttribute (final String attribute) {

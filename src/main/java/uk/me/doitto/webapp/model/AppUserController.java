@@ -109,7 +109,7 @@ public class AppUserController extends ControllerBase<AppUser> {
     @Override
 	public Object jsfDelete (final Long id) {
     	assert id != null;
-        service.delete(id);
+        service.remove(id);
         return jsfList();
     }
 

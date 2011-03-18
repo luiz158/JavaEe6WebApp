@@ -99,7 +99,7 @@ public class AlbumController extends ControllerBase<Album> {
     @Override
 	public Object jsfDelete (final Long id) {
     	assert id != null;
-    	albumService.delete(id);
+    	albumService.remove(id);
         return jsfList();
     }
     

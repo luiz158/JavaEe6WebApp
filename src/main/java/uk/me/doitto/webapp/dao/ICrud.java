@@ -36,7 +36,7 @@ public interface ICrud<T, PK extends Serializable> extends IDb<PK> {
 
     void create (T t);
 
-    void delete (PK id);
+    void remove (PK id);
 
     T update (T t);
    
@@ -46,11 +46,11 @@ public interface ICrud<T, PK extends Serializable> extends IDb<PK> {
 
     List<T> findAll ();
 
-    List<T> findAll (int first, int max);
+    List<T> findAllRange (int first, int max);
 
     List<T> findByNamedQuery (String queryName, Map<String, Object> parameters);
     
-    List<T> findByNamedQuery (String queryName, Map<String, Object> parameters, int first, int max);
+    List<T> findByNamedQueryRange (String queryName, Map<String, Object> parameters, int first, int max);
     
     List<T> before (SingularAttribute<? super T, Date> attribute, Date date);
     

@@ -152,7 +152,7 @@ public class EjbTest {
 //        List<AppUser> list2 = artistService.findByNamedQuery(Artist.FIND_ALL, null, 0, 0);
 //        assertEquals(true, list2.contains(s));
 
-        userService.delete(s.getId());
+        userService.remove(s.getId());
         List<AppUser> list3 = userService.findAll();
         assertEquals(false, list3.contains(s));
      }
@@ -221,7 +221,7 @@ public class EjbTest {
 //        List<Artist> list2 = artistService.findByNamedQuery(Artist.FIND_ALL, null, 0, 0);
 //        assertEquals(true, list2.contains(s));
 
-        artistService.delete(s.getId());
+        artistService.remove(s.getId());
         List<Artist> list3 = artistService.findAll();
         assertEquals(false, list3.contains(s));
      }
@@ -338,7 +338,7 @@ public class EjbTest {
 //        List<Album> list2 = artistService.findByNamedQuery(Artist.FIND_ALL, null, 0, 0);
 //        assertEquals(true, list2.contains(s));
 
-        albumService.delete(s.getId());
+        albumService.remove(s.getId());
         List<Album> list3 = albumService.findAll();
         assertEquals(false, list3.contains(s));
      }
@@ -442,7 +442,7 @@ public class EjbTest {
 //        List<Track> list2 = artistService.findByNamedQuery(Artist.FIND_ALL, null, 0, 0);
 //        assertEquals(true, list2.contains(s));
 
-        trackService.delete(s.getId());
+        trackService.remove(s.getId());
         List<Track> list3 = trackService.findAll();
         assertEquals(false, list3.contains(s));
      }

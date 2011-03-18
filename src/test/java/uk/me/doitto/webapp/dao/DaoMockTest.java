@@ -145,14 +145,14 @@ public class DaoMockTest extends EasyMockSupport {
 	}
 
 	/**
-	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#delete(java.lang.Long)}.
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#remove(java.lang.Long)}.
 	 */
 	@Test
 	public final void testDelete() {
 		expect(mockEm.find(EasyMock.eq(SimpleEntity.class), EasyMock.isA(Long.class))).andReturn(entity);
 		mockEm.remove(EasyMock.isA(SimpleEntity.class));
 		replayAll();
-		dao.delete(entity.getId());
+		dao.remove(entity.getId());
 		verifyAll();
 	}
 
@@ -179,7 +179,7 @@ public class DaoMockTest extends EasyMockSupport {
 	}
 
 	/**
-	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#findByNamedQuery(java.lang.String, java.util.Map, int, int)}.
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#findByNamedQueryRange(java.lang.String, java.util.Map, int, int)}.
 	 */
 	@Test
 	public final void testFindByNamedQuery() {
@@ -198,7 +198,7 @@ public class DaoMockTest extends EasyMockSupport {
 		expect(mockTq.setMaxResults(noOfResults)).andReturn(mockTq);
 		expect(mockTq.getResultList()).andReturn(new ArrayList<SimpleEntity>());
 		replayAll();
-		dao.findByNamedQuery("query string", parameters, firstResult, noOfResults);
+		dao.findByNamedQueryRange("query string", parameters, firstResult, noOfResults);
 		verifyAll();
 	}
 

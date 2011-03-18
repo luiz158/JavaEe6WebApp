@@ -46,8 +46,6 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 	
     public static final Logger LOGGER = Logger.getLogger("uk.me.doitto.jpadao");
     
-//    private static final int INT_DISABLED = -1;
-    
     @PersistenceContext
     private EntityManager em;
     
@@ -83,7 +81,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
 
     @Override
-    public void delete (final Long id) {
+    public void remove (final Long id) {
 		assert id != null;
     	LOGGER.log(Level.FINE, "delete(" + id + ") " + type);
         em.remove(find(id));
@@ -112,11 +110,11 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
     public List<T> findAll () {
-        return findAll(0, 0);
+        return findAllRange(0, 0);
     }
 
     @Override
-	public List<T> findAll (final int first, final int max) {
+	public List<T> findAllRange (final int first, final int max) {
 		assert first >= 0;
 		assert max >= 0;
     	LOGGER.log(Level.FINE, "findAll(first, max) " + type);
@@ -127,11 +125,11 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     
     @Override
     public List<T> findByNamedQuery (final String queryName, final Map<String, Object> parameters) {
-        return findByNamedQuery(queryName, parameters, 0, 0);
+        return findByNamedQueryRange(queryName, parameters, 0, 0);
     }
 
     @Override
-    public List<T> findByNamedQuery (final String queryName, final Map<String, Object> parameters, int first, int max) {
+    public List<T> findByNamedQueryRange (final String queryName, final Map<String, Object> parameters, int first, int max) {
 		assert queryName != null;
 		assert parameters != null;
 		assert first >= 0;

@@ -213,7 +213,7 @@ public class EmTest {
         assertEquals(true, list2.contains(simpleEntity));
 
         tx.begin();
-        dao.delete(simpleEntity.getId());
+        dao.remove(simpleEntity.getId());
         tx.commit();
         tx.begin();
         SimpleEntity u = dao.find(entity.getId());
@@ -278,14 +278,14 @@ public class EmTest {
     	assertEquals("Should be " + newCount + " instances", newCount, dao.count());
     	// find all
     	assertEquals("Should be " + newCount + " instances", newCount, dao.findAll().size());
-    	assertEquals("Should be " + newCount + " instances", newCount, dao.findAll(0, dao.count()).size());
-    	assertEquals("Should be " + newCount + " instances", newCount, dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), 0, 0).size());
+    	assertEquals("Should be " + newCount + " instances", newCount, dao.findAllRange(0, dao.count()).size());
+    	assertEquals("Should be " + newCount + " instances", newCount, dao.findByNamedQueryRange(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), 0, 0).size());
     	// find first number
-    	assertEquals("Should be " + number + " instances", number, dao.findAll(0, number).size());
-    	assertEquals("Should be " + number + " instances", number, dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), 0, number).size());
+    	assertEquals("Should be " + number + " instances", number, dao.findAllRange(0, number).size());
+    	assertEquals("Should be " + number + " instances", number, dao.findByNamedQueryRange(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), 0, number).size());
     	// find last number
-    	assertEquals("Should be " + number + " instances", number, dao.findAll(dao.count() - number, number).size());
-    	assertEquals("Should be " + number + " instances", number, dao.findByNamedQuery(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), dao.count() - number, number).size());
+    	assertEquals("Should be " + number + " instances", number, dao.findAllRange(dao.count() - number, number).size());
+    	assertEquals("Should be " + number + " instances", number, dao.findByNamedQueryRange(SimpleEntity.FIND_ALL, new HashMap<String, Object>(), dao.count() - number, number).size());
     }
     
     @Test

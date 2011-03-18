@@ -100,7 +100,7 @@ public class EntityController extends ControllerBase<SimpleEntity> {
 
     @Override
 	public Object jsfDelete (final Long id) {
-    	service.delete(id);
+    	service.remove(id);
         return jsfList();
     }
 
