@@ -24,13 +24,16 @@ package uk.me.doitto.webapp.rest;
 
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import javax.validation.constraints.AssertTrue;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
@@ -40,9 +43,13 @@ import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
+import uk.me.doitto.webapp.dao.AbstractEntity;
+import uk.me.doitto.webapp.dao.AbstractEntity_;
+import uk.me.doitto.webapp.dao.SimpleEntity;
 import uk.me.doitto.webapp.ws.AlbumRest;
 import uk.me.doitto.webapp.ws.AppUserRest;
 import uk.me.doitto.webapp.ws.ArtistRest;
+import uk.me.doitto.webapp.ws.RestCrudBase;
 import uk.me.doitto.webapp.ws.TrackRest;
 
 import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
@@ -618,5 +625,133 @@ public class RestIntegrationTest {
         response = webClient.getPage(request).getWebResponse();
         content = response.getContentAsString();
         System.out.println(content);
+    }
+    
+    @Test
+    public void testDates () throws InterruptedException, FailingHttpStatusCodeException, IOException {
+    	WebRequest request;
+    	List<NameValuePair> parameters;
+    	
+    	System.out.println("Users");
+        // create a user
+    	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH), HttpMethod.POST);
+    	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setRequestBody("{\"name\":\"userA\",\"password\":\"passwordA\"}");
+    	request.setCharset(ENCODING);
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+        
+        Thread.sleep(100);
+        String start = String.valueOf(new Date().getTime());
+        Thread.sleep(100);
+        
+        // create a user
+    	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH), HttpMethod.POST);
+    	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setRequestBody("{\"name\":\"userB\",\"password\":\"passwordB\"}");
+    	request.setCharset(ENCODING);
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+        
+        Thread.sleep(100);        
+        String end = String.valueOf(new Date().getTime());
+        Thread.sleep(100);
+        
+        // create a user
+    	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH), HttpMethod.POST);
+    	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setRequestBody("{\"name\":\"userC\",\"password\":\"passwordC\"}");
+    	request.setCharset(ENCODING);
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
+        
+        // Date
+    	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.BEFORE), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	parameters = new ArrayList<NameValuePair>();
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.created.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.DATE, start));
+    	request.setRequestParameters(parameters);
+    	request.setCharset(ENCODING);
+    	System.out.println("Before date 1");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
+    	
+    	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.SINCE), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	parameters = new ArrayList<NameValuePair>();
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.modified.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.DATE, start));
+    	request.setRequestParameters(parameters);
+    	request.setCharset(ENCODING);
+    	System.out.println("Since date 1");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
+    	
+        // Date
+    	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.BEFORE), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	parameters = new ArrayList<NameValuePair>();
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.created.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.DATE, end));
+    	request.setRequestParameters(parameters);
+    	request.setCharset(ENCODING);
+    	System.out.println("Before date 2");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
+    	
+    	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.SINCE), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	parameters = new ArrayList<NameValuePair>();
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.modified.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.DATE, end));
+    	request.setRequestParameters(parameters);
+    	request.setCharset(ENCODING);
+    	System.out.println("Since date 2");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
+    	
+    	// Two dates
+    	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.DURING), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	parameters = new ArrayList<NameValuePair>();
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.created.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.START, start));
+    	parameters.add(new NameValuePair(RestCrudBase.END, end));
+    	request.setRequestParameters(parameters);
+    	request.setCharset(ENCODING);
+    	System.out.println("During interval");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
+    	
+    	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.NOT_DURING), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	parameters = new ArrayList<NameValuePair>();
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.modified.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.START, start));
+    	parameters.add(new NameValuePair(RestCrudBase.END, end));
+    	request.setRequestParameters(parameters);
+    	request.setCharset(ENCODING);
+    	System.out.println("Outside interval");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
+    	
+    	assertTrue(true);
+    	
+//        assertTrue("Wrong contents! ", dao.before(AbstractEntity_.created, date1).contains(entityA));
+//        assertFalse("Wrong contents! ", dao.before(AbstractEntity_.accessed, date1).contains(entityB) || dao.before(AbstractEntity_.modified, date1).contains(entityC));
+//        assertTrue("Wrong contents! ", dao.since(AbstractEntity_.created, date1).contains(entityB) && dao.since(AbstractEntity_.modified, date1).contains(entityC));
+//        assertFalse("Wrong contents! ", dao.since(AbstractEntity_.accessed, date1).contains(entityA));
+//        // Date 2
+//        assertTrue("Wrong contents! ", dao.before(AbstractEntity_.created, date2).contains(entityA) && dao.before(AbstractEntity_.modified, date2).contains(entityB));
+//        assertFalse("Wrong contents! ", dao.before(AbstractEntity_.accessed, date2).contains(entityC));
+//        assertTrue("Wrong contents! ", dao.since(AbstractEntity_.created, date2).contains(entityC));
+//        assertFalse("Wrong contents! ", dao.since(AbstractEntity_.accessed, date2).contains(entityA) || dao.since(AbstractEntity_.modified, date2).contains(entityB));
+//        // Both dates
+//        assertTrue("Wrong contents! ", dao.during(AbstractEntity_.created, date1, date2).contains(entityB));
+//        assertFalse("Wrong contents! ", dao.during(AbstractEntity_.accessed, date1, date2).contains(entityA) || dao.during(AbstractEntity_.modified, date1, date2).contains(entityC));
+//        assertTrue("Wrong contents! ", dao.notDuring(AbstractEntity_.created, date1, date2).contains(entityA) && dao.notDuring(AbstractEntity_.modified, date1, date2).contains(entityC));
+//        assertFalse("Wrong contents! ", dao.notDuring(AbstractEntity_.accessed, date1, date2).contains(entityB));
     }
 }
