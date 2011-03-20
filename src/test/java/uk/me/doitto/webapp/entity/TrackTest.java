@@ -156,10 +156,11 @@ public class TrackTest {
 		assertEquals("Wrong class!", track.getClass(), this.track.getClass());
 	}
 	
+	@Ignore
 	@SuppressWarnings("unused")
 	@Test
 	public void testMetaModel () {
-		SingularAttribute<Track, Integer> duration = Track_.duration;
-		SingularAttribute<Track, String> url = Track_.url;
+//		SingularAttribute<Track, Integer> duration = Track_.duration;
+//		SingularAttribute<Track, String> url = Track_.url;
 	}
 }

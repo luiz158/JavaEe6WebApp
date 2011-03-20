@@ -61,7 +61,7 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     private AppUserService appUserService;
     
     @Context
-    private UriInfo uriInfo;
+    private transient UriInfo uriInfo;
 
 	@Override
 	protected AppUser overlay (final AppUser incoming, final AppUser existing) {

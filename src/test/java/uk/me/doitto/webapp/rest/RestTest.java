@@ -132,10 +132,9 @@ public class RestTest extends JerseyTest {
         webResource = webResource.path(ArtistRest.PATH);
         Artist artist = new Artist();
         artist.setName("test artist");
-        Response response = webResource.post(Response.class, artist);
+//        Response response = webResource.post(Response.class, artist);
         
-        @SuppressWarnings("unchecked")
-		List<Artist> responseMsg = webResource.get(List.class);
+		List<?> responseMsg = webResource.get(List.class);
         assertTrue(responseMsg.contains("Current time is"));
         
 //        Artist t = new Artist();

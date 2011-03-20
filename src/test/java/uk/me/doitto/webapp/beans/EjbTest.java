@@ -190,7 +190,7 @@ public class EjbTest {
     @Test
     public void testAppUserRest () {
         try {
-        	AppUserRest userRest = (AppUserRest)ctx.lookup("java:global/classes/AppUserRest");
+        	ctx.lookup("java:global/classes/AppUserRest");
         	assertTrue(true);
 		} catch (NamingException e) {
 			e.printStackTrace();
@@ -295,7 +295,7 @@ public class EjbTest {
     @Test
     public void testArtistRest () {
         try {
-        	ArtistRest artistRest = (ArtistRest)ctx.lookup("java:global/classes/ArtistRest");
+        	ctx.lookup("java:global/classes/ArtistRest");
 		} catch (NamingException e) {
 			e.printStackTrace();
 			fail("Should not reach here!");
@@ -412,7 +412,7 @@ public class EjbTest {
     @Test
     public void testAlbumRest () {
         try {
-        	AlbumRest albumRest = (AlbumRest)ctx.lookup("java:global/classes/AlbumRest");
+        	ctx.lookup("java:global/classes/AlbumRest");
 		} catch (NamingException e) {
 			e.printStackTrace();
 			fail("Should not reach here!");
@@ -480,13 +480,13 @@ public class EjbTest {
     @Ignore
     @Test
     public void testTrackRest () {
-    	List<Track> tracks = trackRest.getAll();
+    	trackRest.getAll();
     	
     	Track t = new Track();
         t.setName(STRING_1);
         assertTrue("", t.isNew());
 
-    	Response response = trackRest.create(t);
+    	trackRest.create(t);
         assertFalse("", t.isNew());
 
         Track s = trackService.find(t.getId());

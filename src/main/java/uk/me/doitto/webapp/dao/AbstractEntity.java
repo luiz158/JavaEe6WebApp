@@ -121,7 +121,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	protected AbstractEntity (final AbstractEntity entity) {
 		assert entity != null;
 		if (! isNew()) {
-			this.id = new Long(id.longValue());
+			this.id = Long.valueOf(id.longValue());
 		}
 		this.version = entity.version;
 		this.name = entity.name;

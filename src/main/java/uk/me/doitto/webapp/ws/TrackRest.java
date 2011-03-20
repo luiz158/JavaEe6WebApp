@@ -63,7 +63,7 @@ public class TrackRest extends RestCrudBase<Track> {
     private TrackService trackService;
 
     @Context
-    private UriInfo uriInfo;
+    private transient UriInfo uriInfo;
 
 	/**
 	 * {@inheritDoc}
