@@ -73,7 +73,7 @@ public class Track extends AbstractEntity {
     }
 
     @Override
-	public JAXBContext getJaxbcontext () {
+	public JAXBContext getJaxbContext () {
 		return jaxbContext;
 	}
 

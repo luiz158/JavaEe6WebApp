@@ -253,11 +253,11 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		}
 	}
 
-	protected abstract JAXBContext getJaxbcontext ();
+	protected abstract JAXBContext getJaxbContext ();
 	
 	private String toXml () throws JAXBException {
 		Writer writer = new StringWriter();
-		Marshaller marshaller = getJaxbcontext().createMarshaller();
+		Marshaller marshaller = getJaxbContext().createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 		marshaller.marshal(this, writer);
 		return writer.toString();
