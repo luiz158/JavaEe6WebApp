@@ -22,9 +22,7 @@
  */
 package uk.me.doitto.webapp.entity;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.persistence.Entity;
@@ -92,14 +90,6 @@ public class Artist extends AbstractEntity {
     	assert albums != null;
         // intentionally mutable, just pass reference
         this.albums = albums;
-    }
-
-    public Map<String, Long> getAlbumIdMap () {
-        Map<String, Long> trackIdMap = new TreeMap<String, Long>();
-        for (Album album : albums) {
-            trackIdMap.put(album.getName(), album.getId());
-        }
-        return trackIdMap;
     }
 
     /**

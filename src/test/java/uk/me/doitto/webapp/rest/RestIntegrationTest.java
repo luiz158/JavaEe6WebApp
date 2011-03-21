@@ -541,7 +541,6 @@ public class RestIntegrationTest {
     	request.setCharset(ENCODING);
     	System.out.println("Artist: ");
     	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
-//    	System.out.println("");
         
     	// get albums by ID, JSON
     	request = new WebRequest(new URL(album1location), HttpMethod.GET);
@@ -549,8 +548,6 @@ public class RestIntegrationTest {
     	request.setCharset(ENCODING);
     	System.out.println("Linked Album: ");
     	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
-//    	System.out.println("");
-
     	request = new WebRequest(new URL(album2location), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
     	request.setCharset(ENCODING);
@@ -621,7 +618,6 @@ public class RestIntegrationTest {
     	request.setCharset(ENCODING);
     	System.out.println("Album: ");
     	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
-//    	System.out.println("");
         
     	// get tracks by ID, JSON
     	request = new WebRequest(new URL(track1location), HttpMethod.GET);
@@ -629,8 +625,6 @@ public class RestIntegrationTest {
     	request.setCharset(ENCODING);
     	System.out.println("Linked track: ");
     	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
-//    	System.out.println("");
-
     	request = new WebRequest(new URL(track2location), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
     	request.setCharset(ENCODING);
