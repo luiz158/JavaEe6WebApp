@@ -69,7 +69,7 @@ public class Artist extends AbstractEntity {
     }
 
     @Override
-	public JAXBContext getJaxbcontext () {
+	public JAXBContext getJaxbContext () {
 		return jaxbContext;
 	}
 
