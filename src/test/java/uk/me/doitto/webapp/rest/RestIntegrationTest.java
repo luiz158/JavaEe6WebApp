@@ -590,14 +590,6 @@ public class RestIntegrationTest {
     	request.setCharset(ENCODING);
         response = webClient.getPage(request).getWebResponse();
         
-    	// get album by ID, JSON
-    	request = new WebRequest(new URL(albumlocation), HttpMethod.GET);
-    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
-    	request.setCharset(ENCODING);
-        response = webClient.getPage(request).getWebResponse();
-        content = response.getContentAsString();
-        System.out.println(content);
-
         // create another track
     	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.POST);
     	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
@@ -625,7 +617,22 @@ public class RestIntegrationTest {
         response = webClient.getPage(request).getWebResponse();
         content = response.getContentAsString();
         System.out.println(content);
-    }
+        
+    	// get tracks by ID, JSON
+    	request = new WebRequest(new URL(track1location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
+        System.out.println(content);
+
+    	request = new WebRequest(new URL(track2location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        content = response.getContentAsString();
+        System.out.println(content);
+}
     
     @Test
     public void testDates () throws InterruptedException, FailingHttpStatusCodeException, IOException {
