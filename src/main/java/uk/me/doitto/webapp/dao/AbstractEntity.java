@@ -130,6 +130,14 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		this.accessed = new Date(entity.accessed.getTime());
 	}
 	
+    protected static JAXBContext initJaxbContext (final Class<? extends AbstractEntity> clazz) {
+    	try {
+			return JAXBContext.newInstance(clazz);
+		} catch (JAXBException e) {
+			throw new RuntimeException(e);
+		}
+    }
+    
 	/**
 	 * {@inheritDoc}
 	 */

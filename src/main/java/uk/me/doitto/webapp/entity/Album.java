@@ -32,7 +32,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Past;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -53,14 +52,7 @@ public class Album extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private static final JAXBContext jaxbContext;
-    static {
-    	try {
-    		jaxbContext = JAXBContext.newInstance(Album.class);
-		} catch (JAXBException e) {
-			throw new RuntimeException(e);
-		}
-    }
+    private static final JAXBContext jaxbContext = initJaxbContext(Album.class);
 
     private String label = "UnknownLabel";
 
