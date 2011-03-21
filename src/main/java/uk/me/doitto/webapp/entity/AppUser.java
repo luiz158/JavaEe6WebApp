@@ -26,7 +26,6 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -44,14 +43,7 @@ public class AppUser extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private static final JAXBContext jaxbContext;
-    static {
-    	try {
-    		jaxbContext = JAXBContext.newInstance(AppUser.class);
-		} catch (JAXBException e) {
-			throw new RuntimeException(e);
-		}
-    }
+    private static final JAXBContext jaxbContext = initJaxbContext(AppUser.class);
 
 	private String password;
 
