@@ -149,13 +149,13 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		return id;
 	}
 
-	public String getXmlId () {
-		return xmlId;
-	}
-
-	public void setXmlId (final String xmlId) {
-		this.xmlId = xmlId;
-	}
+//	public String getXmlId () {
+//		return xmlId;
+//	}
+//
+//	public void setXmlId (final String xmlId) {
+//		this.xmlId = xmlId;
+//	}
 
 	@PostLoad
 	public void initXmlId () {
