@@ -210,11 +210,11 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		return new Date(created.getTime());
 	}
 
-	@Override
-	public void setCreated (final Date created) {
-		assert created != null;
-		this.created = new Date(created.getTime());
-	}
+//	@Override
+//	public void setCreated (final Date created) {
+//		assert created != null;
+//		this.created = new Date(created.getTime());
+//	}
 
 	@Override
 	public Date getModified () {
