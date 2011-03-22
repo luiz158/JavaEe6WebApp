@@ -54,7 +54,7 @@ import javax.xml.bind.annotation.XmlID;
 @SuppressWarnings("serial")
 @MappedSuperclass
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class AbstractEntity implements PersistentEntity<Long>, Comparable<AbstractEntity> {
+public abstract class AbstractEntity implements PersistentEntity<Long>, XmlEntity, Comparable<AbstractEntity> {
 
 	/**
 	 * Maps each string date attribute name from an incoming web request to its corresponding JPA2 metamodel field
@@ -149,15 +149,11 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		return id;
 	}
 
-//	public String getXmlId () {
-//		return xmlId;
-//	}
-//
-//	public void setXmlId (final String xmlId) {
-//		this.xmlId = xmlId;
-//	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@PostLoad
+	@Override
 	public void initXmlId () {
 		xmlId = id.toString();
 	}
@@ -194,37 +190,46 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		this.name = name;
 	}
 
-	@Override
-	public Date getAccessed () {
-		return new Date(accessed.getTime());
-	}
-
-	@Override
-	public void setAccessed (final Date accessed) {
-		assert accessed != null;
-		this.accessed = new Date(accessed.getTime());
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Date getCreated () {
 		return new Date(created.getTime());
 	}
 
-//	@Override
-//	public void setCreated (final Date created) {
-//		assert created != null;
-//		this.created = new Date(created.getTime());
-//	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Date getModified () {
 		return new Date(modified.getTime());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setModified (final Date modified) {
 		assert modified != null;
 		this.modified = new Date(modified.getTime());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Date getAccessed () {
+		return new Date(accessed.getTime());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setAccessed (final Date accessed) {
+		assert accessed != null;
+		this.accessed = new Date(accessed.getTime());
 	}
 
 	/**
@@ -256,8 +261,16 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		}
 	}
 
+	/**
+	 * Used internally by toXml() to provide a default JAXB XML toString() implementation
+	 * @return a class-specific context instance
+	 */
 	protected abstract JAXBContext getJaxbContext ();
 	
+	/**
+	 * @return a default JAXB XML String representation of the entity
+	 * @throws JAXBException
+	 */
 	private String toXml () throws JAXBException {
 		Writer writer = new StringWriter();
 		Marshaller marshaller = getJaxbContext().createMarshaller();
