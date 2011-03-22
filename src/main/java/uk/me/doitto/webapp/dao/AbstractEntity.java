@@ -155,10 +155,12 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	}
 
 	/**
+	 * Populate xmlId field when retrieved from database.  
+	 * Only ever called by persistence framework, so suppress warning
 	 * {@inheritDoc}
 	 */
+	@SuppressWarnings("unused")
 	@PostLoad
-//	@Override
 	private void initXmlId () {
 		xmlId = id.toString();
 	}
