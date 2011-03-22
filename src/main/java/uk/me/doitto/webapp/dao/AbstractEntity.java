@@ -55,7 +55,7 @@ import javax.xml.bind.annotation.XmlTransient;
 @SuppressWarnings("serial")
 @MappedSuperclass
 @XmlAccessorType(XmlAccessType.FIELD)
-public abstract class AbstractEntity implements PersistentEntity<Long>, XmlEntity, Comparable<AbstractEntity> {
+public abstract class AbstractEntity implements PersistentEntity<Long>, Comparable<AbstractEntity> {
 
 	/**
 	 * Maps each string date attribute name from an incoming web request to its corresponding JPA2 metamodel field
@@ -158,8 +158,8 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, XmlEntit
 	 * {@inheritDoc}
 	 */
 	@PostLoad
-	@Override
-	public void initXmlId () {
+//	@Override
+	private void initXmlId () {
 		xmlId = id.toString();
 	}
 
