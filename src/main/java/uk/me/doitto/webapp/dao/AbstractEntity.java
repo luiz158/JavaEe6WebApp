@@ -34,6 +34,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.xml.bind.JAXBContext;
@@ -85,6 +87,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	protected Long id;
 
 	@XmlID
+	@Transient
 	protected String xmlId;
 	
 	/**
@@ -98,13 +101,13 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 */
 	protected String name;
 
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date created;
 
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date modified;
 
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date accessed;
 
 	protected AbstractEntity () {
