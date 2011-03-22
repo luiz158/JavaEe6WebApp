@@ -44,6 +44,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Abstract implementation of PersistentEntity, in which the primary key type
@@ -80,12 +81,16 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, XmlEntit
 	}
 	
 	/**
-	 * For use by persistence provider
+	 * For use by persistence provider, not sent to REST output
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlTransient
 	protected Long id;
 
+	/**
+	 * For use in REST output, not persisted
+	 */
 	@XmlID
 	@Transient
 	protected String xmlId;
