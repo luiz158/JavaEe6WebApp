@@ -56,7 +56,7 @@
 		
 		<site>
 			<id>site</id>
-			<url>file:///home/super/QNAP/Public/JavaEe6WebApp/</url>
+			<url>file:///net/qnap/Public/JavaEe6WebApp/</url>
 		</site>
 	</distributionManagement>
 
