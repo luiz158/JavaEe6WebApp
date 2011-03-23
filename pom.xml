@@ -10,15 +10,12 @@
 	<url>http://doitto.me.uk</url>
 
 	<properties>
-		<!-- Explicitly declaring the source encoding eliminates the following message: 
-		[WARNING] Using platform encoding (UTF-8 actually) to copy filtered resources, i.e. build is platform dependent! -->
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<netbeans.hint.deploy.server>gfv3ee6wc</netbeans.hint.deploy.server>
 		<netbeans.hint.j2eeVersion>1.6</netbeans.hint.j2eeVersion>
 		<organization>The Pond</organization>
 		<fullName>Ian Smith</fullName>
 		<email>m4r35n357@gmail.com</email>
-		<subversionUrl>svn://doitto.me.uk:4000/webapp/trunk</subversionUrl>
 		<repoManager>http://server:6060/nexus/content/repositories</repoManager>
 		<javaVersion>1.6</javaVersion>
 		<glassfishVersion>3.1</glassfishVersion>

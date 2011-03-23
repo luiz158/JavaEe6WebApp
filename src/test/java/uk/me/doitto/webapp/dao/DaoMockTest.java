@@ -26,8 +26,10 @@ import static org.easymock.EasyMock.expect;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
+import static org.junit.Assert.fail;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,7 +38,10 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Expression;
+import javax.persistence.criteria.Path;
+import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
+import javax.persistence.metamodel.SingularAttribute;
 
 import org.easymock.EasyMock;
 import org.easymock.EasyMockSupport;
@@ -44,6 +49,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -57,21 +63,28 @@ public class DaoMockTest extends EasyMockSupport {
 	
 	private SimpleEntity entity;
 	
-	private EntityManager mockEm;
+	private EntityManager em;
 	
-	private TypedQuery<SimpleEntity> mockTq;
+	private TypedQuery<SimpleEntity> tq;
 	
-	private CriteriaQuery<SimpleEntity> mockCq;
 	
-	private CriteriaQuery<Long> mockCqLong;
+	private CriteriaQuery<SimpleEntity> cq;
 	
-	private TypedQuery<Long> mockTqLong;
+	private CriteriaQuery<Long> cqLong;
+	
+	private TypedQuery<Long> tqLong;
 	
 	private Expression<Long> expLong;
 	
-	private CriteriaBuilder mockCb;
+	private Expression<?> expression;
 	
-	private Root<SimpleEntity> mockRoot;
+	private CriteriaBuilder cb;
+	
+	private Root<SimpleEntity> root;
+	
+	private Path<Date> path;
+	
+	private Predicate predicate;
 	
 	/**
 	 * @throws java.lang.Exception
@@ -90,17 +103,21 @@ public class DaoMockTest extends EasyMockSupport {
 	/**
 	 * @throws java.lang.Exception
 	 */
+	@SuppressWarnings("unchecked")
 	@Before
 	public void setUp() throws Exception {
-		mockEm = createStrictMock(EntityManager.class);
-		mockCb = createStrictMock(CriteriaBuilder.class);
-		mockCq = createStrictMock(CriteriaQuery.class);
-		mockCqLong = createStrictMock(CriteriaQuery.class);
-		mockRoot = createStrictMock(Root.class);
-		mockTq = createStrictMock(TypedQuery.class);
-		mockTqLong = createStrictMock(TypedQuery.class);
+		em = createStrictMock(EntityManager.class);
+		cb = createStrictMock(CriteriaBuilder.class);
+		cq = createStrictMock(CriteriaQuery.class);
+		cqLong = createStrictMock(CriteriaQuery.class);
+		root = createStrictMock(Root.class);
+		tq = createStrictMock(TypedQuery.class);
+		tqLong = createStrictMock(TypedQuery.class);
 		expLong = createStrictMock(Expression.class);
-		dao = new SimpleDao(mockEm);
+		path = createStrictMock(Path.class);
+		predicate = createStrictMock(Predicate.class);
+		
+		dao = new SimpleDao(em);
 		entity = new SimpleEntity();
 		entity.id = 1L;
 		entity.version = 1;
@@ -117,7 +134,7 @@ public class DaoMockTest extends EasyMockSupport {
 	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#Crud(java.lang.Class)}.
 	 */
 	@Test
-	public final void testCrudClassOfT() {
+	public final void testCrud () {
 		SimpleDao daoClass = new SimpleDao();
 		assertNotSame("", this.dao, daoClass);
 		assertNull("Injected field should be null here!", daoClass.getEm());
@@ -127,32 +144,87 @@ public class DaoMockTest extends EasyMockSupport {
 	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#Crud(java.lang.Class, javax.persistence.EntityManager)}.
 	 */
 	@Test
-	public final void testCrudClassOfTEntityManager() {
-		SimpleDao daoClass = new SimpleDao(mockEm);
+	public final void testCrudEntityManager () {
+		SimpleDao daoClass = new SimpleDao(em);
 		assertNotSame("", this.dao, daoClass);
-		assertSame("Injected field should be overridden by this constructor!", mockEm, daoClass.getEm());
+		assertSame("Injected field should be overridden by this constructor!", em, daoClass.getEm());
+	}
+
+	/**
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#Crud(java.lang.Class, javax.persistence.EntityManager)}.
+	 */
+	@Test
+	public final void testCrudNullEntityManager () {
+		try {
+			@SuppressWarnings("unused")
+			SimpleDao daoClassNullEm = new SimpleDao(null);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
 	}
 
 	/**
 	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#create(uk.me.doitto.webapp.dao.AbstractEntity)}.
 	 */
 	@Test
-	public final void testCreate() {
-		mockEm.persist(EasyMock.isA(SimpleEntity.class));
+	public final void testCreate () {
+		em.persist(EasyMock.isA(SimpleEntity.class));
 		replayAll();
 		dao.create(entity);
 		verifyAll();
 	}
 
 	/**
-	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#remove(java.lang.Long)}.
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#create(uk.me.doitto.webapp.dao.AbstractEntity)}.
 	 */
 	@Test
-	public final void testDelete() {
-		expect(mockEm.find(EasyMock.eq(SimpleEntity.class), EasyMock.isA(Long.class))).andReturn(entity);
-		mockEm.remove(EasyMock.isA(SimpleEntity.class));
+	public final void testCreateNull () {
+		try {
+			dao.create(null);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+	}
+
+	/**
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#delete(java.lang.Long)}.
+	 */
+	@Test
+	public final void testDelete () {
+		expect(em.find(EasyMock.eq(SimpleEntity.class), EasyMock.isA(Long.class))).andReturn(entity);
+		em.remove(EasyMock.isA(SimpleEntity.class));
 		replayAll();
 		dao.remove(entity.getId());
+		verifyAll();
+	}
+
+	/**
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#delete(java.lang.Long)}.
+	 */
+	@Test
+	public final void testDeleteNullBadId () {
+		SimpleEntity entity = new SimpleEntity();
+		try {
+			dao.remove(entity.getId());
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		entity.id = -1L;
+		try {
+			dao.remove(entity.getId());
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+	}
+
+	/**
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#update(uk.me.doitto.webapp.dao.AbstractEntity)}.
+	 */
+	@Test
+	public final void testUpdate () {
+		expect(em.merge(EasyMock.isA(SimpleEntity.class))).andReturn(entity);
+		replayAll();
+		dao.update(entity);
 		verifyAll();
 	}
 
@@ -160,10 +232,22 @@ public class DaoMockTest extends EasyMockSupport {
 	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#update(uk.me.doitto.webapp.dao.AbstractEntity)}.
 	 */
 	@Test
-	public final void testUpdate() {
-		expect(mockEm.merge(EasyMock.isA(SimpleEntity.class))).andReturn(entity);
+	public final void testUpdateNull () {
+		try {
+			dao.update(null);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+	}
+
+	/**
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#find(java.lang.Long)}.
+	 */
+	@Test
+	public final void testFind () {
+		expect(em.find(EasyMock.eq(SimpleEntity.class), EasyMock.isA(Long.class))).andReturn(entity);
 		replayAll();
-		dao.update(entity);
+		dao.find(entity.getId());
 		verifyAll();
 	}
 
@@ -171,66 +255,223 @@ public class DaoMockTest extends EasyMockSupport {
 	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#find(java.lang.Long)}.
 	 */
 	@Test
-	public final void testFind() {
-		expect(mockEm.find(EasyMock.eq(SimpleEntity.class), EasyMock.isA(Long.class))).andReturn(entity);
-		replayAll();
-		dao.find(entity.getId());
-		verifyAll();
+	public final void testFindNullBadId () {
+		SimpleEntity entity = new SimpleEntity();
+		try {
+			dao.find(entity.getId());
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		entity.id = -1L;
+		try {
+			dao.find(entity.getId());
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
 	}
 
 	/**
-	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#findByNamedQueryRange(java.lang.String, java.util.Map, int, int)}.
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#findAll()}.
+	 */
+	@SuppressWarnings("unchecked")
+	@Test
+	public final void testFindAll () {
+		expect(em.getCriteriaBuilder()).andReturn(cb);
+		expect(cb.createQuery(SimpleEntity.class)).andReturn(cq);
+		expect(cq.from(SimpleEntity.class)).andReturn(root);
+		expect(cq.select(root)).andReturn(cq);
+		expect(em.createQuery(EasyMock.isA(CriteriaQuery.class))).andReturn(tq);
+		expect(tq.setFirstResult(0)).andReturn(tq);
+		expect(tq.setMaxResults(0)).andReturn(tq);
+		expect(tq.getResultList()).andReturn(new ArrayList<SimpleEntity>());
+		replayAll();
+		dao.findAll();
+		verifyAll();
+	}
+	
+	/**
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#findAll()}.
 	 */
 	@Test
-	public final void testFindByNamedQuery() {
+	public final void testFindAllBadParams () {
+		try {
+			dao.findAllRange(0, -1);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.findAllRange(-1, 0);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+	}
+	
+	/**
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#findByNamedQuery(java.lang.String, java.util.Map, int, int)}.
+	 */
+	@Test
+	public final void testFindByNamedQuery () {
 		int firstResult = 1;
 		int noOfResults = 100;
 		Map<String, Object> parameters = new HashMap<String, Object>();
 //		mockEm.checkOrder(mockEm, false);
 		parameters.put("p1", "v1");
 //		parameters.put("p2", "v2");
-		expect(mockEm.createNamedQuery(EasyMock.isA(String.class), EasyMock.eq(SimpleEntity.class))).andReturn(mockTq);
+		expect(em.createNamedQuery(EasyMock.isA(String.class), EasyMock.eq(SimpleEntity.class))).andReturn(tq);
 //		expect(mockTq.setFirstResult(firstResult)).andReturn(mockTq);
 //		expect(mockTq.setMaxResults(noOfResults)).andReturn(mockTq);
-		expect(mockTq.setParameter("p1", "v1")).andReturn(mockTq);
+		expect(tq.setParameter("p1", "v1")).andReturn(tq);
 //		expect(mockTq.setParameter("p2", "v2")).andReturn(mockTq);
-		expect(mockTq.setFirstResult(firstResult)).andReturn(mockTq);
-		expect(mockTq.setMaxResults(noOfResults)).andReturn(mockTq);
-		expect(mockTq.getResultList()).andReturn(new ArrayList<SimpleEntity>());
+		expect(tq.setFirstResult(firstResult)).andReturn(tq);
+		expect(tq.setMaxResults(noOfResults)).andReturn(tq);
+		expect(tq.getResultList()).andReturn(new ArrayList<SimpleEntity>());
 		replayAll();
 		dao.findByNamedQueryRange("query string", parameters, firstResult, noOfResults);
 		verifyAll();
 	}
 
 	/**
-	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#findAll()}.
+	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#findByNamedQuery(java.lang.String, java.util.Map, int, int)}.
 	 */
 	@Test
-	public final void testFindAll() {
-		expect(mockEm.getCriteriaBuilder()).andReturn(mockCb);
-		expect(mockCb.createQuery(SimpleEntity.class)).andReturn(mockCq);
-		expect(mockCq.from(SimpleEntity.class)).andReturn(mockRoot);
-		expect(mockCq.select(mockRoot)).andReturn(mockCq);
-		expect(mockEm.createQuery(EasyMock.isA(CriteriaQuery.class))).andReturn(mockTq);
-		expect(mockTq.setFirstResult(0)).andReturn(mockTq);
-		expect(mockTq.setMaxResults(0)).andReturn(mockTq);
-		expect(mockTq.getResultList()).andReturn(new ArrayList<SimpleEntity>());
+	public final void testFindByNamedQueryBadParams () {
+		try {
+			dao.findByNamedQueryRange(null, new HashMap<String, Object>(), 0, 0);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.findByNamedQueryRange("", new HashMap<String, Object>(), 0, 0);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.findByNamedQueryRange("query string", null, 0, 0);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.findByNamedQueryRange("query string", new HashMap<String, Object>(), -1, 0);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.findByNamedQueryRange("query string", new HashMap<String, Object>(), 0, -1);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+	}
+
+	@Ignore
+	@Test
+	public final void testBefore () {
+		expect(em.getCriteriaBuilder()).andReturn(cb);
+		expect(cb.createQuery(SimpleEntity.class)).andReturn(cq);
+		expect(cq.from(SimpleEntity.class)).andReturn(root);
+		expect(root.get(EasyMock.isA(SingularAttribute.class))).andReturn(path);
+		expect(cb.lessThan(EasyMock.isA(Path.class), EasyMock.isA(Date.class))).andReturn(predicate);
+		expect(cq.where(predicate)).andReturn(cq);
+		expect(cq.select(root)).andReturn(cq);		
+		expect(em.createQuery(EasyMock.isA(CriteriaQuery.class))).andReturn(tq);
+		expect(tq.getResultList()).andReturn(new ArrayList<SimpleEntity>());
 		replayAll();
-		dao.findAll();
+		dao.before(AbstractEntity_.created, new Date());
 		verifyAll();
 	}
+	
+	@Test
+	public final void testBeforeBadParams () {
+		try {
+			dao.before(null, new Date());
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.before(AbstractEntity_.created, null);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+	}
+
+	@Test
+	public final void testSinceBadParams () {
+		try {
+			dao.since(null, new Date());
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.since(AbstractEntity_.created, null);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+	}
+
+	@Test
+	public final void testDuringBadParams () {
+		Date date1 = new Date();
+		Date date2 = new Date(date1.getTime() + (1000 * 60));
+		try {
+			dao.during(null, date1, date2);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.during(AbstractEntity_.created, null, date2);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.during(AbstractEntity_.created, date1, null);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.during(AbstractEntity_.created, date2, date1);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+	}
+
+	@Test
+	public final void testNotDuringBadParams () {
+		Date date1 = new Date();
+		Date date2 = new Date(date1.getTime() + (1000 * 60));
+		try {
+			dao.notDuring(null, date1, date2);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.notDuring(AbstractEntity_.created, null, date2);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.notDuring(AbstractEntity_.created, date1, null);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+		try {
+			dao.notDuring(AbstractEntity_.created, date2, date1);
+			fail("Should not reach here!");
+		} catch (AssertionError e) {
+		}
+	}
+
 	/**
 	 * Test method for {@link uk.me.doitto.webapp.dao.Crud#count()}.
 	 */
+	@SuppressWarnings("unchecked")
 	@Test
 	public final void testCount () {
-		expect(mockEm.getCriteriaBuilder()).andReturn(mockCb);
-		expect(mockCb.createQuery(Long.class)).andReturn(mockCqLong);
-		expect(mockCqLong.from(SimpleEntity.class)).andReturn(mockRoot);
-		expect(mockCb.count(mockRoot)).andReturn(expLong);
-		expect(mockCqLong.select(expLong)).andReturn(mockCqLong);
-		expect(mockEm.createQuery(EasyMock.isA(CriteriaQuery.class))).andReturn(mockTqLong);
-		expect(mockTqLong.getSingleResult()).andReturn(Long.valueOf(42));
+		expect(em.getCriteriaBuilder()).andReturn(cb);
+		expect(cb.createQuery(Long.class)).andReturn(cqLong);
+		expect(cqLong.from(SimpleEntity.class)).andReturn(root);
+		expect(cb.count(root)).andReturn(expLong);
+		expect(cqLong.select(expLong)).andReturn(cqLong);
+		expect(em.createQuery(EasyMock.isA(CriteriaQuery.class))).andReturn(tqLong);
+		expect(tqLong.getSingleResult()).andReturn(Long.valueOf(42));
 		replayAll();
 		dao.count();
 		verifyAll();
