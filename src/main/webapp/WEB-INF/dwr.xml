@@ -28,6 +28,6 @@
 		
 		<convert converter="bean" match="uk.me.doitto.webapp.*"/>
 		
-		<convert converter="enum" match="uk.me.doitto.webapp.dao.AbstractEntity.TimeStamp"/>
+		<convert converter="enum" match="uk.me.doitto.webapp.dao.TimeStamp"/>
 	</allow>
 </dwr>
