@@ -46,6 +46,7 @@ import org.junit.Test;
 import uk.me.doitto.webapp.dao.AbstractEntity;
 import uk.me.doitto.webapp.dao.AbstractEntity_;
 import uk.me.doitto.webapp.dao.SimpleEntity;
+import uk.me.doitto.webapp.dao.TimeStamp;
 import uk.me.doitto.webapp.ws.AlbumRest;
 import uk.me.doitto.webapp.ws.AppUserRest;
 import uk.me.doitto.webapp.ws.ArtistRest;
@@ -676,7 +677,7 @@ public class RestIntegrationTest {
     	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.BEFORE), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
     	parameters = new ArrayList<NameValuePair>();
-    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.created.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, TimeStamp.created.toString()));
     	parameters.add(new NameValuePair(RestCrudBase.DATE, start));
     	request.setRequestParameters(parameters);
     	request.setCharset(ENCODING);
@@ -687,7 +688,7 @@ public class RestIntegrationTest {
     	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.SINCE), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
     	parameters = new ArrayList<NameValuePair>();
-    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.modified.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, TimeStamp.modified.toString()));
     	parameters.add(new NameValuePair(RestCrudBase.DATE, start));
     	request.setRequestParameters(parameters);
     	request.setCharset(ENCODING);
@@ -699,7 +700,7 @@ public class RestIntegrationTest {
     	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.BEFORE), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
     	parameters = new ArrayList<NameValuePair>();
-    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.created.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, TimeStamp.created.toString()));
     	parameters.add(new NameValuePair(RestCrudBase.DATE, end));
     	request.setRequestParameters(parameters);
     	request.setCharset(ENCODING);
@@ -710,7 +711,7 @@ public class RestIntegrationTest {
     	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.SINCE), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
     	parameters = new ArrayList<NameValuePair>();
-    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.modified.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, TimeStamp.modified.toString()));
     	parameters.add(new NameValuePair(RestCrudBase.DATE, end));
     	request.setRequestParameters(parameters);
     	request.setCharset(ENCODING);
@@ -722,7 +723,7 @@ public class RestIntegrationTest {
     	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.DURING), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
     	parameters = new ArrayList<NameValuePair>();
-    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.created.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, TimeStamp.created.toString()));
     	parameters.add(new NameValuePair(RestCrudBase.START, start));
     	parameters.add(new NameValuePair(RestCrudBase.END, end));
     	request.setRequestParameters(parameters);
@@ -734,7 +735,7 @@ public class RestIntegrationTest {
     	request = new WebRequest(new URL(REST_URL + AppUserRest.PATH + "/" + RestCrudBase.NOT_DURING), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
     	parameters = new ArrayList<NameValuePair>();
-    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, AbstractEntity.TimeStamp.modified.toString()));
+    	parameters.add(new NameValuePair(RestCrudBase.ATTRIBUTE, TimeStamp.modified.toString()));
     	parameters.add(new NameValuePair(RestCrudBase.START, start));
     	parameters.add(new NameValuePair(RestCrudBase.END, end));
     	request.setRequestParameters(parameters);

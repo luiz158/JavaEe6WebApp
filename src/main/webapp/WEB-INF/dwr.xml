@@ -6,23 +6,23 @@
 			<param name="class" value="java.util.Date" />
 		</create>
 		
-		<create creator="new" javascript="Clock">
+		<create creator="new" scope="application">
 			<param name="class" value="uk.me.doitto.webapp.util.Clock" />
 		</create>
 		
-		<create creator="new" javascript="AppUserService">
+		<create creator="new" scope="application">
 			<param name="class" value="uk.me.doitto.webapp.beans.AppUserService" />
 		</create>
 		
-		<create creator="new" javascript="ArtistService">
+		<create creator="new" scope="application">
 			<param name="class" value="uk.me.doitto.webapp.beans.ArtistService" />
 		</create>
 		
-		<create creator="new" javascript="AlbumService">
+		<create creator="new" scope="application">
 			<param name="class" value="uk.me.doitto.webapp.beans.AlbumService" />
 		</create>
 		
-		<create creator="new" javascript="TrackService">
+		<create creator="new" scope="application">
 			<param name="class" value="uk.me.doitto.webapp.beans.TrackService" />
 		</create>
 		

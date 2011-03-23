@@ -146,29 +146,29 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
 
     @Override
-	public List<T> before (final SingularAttribute<? super T, Date> attribute, final Date date) {
+	public List<T> before (final TimeStamp attribute, final Date date) {
 		assert attribute != null;
 		assert date != null;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
-    	query.select(root).where(builder.lessThan(root.get(attribute), date));
+    	query.select(root).where(builder.lessThan(root.get(attribute.getValue()), date));
     	return em.createQuery(query).getResultList();
     }
     
     @Override
-	public List<T> since (final SingularAttribute<? super T, Date> attribute, final Date date) {
+	public List<T> since (final TimeStamp attribute, final Date date) {
 		assert attribute != null;
 		assert date != null;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
-    	query.select(root).where(builder.greaterThan(root.get(attribute), date));
+    	query.select(root).where(builder.greaterThan(root.get(attribute.getValue()), date));
     	return em.createQuery(query).getResultList();
     }
     
     @Override
-	public List<T> during (final SingularAttribute<? super T, Date> attribute, final Date start, final Date end) {
+	public List<T> during (final TimeStamp attribute, final Date start, final Date end) {
 		assert attribute != null;
 		assert start != null;
 		assert end != null;
@@ -176,12 +176,12 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
-    	query.select(root).where(builder.between(root.get(attribute), start, end));
+    	query.select(root).where(builder.between(root.get(attribute.getValue()), start, end));
     	return em.createQuery(query).getResultList();
     }
     
 	@Override
-	public List<T> notDuring (final SingularAttribute<? super T, Date> attribute, final Date start, final Date end) {
+	public List<T> notDuring (final TimeStamp attribute, final Date start, final Date end) {
 		assert attribute != null;
 		assert start != null;
 		assert end != null;
@@ -189,7 +189,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     	CriteriaBuilder builder = em.getCriteriaBuilder();
     	CriteriaQuery<T> query = builder.createQuery(type);
     	Root<T> root = query.from(type);
-    	query.select(root).where(builder.between(root.get(attribute), start, end).not());
+    	query.select(root).where(builder.between(root.get(attribute.getValue()), start, end).not());
     	return em.createQuery(query).getResultList();
     }
 

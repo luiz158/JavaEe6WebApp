@@ -52,13 +52,13 @@ public interface ICrud<T, PK extends Serializable> extends IDb<PK> {
     
     List<T> findByNamedQueryRange (String queryName, Map<String, Object> parameters, int first, int max);
     
-    List<T> before (SingularAttribute<? super T, Date> attribute, Date date);
+    List<T> before (TimeStamp attribute, Date date);
     
-    List<T> since (SingularAttribute<? super T, Date> attribute, Date date);
+    List<T> since (TimeStamp attribute, Date date);
     
-    List<T> during (SingularAttribute<? super T, Date> attribute, Date date1, Date date2);
+    List<T> during (TimeStamp attribute, Date date1, Date date2);
     
-    List<T> notDuring (SingularAttribute<? super T, Date> attribute, Date date1, Date date2);
+    List<T> notDuring (TimeStamp attribute, Date date1, Date date2);
     
     List<T> search (SingularAttribute<? super T, String> attribute, String queryString);
 }

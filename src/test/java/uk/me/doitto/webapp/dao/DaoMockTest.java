@@ -375,7 +375,7 @@ public class DaoMockTest extends EasyMockSupport {
 		expect(em.createQuery(EasyMock.isA(CriteriaQuery.class))).andReturn(tq);
 		expect(tq.getResultList()).andReturn(new ArrayList<SimpleEntity>());
 		replayAll();
-		dao.before(AbstractEntity_.created, new Date());
+		dao.before(TimeStamp.created, new Date());
 		verifyAll();
 	}
 	
@@ -387,7 +387,7 @@ public class DaoMockTest extends EasyMockSupport {
 		} catch (AssertionError e) {
 		}
 		try {
-			dao.before(AbstractEntity_.created, null);
+			dao.before(TimeStamp.created, null);
 			fail("Should not reach here!");
 		} catch (AssertionError e) {
 		}
@@ -401,7 +401,7 @@ public class DaoMockTest extends EasyMockSupport {
 		} catch (AssertionError e) {
 		}
 		try {
-			dao.since(AbstractEntity_.created, null);
+			dao.since(TimeStamp.created, null);
 			fail("Should not reach here!");
 		} catch (AssertionError e) {
 		}
@@ -417,17 +417,17 @@ public class DaoMockTest extends EasyMockSupport {
 		} catch (AssertionError e) {
 		}
 		try {
-			dao.during(AbstractEntity_.created, null, date2);
+			dao.during(TimeStamp.created, null, date2);
 			fail("Should not reach here!");
 		} catch (AssertionError e) {
 		}
 		try {
-			dao.during(AbstractEntity_.created, date1, null);
+			dao.during(TimeStamp.created, date1, null);
 			fail("Should not reach here!");
 		} catch (AssertionError e) {
 		}
 		try {
-			dao.during(AbstractEntity_.created, date2, date1);
+			dao.during(TimeStamp.created, date2, date1);
 			fail("Should not reach here!");
 		} catch (AssertionError e) {
 		}
@@ -443,17 +443,17 @@ public class DaoMockTest extends EasyMockSupport {
 		} catch (AssertionError e) {
 		}
 		try {
-			dao.notDuring(AbstractEntity_.created, null, date2);
+			dao.notDuring(TimeStamp.created, null, date2);
 			fail("Should not reach here!");
 		} catch (AssertionError e) {
 		}
 		try {
-			dao.notDuring(AbstractEntity_.created, date1, null);
+			dao.notDuring(TimeStamp.created, date1, null);
 			fail("Should not reach here!");
 		} catch (AssertionError e) {
 		}
 		try {
-			dao.notDuring(AbstractEntity_.created, date2, date1);
+			dao.notDuring(TimeStamp.created, date2, date1);
 			fail("Should not reach here!");
 		} catch (AssertionError e) {
 		}

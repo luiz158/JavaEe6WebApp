@@ -317,20 +317,20 @@ public class EmTest {
         tx.commit();
         
         // Date 1
-        assertTrue("Wrong contents! ", dao.before(AbstractEntity_.created, date1).contains(entityA));
-        assertFalse("Wrong contents! ", dao.before(AbstractEntity_.accessed, date1).contains(entityB) || dao.before(AbstractEntity_.modified, date1).contains(entityC));
-        assertTrue("Wrong contents! ", dao.since(AbstractEntity_.created, date1).contains(entityB) && dao.since(AbstractEntity_.modified, date1).contains(entityC));
-        assertFalse("Wrong contents! ", dao.since(AbstractEntity_.accessed, date1).contains(entityA));
+        assertTrue("Wrong contents! ", dao.before(TimeStamp.created, date1).contains(entityA));
+        assertFalse("Wrong contents! ", dao.before(TimeStamp.accessed, date1).contains(entityB) || dao.before(TimeStamp.modified, date1).contains(entityC));
+        assertTrue("Wrong contents! ", dao.since(TimeStamp.created, date1).contains(entityB) && dao.since(TimeStamp.modified, date1).contains(entityC));
+        assertFalse("Wrong contents! ", dao.since(TimeStamp.accessed, date1).contains(entityA));
         // Date 2
-        assertTrue("Wrong contents! ", dao.before(AbstractEntity_.created, date2).contains(entityA) && dao.before(AbstractEntity_.modified, date2).contains(entityB));
-        assertFalse("Wrong contents! ", dao.before(AbstractEntity_.accessed, date2).contains(entityC));
-        assertTrue("Wrong contents! ", dao.since(AbstractEntity_.created, date2).contains(entityC));
-        assertFalse("Wrong contents! ", dao.since(AbstractEntity_.accessed, date2).contains(entityA) || dao.since(AbstractEntity_.modified, date2).contains(entityB));
+        assertTrue("Wrong contents! ", dao.before(TimeStamp.created, date2).contains(entityA) && dao.before(TimeStamp.modified, date2).contains(entityB));
+        assertFalse("Wrong contents! ", dao.before(TimeStamp.accessed, date2).contains(entityC));
+        assertTrue("Wrong contents! ", dao.since(TimeStamp.created, date2).contains(entityC));
+        assertFalse("Wrong contents! ", dao.since(TimeStamp.accessed, date2).contains(entityA) || dao.since(TimeStamp.modified, date2).contains(entityB));
         // Both dates
-        assertTrue("Wrong contents! ", dao.during(AbstractEntity_.created, date1, date2).contains(entityB));
-        assertFalse("Wrong contents! ", dao.during(AbstractEntity_.accessed, date1, date2).contains(entityA) || dao.during(AbstractEntity_.modified, date1, date2).contains(entityC));
-        assertTrue("Wrong contents! ", dao.notDuring(AbstractEntity_.created, date1, date2).contains(entityA) && dao.notDuring(AbstractEntity_.modified, date1, date2).contains(entityC));
-        assertFalse("Wrong contents! ", dao.notDuring(AbstractEntity_.accessed, date1, date2).contains(entityB));
+        assertTrue("Wrong contents! ", dao.during(TimeStamp.created, date1, date2).contains(entityB));
+        assertFalse("Wrong contents! ", dao.during(TimeStamp.accessed, date1, date2).contains(entityA) || dao.during(TimeStamp.modified, date1, date2).contains(entityC));
+        assertTrue("Wrong contents! ", dao.notDuring(TimeStamp.created, date1, date2).contains(entityA) && dao.notDuring(TimeStamp.modified, date1, date2).contains(entityC));
+        assertFalse("Wrong contents! ", dao.notDuring(TimeStamp.accessed, date1, date2).contains(entityB));
     }
     
     @Test

@@ -19,6 +19,7 @@ import javax.ws.rs.core.Response;
 import uk.me.doitto.webapp.dao.AbstractEntity;
 import uk.me.doitto.webapp.dao.AbstractEntity_;
 import uk.me.doitto.webapp.dao.Crud;
+import uk.me.doitto.webapp.dao.TimeStamp;
 
 /**
  * Specialises IRestCrud for Long PKs, specifies an overlay method to selectively allow editing over REST
@@ -156,10 +157,6 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 		return getService().findByNamedQueryRange(queryName, parameters, first, max);
 	}
 
-    private SingularAttribute<AbstractEntity, Date> getMetaModelDateAttribute (final String attribute) {
-    	return AbstractEntity.TimeStamp.valueOf(attribute).getAttribute();
-    }
-    
     @GET
     @Path(BEFORE)
     @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
@@ -167,7 +164,7 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 	public List<T> before (@QueryParam(ATTRIBUTE) final String attribute, @QueryParam(DATE) final long date) {
 		assert attribute != null;
 		assert date > 0;
-    	return getService().before(getMetaModelDateAttribute(attribute), new Date(date));
+    	return getService().before(TimeStamp.valueOf(attribute), new Date(date));
     }
     
     @GET
@@ -177,7 +174,7 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 	public List<T> since (@QueryParam(ATTRIBUTE) final String attribute, @QueryParam(DATE) final long date) {
 		assert attribute != null;
 		assert date > 0;
-    	return getService().since(getMetaModelDateAttribute(attribute), new Date(date));
+    	return getService().since(TimeStamp.valueOf(attribute), new Date(date));
     }
     
     @GET
@@ -188,7 +185,7 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 		assert attribute != null;
 		assert start > 0;
 		assert end > start;
-    	return getService().during(getMetaModelDateAttribute(attribute), new Date(start), new Date(end));
+    	return getService().during(TimeStamp.valueOf(attribute), new Date(start), new Date(end));
     }
     
     @GET
@@ -199,7 +196,7 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 		assert attribute != null;
 		assert start > 0;
 		assert end > start;
-    	return getService().notDuring(getMetaModelDateAttribute(attribute), new Date(start), new Date(end));
+    	return getService().notDuring(TimeStamp.valueOf(attribute), new Date(start), new Date(end));
     }
     
     @GET
