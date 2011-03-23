@@ -8,6 +8,11 @@ import org.directwebremoting.Browser;
 import org.directwebremoting.ServerContextFactory;
 import org.directwebremoting.ui.dwr.Util;
 
+/**
+ * Created by DWR
+ * @author super
+ *
+ */
 public class Clock implements Runnable {
 
 	protected transient boolean active = false;
@@ -17,7 +22,7 @@ public class Clock implements Runnable {
 	}
 
 	@Override
-	public void run () {
+	public synchronized void run () {
 		if (active) {
 			setClockDisplay(new Date().toString());
 		}
@@ -42,7 +47,7 @@ public class Clock implements Runnable {
 	 *            The string to display.
 	 */
 	public void setClockDisplay (final String output) {
-		Browser.withPage(ServerContextFactory.get().getContextPath() + "/reverseajax/clock.html", new Runnable() {
+		Browser.withPage(ServerContextFactory.get().getContextPath() + "/", new Runnable() {
 			@Override
 			public void run() {
 				Util.setValue("clockDisplay", output);
