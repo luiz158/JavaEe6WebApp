@@ -85,6 +85,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     @Override
     public void delete (final Long id) {
 		assert id != null;
+		assert id.longValue() > 0;
     	LOGGER.log(Level.FINE, "delete(" + id + ") " + type);
         em.remove(find(id));
     }
@@ -102,6 +103,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     @Override
     public T find (final Long id) {
 		assert id != null;
+		assert id.longValue() > 0;
     	LOGGER.log(Level.FINE, "find(" + id + ") " + type);
         T t = em.find(type, id);
         if (t != null) {
@@ -133,6 +135,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     @Override
     public List<T> findByNamedQuery (final String queryName, final Map<String, Object> parameters, int first, int max) {
 		assert queryName != null;
+		assert queryName.length() > 0;
 		assert parameters != null;
 		assert first >= 0;
 		assert max >= 0;

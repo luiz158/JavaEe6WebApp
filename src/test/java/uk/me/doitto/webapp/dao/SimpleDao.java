@@ -29,7 +29,7 @@ public class SimpleDao extends Crud<SimpleEntity> {
 		super(SimpleEntity.class);
 	}
 	
-	public SimpleDao (EntityManager mock) {
+	public SimpleDao (final EntityManager mock) {
 		super(SimpleEntity.class, mock);
 	}
 }
