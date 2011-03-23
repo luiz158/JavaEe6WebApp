@@ -49,17 +49,19 @@ public class TemplateController implements Serializable {
 
 	public enum Navigation {
 
-        index("/index"),
-        next("/next"),
-        login("/login"),
-        error("/error"),
-        another(Globals.PAGE_PREFIX + "another"),
-        listusers(Globals.PAGE_PREFIX + "listUsers");
+        index("/index" + Globals.PAGE_SUFFIX),
+        next("/next" + Globals.PAGE_SUFFIX),
+        login("/login" + Globals.PAGE_SUFFIX),
+        error("/error" + Globals.PAGE_SUFFIX),
+        another(Globals.PAGE_PREFIX + "another" + Globals.PAGE_SUFFIX),
+        listusers(Globals.PAGE_PREFIX + "listUsers" + Globals.PAGE_SUFFIX),
+        dwr("/dwr"),
+        wadl("/resources/application.wadl");
         
         private final String page;
 
         public String getPage() {
-            return page + Globals.PAGE_SUFFIX;
+            return page;
         }
 
         Navigation (final String page) {
@@ -75,7 +77,7 @@ public class TemplateController implements Serializable {
         return "Hello World! - Current time is: " + new Date();
     }
     
-    public String getLoggedInUser() {
+    public String getLoggedInUser () {
         Principal principal = FacesContext.getCurrentInstance().getExternalContext().getUserPrincipal();
         if (principal != null) {
             return principal.getName();
@@ -83,7 +85,17 @@ public class TemplateController implements Serializable {
         return "No User";
     }
 
-    public Object logout() {
+    public Object dwr () {
+        currentPage = Navigation.dwr.getPage();
+        return currentPage;
+    }
+
+    public Object wadl () {
+        currentPage = Navigation.wadl.getPage();
+        return currentPage;
+    }
+
+    public Object logout () {
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
         return Navigation.index.getPage();
     }
@@ -103,10 +115,10 @@ public class TemplateController implements Serializable {
         return currentPage;
     }
 
-    public Object listUsers () {
-        currentPage = Navigation.listusers.getPage();
-        return currentPage;
-    }
+//    public Object listUsers () {
+//        currentPage = Navigation.listusers.getPage();
+//        return currentPage;
+//    }
 
     public Object toggleDebug () {
         debug = !debug;

@@ -68,6 +68,27 @@
                 </h:column>
 
                 <composite:insertChildren />
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Created" />
+                    </f:facet>
+                    <h:outputText value="#{item.created}" />
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Modified" />
+                    </f:facet>
+                    <h:outputText value="#{item.modified}" />
+                </h:column>
+
+                <h:column>
+                    <f:facet name="header">
+                        <h:outputText value="Accessed" />
+                    </f:facet>
+                    <h:outputText value="#{item.accessed}" />
+                </h:column>
             </h:dataTable>
 
             <h:panelGrid columns="7">
