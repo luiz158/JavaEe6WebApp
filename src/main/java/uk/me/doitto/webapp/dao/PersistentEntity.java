@@ -54,21 +54,31 @@ public interface PersistentEntity<PK extends Serializable> extends IDb<PK> {
 	 */
 	boolean isNew ();
 
+	/**
+	 * @return the entity name, used by equals() unless it is overridden
+	 */
 	String getName ();
 
 	void setName (String name);
 
-	Date getAccessed ();
-
-	void setAccessed (Date accessed);
-
+	/**
+	 * @return the creation date for this entity
+	 */
 	Date getCreated ();
 
-	void setCreated (Date created);
-	
+	/**
+	 * @return the latest modification date for this entity
+	 */
 	Date getModified ();
 
 	void setModified (Date modified);
+
+	/**
+	 * @return date that this entity was last retrieved by id (not by a general query)
+	 */
+	Date getAccessed ();
+
+	void setAccessed (Date accessed);
 
 	/**
 	 * Obtain a deep copy of the entity

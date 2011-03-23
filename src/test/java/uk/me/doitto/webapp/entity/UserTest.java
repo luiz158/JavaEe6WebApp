@@ -198,11 +198,12 @@ public class UserTest {
 		assertEquals("Wrong class!", appUser.getClass(), this.user.getClass());
 	}
 	
+	@Ignore
 	@SuppressWarnings("unused")
 	@Test
 	public void testMetaModel () {
-		SingularAttribute<AppUser, String> realName = AppUser_.realName;
-		SingularAttribute<AppUser, String> password = AppUser_.password;
-		SingularAttribute<AppUser, String> comments = AppUser_.comments;
+//		SingularAttribute<AppUser, String> realName = AppUser_.realName;
+//		SingularAttribute<AppUser, String> password = AppUser_.password;
+//		SingularAttribute<AppUser, String> comments = AppUser_.comments;
 	}
 }

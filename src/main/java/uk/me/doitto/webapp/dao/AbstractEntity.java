@@ -34,6 +34,8 @@ import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
 import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.xml.bind.JAXBContext;
@@ -42,6 +44,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlTransient;
 
 /**
  * Abstract implementation of PersistentEntity, in which the primary key type
@@ -78,13 +81,18 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	}
 	
 	/**
-	 * For use by persistence provider
+	 * For use by persistence provider, not sent to REST output
 	 */
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@XmlTransient
 	protected Long id;
 
+	/**
+	 * For use in REST output, not persisted
+	 */
 	@XmlID
+	@Transient
 	protected String xmlId;
 	
 	/**
@@ -98,13 +106,13 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 */
 	protected String name;
 
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date created;
 
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date modified;
 
-    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    @Temporal(TemporalType.TIMESTAMP)
 	private Date accessed;
 
 	protected AbstractEntity () {
@@ -121,7 +129,7 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	protected AbstractEntity (final AbstractEntity entity) {
 		assert entity != null;
 		if (! isNew()) {
-			this.id = new Long(id.longValue());
+			this.id = Long.valueOf(id.longValue());
 		}
 		this.version = entity.version;
 		this.name = entity.name;
@@ -130,6 +138,14 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		this.accessed = new Date(entity.accessed.getTime());
 	}
 	
+    protected static JAXBContext initJaxbContext (final Class<? extends AbstractEntity> clazz) {
+    	try {
+			return JAXBContext.newInstance(clazz);
+		} catch (JAXBException e) {
+			throw new RuntimeException(e);
+		}
+    }
+    
 	/**
 	 * {@inheritDoc}
 	 */
@@ -138,16 +154,14 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		return id;
 	}
 
-	public String getXmlId () {
-		return xmlId;
-	}
-
-	public void setXmlId (final String xmlId) {
-		this.xmlId = xmlId;
-	}
-
+	/**
+	 * Populate xmlId field when retrieved from database.  
+	 * Only ever called by persistence framework, so suppress warning
+	 * {@inheritDoc}
+	 */
+	@SuppressWarnings("unused")
 	@PostLoad
-	public void initXmlId () {
+	private void initXmlId () {
 		xmlId = id.toString();
 	}
 
@@ -183,37 +197,46 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		this.name = name;
 	}
 
-	@Override
-	public Date getAccessed () {
-		return new Date(accessed.getTime());
-	}
-
-	@Override
-	public void setAccessed (final Date accessed) {
-		assert accessed != null;
-		this.accessed = new Date(accessed.getTime());
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Date getCreated () {
 		return new Date(created.getTime());
 	}
 
-	@Override
-	public void setCreated (final Date created) {
-		assert created != null;
-		this.created = new Date(created.getTime());
-	}
-
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public Date getModified () {
 		return new Date(modified.getTime());
 	}
 
+	/**
+	 * {@inheritDoc}
+	 */
 	@Override
 	public void setModified (final Date modified) {
 		assert modified != null;
 		this.modified = new Date(modified.getTime());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public Date getAccessed () {
+		return new Date(accessed.getTime());
+	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void setAccessed (final Date accessed) {
+		assert accessed != null;
+		this.accessed = new Date(accessed.getTime());
 	}
 
 	/**
@@ -245,21 +268,28 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		}
 	}
 
-	protected abstract JAXBContext getJaxbcontext ();
+	/**
+	 * Used internally by toXml() to provide a default JAXB XML toString() implementation
+	 * @return a class-specific context instance
+	 */
+	protected abstract JAXBContext getJaxbContext ();
 	
-	private String asString () throws JAXBException {
+	/**
+	 * @return a default JAXB XML String representation of the entity
+	 * @throws JAXBException
+	 */
+	private String toXml () throws JAXBException {
 		Writer writer = new StringWriter();
-		Marshaller marshaller = getJaxbcontext().createMarshaller();
+		Marshaller marshaller = getJaxbContext().createMarshaller();
 		marshaller.setProperty(Marshaller.JAXB_ENCODING, "UTF-8");
 		marshaller.marshal(this, writer);
 		return writer.toString();
 	}
 	
 	@Override
-	public String toString () {
-		
+	public String toString () {		
 		try {
-			return asString();
+			return toXml();
 		} catch (JAXBException e) {
 			return "[" + this.getClass().getSimpleName() + ": " + id + " v" + version + " - " + name + "]";
 		}

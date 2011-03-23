@@ -73,7 +73,7 @@ public class ArtistRest extends RestCrudBase<Artist> {
     private ArtistService artistService;
 
     @Context
-    private UriInfo uriInfo;
+    private transient UriInfo uriInfo;
     
     @Override
 	protected Artist overlay (final Artist incoming, final Artist existing) {

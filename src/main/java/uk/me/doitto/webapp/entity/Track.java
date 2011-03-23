@@ -22,9 +22,15 @@
  */
 package uk.me.doitto.webapp.entity;
 
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
+
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.ManyToMany;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -41,14 +47,7 @@ public class Track extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private static final JAXBContext jaxbContext;
-    static {
-    	try {
-    		jaxbContext = JAXBContext.newInstance(Track.class);
-		} catch (JAXBException e) {
-			throw new RuntimeException(e);
-		}
-    }
+    private static final JAXBContext jaxbContext = initJaxbContext(Track.class);
 
     private int duration = 0;
     
@@ -57,8 +56,10 @@ public class Track extends AbstractEntity {
     /**
      * Intentionally mutable field, so use a concurrent collection
      */
-//    @ManyToMany(mappedBy = "tracks", fetch = FetchType.EAGER)
-//    private Set<Album> albums = new ConcurrentSkipListSet<Album>();
+    @XmlIDREF
+    @XmlList
+    @ManyToMany(mappedBy = "tracks", fetch = FetchType.EAGER)
+    private Set<Album> albums = new ConcurrentSkipListSet<Album>();
     
     // for hibernate
     public Track () {
@@ -72,7 +73,7 @@ public class Track extends AbstractEntity {
     }
 
     @Override
-	public JAXBContext getJaxbcontext () {
+	public JAXBContext getJaxbContext () {
 		return jaxbContext;
 	}
 
@@ -94,13 +95,13 @@ public class Track extends AbstractEntity {
         this.url = url;
     }
 
-//	public Set<Album> getAlbums () {
-//        // intentionally mutable, just return reference
-//		return albums;
-//	}
-//
-//	public void setAlbums (final Set<Album> albums) {
-//        // intentionally mutable, just pass reference
-//		this.albums = albums;
-//	}
+	public Set<Album> getAlbums () {
+        // intentionally mutable, just return reference
+		return albums;
+	}
+
+	public void setAlbums (final Set<Album> albums) {
+        // intentionally mutable, just pass reference
+		this.albums = albums;
+	}
 }

@@ -22,16 +22,13 @@
  */
 package uk.me.doitto.webapp.entity;
 
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.OneToMany;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -50,14 +47,7 @@ public class Artist extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private static final JAXBContext jaxbContext;
-    static {
-    	try {
-    		jaxbContext = JAXBContext.newInstance(Artist.class);
-		} catch (JAXBException e) {
-			throw new RuntimeException(e);
-		}
-    }
+    private static final JAXBContext jaxbContext = initJaxbContext(Artist.class);
 
     /**
      * Intentionally mutable field, so use a concurrent collection
@@ -79,7 +69,7 @@ public class Artist extends AbstractEntity {
     }
 
     @Override
-	public JAXBContext getJaxbcontext () {
+	public JAXBContext getJaxbContext () {
 		return jaxbContext;
 	}
 
@@ -92,14 +82,6 @@ public class Artist extends AbstractEntity {
     	assert albums != null;
         // intentionally mutable, just pass reference
         this.albums = albums;
-    }
-
-    public Map<String, Long> getAlbumIdMap () {
-        Map<String, Long> trackIdMap = new TreeMap<String, Long>();
-        for (Album album : albums) {
-            trackIdMap.put(album.getName(), album.getId());
-        }
-        return trackIdMap;
     }
 
     /**

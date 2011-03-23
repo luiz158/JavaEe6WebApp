@@ -483,7 +483,6 @@ public class RestIntegrationTest {
     public void testArtistAlbumLinking () throws FailingHttpStatusCodeException, IOException {
     	WebRequest request;
     	WebResponse response;
-    	String content;
     	
         // create artist
     	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH), HttpMethod.POST);
@@ -516,14 +515,6 @@ public class RestIntegrationTest {
     	request.setCharset(ENCODING);
         response = webClient.getPage(request).getWebResponse();
         
-    	// get artist by ID, JSON
-    	request = new WebRequest(new URL(artistlocation), HttpMethod.GET);
-    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
-    	request.setCharset(ENCODING);
-        response = webClient.getPage(request).getWebResponse();
-        content = response.getContentAsString();
-        System.out.println(content);
-
         // create another album
     	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH), HttpMethod.POST);
     	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
@@ -548,16 +539,27 @@ public class RestIntegrationTest {
     	request = new WebRequest(new URL(artistlocation), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
     	request.setCharset(ENCODING);
-        response = webClient.getPage(request).getWebResponse();
-        content = response.getContentAsString();
-        System.out.println(content);
-    }
+    	System.out.println("Artist: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+        
+    	// get albums by ID, JSON
+    	request = new WebRequest(new URL(album1location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+    	System.out.println("Linked Album: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	request = new WebRequest(new URL(album2location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+    	System.out.println("Linked Album: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
+}
     
     @Test
     public void testAlbumTrackLinking () throws FailingHttpStatusCodeException, IOException {
     	WebRequest request;
     	WebResponse response;
-    	String content;
     	
         // create album
     	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH), HttpMethod.POST);
@@ -590,14 +592,6 @@ public class RestIntegrationTest {
     	request.setCharset(ENCODING);
         response = webClient.getPage(request).getWebResponse();
         
-    	// get album by ID, JSON
-    	request = new WebRequest(new URL(albumlocation), HttpMethod.GET);
-    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
-    	request.setCharset(ENCODING);
-        response = webClient.getPage(request).getWebResponse();
-        content = response.getContentAsString();
-        System.out.println(content);
-
         // create another track
     	request = new WebRequest(new URL(REST_URL + TrackRest.PATH), HttpMethod.POST);
     	request.setAdditionalHeader(CONTENT_TYPE, MediaType.APPLICATION_JSON);
@@ -622,10 +616,22 @@ public class RestIntegrationTest {
     	request = new WebRequest(new URL(albumlocation), HttpMethod.GET);
     	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
     	request.setCharset(ENCODING);
-        response = webClient.getPage(request).getWebResponse();
-        content = response.getContentAsString();
-        System.out.println(content);
-    }
+    	System.out.println("Album: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+        
+    	// get tracks by ID, JSON
+    	request = new WebRequest(new URL(track1location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+    	System.out.println("Linked track: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	request = new WebRequest(new URL(track2location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+    	System.out.println("Linked track: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
+}
     
     @Test
     public void testDates () throws InterruptedException, FailingHttpStatusCodeException, IOException {
@@ -736,22 +742,5 @@ public class RestIntegrationTest {
     	System.out.println("Outside interval");
     	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
     	System.out.println("");
-    	
-    	assertTrue(true);
-    	
-//        assertTrue("Wrong contents! ", dao.before(AbstractEntity_.created, date1).contains(entityA));
-//        assertFalse("Wrong contents! ", dao.before(AbstractEntity_.accessed, date1).contains(entityB) || dao.before(AbstractEntity_.modified, date1).contains(entityC));
-//        assertTrue("Wrong contents! ", dao.since(AbstractEntity_.created, date1).contains(entityB) && dao.since(AbstractEntity_.modified, date1).contains(entityC));
-//        assertFalse("Wrong contents! ", dao.since(AbstractEntity_.accessed, date1).contains(entityA));
-//        // Date 2
-//        assertTrue("Wrong contents! ", dao.before(AbstractEntity_.created, date2).contains(entityA) && dao.before(AbstractEntity_.modified, date2).contains(entityB));
-//        assertFalse("Wrong contents! ", dao.before(AbstractEntity_.accessed, date2).contains(entityC));
-//        assertTrue("Wrong contents! ", dao.since(AbstractEntity_.created, date2).contains(entityC));
-//        assertFalse("Wrong contents! ", dao.since(AbstractEntity_.accessed, date2).contains(entityA) || dao.since(AbstractEntity_.modified, date2).contains(entityB));
-//        // Both dates
-//        assertTrue("Wrong contents! ", dao.during(AbstractEntity_.created, date1, date2).contains(entityB));
-//        assertFalse("Wrong contents! ", dao.during(AbstractEntity_.accessed, date1, date2).contains(entityA) || dao.during(AbstractEntity_.modified, date1, date2).contains(entityC));
-//        assertTrue("Wrong contents! ", dao.notDuring(AbstractEntity_.created, date1, date2).contains(entityA) && dao.notDuring(AbstractEntity_.modified, date1, date2).contains(entityC));
-//        assertFalse("Wrong contents! ", dao.notDuring(AbstractEntity_.accessed, date1, date2).contains(entityB));
     }
 }

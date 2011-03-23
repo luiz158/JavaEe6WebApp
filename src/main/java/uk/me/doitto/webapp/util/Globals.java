@@ -45,7 +45,7 @@ public class Globals {
     public enum LogFile {
         HANDLER("logging.out");
 
-        private FileHandler fh;
+        private transient FileHandler fh;
 
         public FileHandler get () {
             return fh;

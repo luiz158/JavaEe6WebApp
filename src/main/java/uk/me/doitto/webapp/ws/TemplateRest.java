@@ -43,7 +43,7 @@ public class TemplateRest implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-    final String world = "Hello World!";
+    final static String world = "Hello World!";
 
     @GET 
     @Produces("text/plain")

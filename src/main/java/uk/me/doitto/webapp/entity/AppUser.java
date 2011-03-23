@@ -26,7 +26,6 @@ import javax.persistence.Entity;
 import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlRootElement;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
@@ -37,21 +36,16 @@ import uk.me.doitto.webapp.dao.AbstractEntity;
  */
 @Entity
 @NamedQueries({
-    @NamedQuery(name = "AppUser.ALL", query = "SELECT a FROM AppUser a")
+    @NamedQuery(name = AppUser.FIND_ALL, query = "SELECT a FROM AppUser a")
 })
 @XmlRootElement
 public class AppUser extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private static final JAXBContext jaxbContext;
-    static {
-    	try {
-    		jaxbContext = JAXBContext.newInstance(AppUser.class);
-		} catch (JAXBException e) {
-			throw new RuntimeException(e);
-		}
-    }
+    public static final String FIND_ALL = "AppUser.findAll";
+
+    private static final JAXBContext jaxbContext = initJaxbContext(AppUser.class);
 
 	private String password;
 
@@ -72,7 +66,7 @@ public class AppUser extends AbstractEntity {
 	}
 
     @Override
-	public JAXBContext getJaxbcontext () {
+	public JAXBContext getJaxbContext () {
 		return jaxbContext;
 	}
 

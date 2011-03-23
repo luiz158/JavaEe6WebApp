@@ -230,7 +230,7 @@ public class DaoMockTest extends EasyMockSupport {
 		expect(mockCb.count(mockRoot)).andReturn(expLong);
 		expect(mockCqLong.select(expLong)).andReturn(mockCqLong);
 		expect(mockEm.createQuery(EasyMock.isA(CriteriaQuery.class))).andReturn(mockTqLong);
-		expect(mockTqLong.getSingleResult()).andReturn(new Long(42));
+		expect(mockTqLong.getSingleResult()).andReturn(Long.valueOf(42));
 		replayAll();
 		dao.count();
 		verifyAll();

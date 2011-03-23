@@ -53,6 +53,11 @@
 			<url>${repoManager}/snapshots/</url>
 			<layout>default</layout>
 		</snapshotRepository>
+		
+		<site>
+			<id>site</id>
+			<url>file:///net/qnap/Public/JavaEe6WebApp/</url>
+		</site>
 	</distributionManagement>
 
 	<ciManagement>
@@ -466,6 +471,12 @@
 
 	<reporting>
 		<plugins>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>2.7</version>
+			</plugin>
+			
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-checkstyle-plugin</artifactId>

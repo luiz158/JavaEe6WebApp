@@ -23,9 +23,7 @@
 package uk.me.doitto.webapp.entity;
 
 import java.util.Date;
-import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.persistence.Entity;
@@ -34,7 +32,6 @@ import javax.persistence.ManyToMany;
 import javax.persistence.Temporal;
 import javax.validation.constraints.Past;
 import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -55,14 +52,7 @@ public class Album extends AbstractEntity {
 
     private static final long serialVersionUID = 1L;
 
-    private static final JAXBContext jaxbContext;
-    static {
-    	try {
-    		jaxbContext = JAXBContext.newInstance(Album.class);
-		} catch (JAXBException e) {
-			throw new RuntimeException(e);
-		}
-    }
+    private static final JAXBContext jaxbContext = initJaxbContext(Album.class);
 
     private String label = "UnknownLabel";
 
@@ -98,7 +88,7 @@ public class Album extends AbstractEntity {
     }
 
     @Override
-	public JAXBContext getJaxbcontext () {
+	public JAXBContext getJaxbContext () {
 		return jaxbContext;
 	}
 
@@ -169,14 +159,6 @@ public class Album extends AbstractEntity {
         this.tracks = tracks;
     }
 
-    public Map<String, Long> getTrackIdMap () {
-        Map<String, Long> trackIdMap = new TreeMap<String, Long>();
-        for (Track track : tracks) {
-            trackIdMap.put(track.getName(), track.getId());
-        }
-        return trackIdMap;
-    }
-
     /**
      * Creates a two-way link between this album and a track object
      *
@@ -185,7 +167,7 @@ public class Album extends AbstractEntity {
     public void addToTrackListing (final Track track) {
     	assert track != null;
         tracks.add(track);
-//        track.getAlbums().add(this);
+        track.getAlbums().add(this);
     }
 
     /**
@@ -196,6 +178,6 @@ public class Album extends AbstractEntity {
     public void removeFromTrackListing (final Track track) {
     	assert track != null;
         tracks.remove(track);
-//        track.getAlbums().remove(this);
+        track.getAlbums().remove(this);
     }
 }

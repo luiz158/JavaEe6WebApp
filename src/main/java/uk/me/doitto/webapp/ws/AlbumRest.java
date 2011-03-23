@@ -71,7 +71,7 @@ public class AlbumRest extends RestCrudBase<Album> {
     private AlbumService albumService;
 
     @Context
-    private UriInfo uriInfo;
+    private transient UriInfo uriInfo;
 
 	@Override
 	protected Album overlay (final Album incoming, final Album existing) {
