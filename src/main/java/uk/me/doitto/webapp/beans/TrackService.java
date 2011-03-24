@@ -46,7 +46,7 @@ public class TrackService extends Crud<Track> {
 		
 	    static TrackService newInstance () {
 	    	try {   		
-	        	return (TrackService)new InitialContext().lookup("java:global/classes/TrackService");
+	        	return (TrackService)new InitialContext().lookup("java:global/myapp/TrackService");
 			} catch (NamingException e) {
 				throw new RuntimeException("Could not create a TrackService EJB for DWR", e);
 			}
