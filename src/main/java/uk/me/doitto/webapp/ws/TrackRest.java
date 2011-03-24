@@ -85,6 +85,8 @@ public class TrackRest extends RestCrudBase<Track> {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final Track track) {
+		assert trackService != null;
+		assert uriInfo != null;
     	assert track != null;
     	Track combined = overlay(track, new Track());
     	trackService.create(combined);
@@ -94,7 +96,8 @@ public class TrackRest extends RestCrudBase<Track> {
     }
 
 	@Override
-	protected Crud<Track> getService() {
+	protected Crud<Track> getService () {
+		assert trackService != null;
 		return trackService;
 	}
 }

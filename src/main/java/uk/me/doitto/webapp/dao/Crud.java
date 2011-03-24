@@ -75,6 +75,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
 	@Override
     public void create (final T t) {
+		assert em != null;
 		assert t != null;
 		LOGGER.log(Level.FINE, "create(" + t + ") " + type);
         em.persist(t);
@@ -82,6 +83,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
     public void remove (final Long id) {
+		assert em != null;
 		assert id != null;
 		assert id.longValue() > 0;
     	LOGGER.log(Level.FINE, "delete(" + id + ") " + type);
@@ -90,6 +92,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
     public T update (final T t) {
+		assert em != null;
 		assert t != null;
     	LOGGER.log(Level.FINE, "update(" + t + ") " + type);
         Date date = new Date();
@@ -100,6 +103,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
     public T find (final Long id) {
+		assert em != null;
 		assert id != null;
 		assert id.longValue() > 0;
     	LOGGER.log(Level.FINE, "find(" + id + ") " + type);
@@ -117,6 +121,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
 	public List<T> findAllRange (final int first, final int max) {
+		assert em != null;
 		assert first >= 0;
 		assert max >= 0;
     	LOGGER.log(Level.FINE, "findAll(first, max) " + type);
@@ -132,6 +137,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
     public List<T> findByNamedQueryRange (final String queryName, final Map<String, Object> parameters, int first, int max) {
+		assert em != null;
 		assert queryName != null;
 		assert queryName.length() > 0;
 		assert parameters != null;
@@ -147,6 +153,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
 	public List<T> before (final TimeStamp attribute, final Date date) {
+		assert em != null;
 		assert attribute != null;
 		assert date != null;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -158,6 +165,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     
     @Override
 	public List<T> since (final TimeStamp attribute, final Date date) {
+		assert em != null;
 		assert attribute != null;
 		assert date != null;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
@@ -169,6 +177,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     
     @Override
 	public List<T> during (final TimeStamp attribute, final Date start, final Date end) {
+		assert em != null;
 		assert attribute != null;
 		assert start != null;
 		assert end != null;
@@ -182,6 +191,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     
 	@Override
 	public List<T> notDuring (final TimeStamp attribute, final Date start, final Date end) {
+		assert em != null;
 		assert attribute != null;
 		assert start != null;
 		assert end != null;
@@ -195,6 +205,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 
     @Override
 	public List<T> search (final SingularAttribute<? super T, String> attribute, final String queryString) {
+		assert em != null;
 		assert attribute != null;
 		assert queryString != null;
 		assert queryString.length() > 0;
@@ -208,6 +219,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     
     @Override
 	public int count () {
+		assert em != null;
     	CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<Long> cq = builder.createQuery(Long.class);
         cq.select(builder.count(cq.from(type)));

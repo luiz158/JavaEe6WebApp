@@ -93,6 +93,8 @@ public class AlbumRest extends RestCrudBase<Album> {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final Album album) {
+		assert albumService != null;
+		assert uriInfo != null;
     	assert album != null;
     	Album combined = overlay(album, new Album());
     	albumService.create(combined);
@@ -104,7 +106,8 @@ public class AlbumRest extends RestCrudBase<Album> {
     @GET
     @Path(LINK_TRACK)
     @Produces(MediaType.TEXT_HTML)
-    public Response linkTrack(@QueryParam(QP_ALBUMID) final Long id, @QueryParam(TrackRest.QP_TRACKID) final Long trackId) {
+    public Response linkTrack (@QueryParam(QP_ALBUMID) final Long id, @QueryParam(TrackRest.QP_TRACKID) final Long trackId) {
+		assert albumService != null;
 		assert id >= 0;
 		assert trackId >= 0;
     	Globals.LOGGER.log(Level.FINE, "Linking Album: {0} to Track: {1}", new Object[]{id, trackId});
@@ -115,7 +118,8 @@ public class AlbumRest extends RestCrudBase<Album> {
     @GET
     @Path(UNLINK_TRACK)
     @Produces(MediaType.TEXT_HTML)
-    public Response unlinkTrack(@QueryParam(QP_ALBUMID) final Long id, @QueryParam(TrackRest.QP_TRACKID) final Long trackId) {
+    public Response unlinkTrack (@QueryParam(QP_ALBUMID) final Long id, @QueryParam(TrackRest.QP_TRACKID) final Long trackId) {
+		assert albumService != null;
 		assert id >= 0;
 		assert trackId >= 0;
     	Globals.LOGGER.log(Level.FINE, "Unlinking Album: {0} from Track: {1}", new Object[]{id, trackId});
@@ -124,7 +128,8 @@ public class AlbumRest extends RestCrudBase<Album> {
     }
 
 	@Override
-	protected Crud<Album> getService() {
+	protected Crud<Album> getService () {
+		assert albumService != null;
 		return albumService;
 	}
 }

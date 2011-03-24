@@ -83,6 +83,8 @@ public class AppUserRest extends RestCrudBase<AppUser> {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final AppUser appUser) {
+		assert appUserService != null;
+		assert uriInfo != null;
 		assert appUser != null;
     	AppUser combined = overlay(appUser, new AppUser());
     	appUserService.create(combined);
@@ -92,7 +94,8 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     }
 
 	@Override
-	protected Crud<AppUser> getService() {
+	protected Crud<AppUser> getService () {
+		assert appUserService != null;
 		return appUserService;
 	}
 }

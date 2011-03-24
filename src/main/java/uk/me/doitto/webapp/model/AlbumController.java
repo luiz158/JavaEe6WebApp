@@ -68,6 +68,7 @@ public class AlbumController extends ControllerBase<Album> {
 
     @Override
 	public Object jsfList () {
+    	assert albumService != null;
         items = albumService.findAll();
         pagedItems = listPagedItems();
         return Navigation.LIST.getPage();
@@ -75,6 +76,7 @@ public class AlbumController extends ControllerBase<Album> {
 
     @Override
 	public Object jsfSave () {
+    	assert albumService != null;
         if (item.isNew()) {
         	albumService.create(item);
         } else {
@@ -91,6 +93,7 @@ public class AlbumController extends ControllerBase<Album> {
 
     @Override
 	public Object jsfEdit (final Long id) {
+    	assert albumService != null;
     	assert id != null;
     	item = albumService.find(id);
         return Navigation.EDIT.getPage();
@@ -98,12 +101,14 @@ public class AlbumController extends ControllerBase<Album> {
 
     @Override
 	public Object jsfDelete (final Long id) {
+    	assert albumService != null;
     	assert id != null;
     	albumService.remove(id);
         return jsfList();
     }
     
 	public Object linkTrack (final Long id, final Long trackId) {
+    	assert albumService != null;
     	assert id != null;
     	assert trackId != null;
     	albumService.linkTrack(id, trackId);
@@ -111,6 +116,7 @@ public class AlbumController extends ControllerBase<Album> {
     }
     
 	public Object unlinkTrack (final Long id, final Long trackId) {
+    	assert albumService != null;
     	assert id != null;
     	assert trackId != null;
     	albumService.unlinkTrack(id, trackId);

@@ -85,6 +85,8 @@ public class ArtistRest extends RestCrudBase<Artist> {
 	@Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
     @Override
     public Response create (final Artist artist) {
+		assert artistService != null;
+		assert uriInfo != null;
 		assert artist != null;
     	Artist combined = overlay(artist, new Artist());
     	artistService.create(combined);
@@ -93,7 +95,8 @@ public class ArtistRest extends RestCrudBase<Artist> {
         return Response.created(uri).entity(combined).build();
     }
 
-    public Map<String, Long> getArtistNameIdMap() {
+    public Map<String, Long> getArtistNameIdMap () {
+		assert artistService != null;
         Globals.LOGGER.log(Level.FINE, "");
         Map<String, Long> artistNameMap = new TreeMap<String, Long>();
         for (Artist artist : artistService.findAll()) {
@@ -105,7 +108,8 @@ public class ArtistRest extends RestCrudBase<Artist> {
     @GET
     @Path(LINK_ALBUM)
     @Produces(MediaType.TEXT_HTML)
-    public Response linkAlbum(@QueryParam(QP_ARTISTID) final Long id, @QueryParam(AlbumRest.QP_ALBUMID) final Long albumId) {
+    public Response linkAlbum (@QueryParam(QP_ARTISTID) final Long id, @QueryParam(AlbumRest.QP_ALBUMID) final Long albumId) {
+		assert artistService != null;
 		assert id >= 0;
 		assert albumId >= 0;
     	Globals.LOGGER.log(Level.FINE, "Linking Artist: {0} to Album: {1}", new Object[]{id, albumId});
@@ -116,7 +120,8 @@ public class ArtistRest extends RestCrudBase<Artist> {
     @GET
     @Path(UNLINK_ALBUM)
     @Produces(MediaType.TEXT_HTML)
-    public Response unlinkAlbum(@QueryParam(QP_ARTISTID) final Long id, @QueryParam(AlbumRest.QP_ALBUMID) final Long albumId) {
+    public Response unlinkAlbum (@QueryParam(QP_ARTISTID) final Long id, @QueryParam(AlbumRest.QP_ALBUMID) final Long albumId) {
+		assert artistService != null;
 		assert id >= 0;
 		assert albumId >= 0;
     	Globals.LOGGER.log(Level.FINE, "Unlinking Artist: {0} from Album: {1}", new Object[]{id, albumId});
@@ -126,6 +131,7 @@ public class ArtistRest extends RestCrudBase<Artist> {
 
 	@Override
 	protected Crud<Artist> getService() {
+		assert artistService != null;
 		return artistService;
 	}
 }

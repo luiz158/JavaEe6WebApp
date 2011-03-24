@@ -68,6 +68,7 @@ public class TrackController extends ControllerBase<Track> {
 
     @Override
     public Object jsfList () {
+    	assert trackService != null;
         items = trackService.findAll();
         pagedItems = listPagedItems();
         return Navigation.LIST.getPage();
@@ -75,6 +76,7 @@ public class TrackController extends ControllerBase<Track> {
 
     @Override
     public Object jsfSave () {
+    	assert trackService != null;
         if (item.isNew()) {
             trackService.create(item);
         } else {
@@ -91,6 +93,7 @@ public class TrackController extends ControllerBase<Track> {
 
     @Override
     public Object jsfEdit (final Long id) {
+    	assert trackService != null;
     	assert id != null;
         item = trackService.find(id);
         return Navigation.EDIT.getPage();
@@ -98,6 +101,7 @@ public class TrackController extends ControllerBase<Track> {
 
     @Override
     public Object jsfDelete (final Long id) {
+    	assert trackService != null;
     	assert id != null;
         trackService.remove(id);
         return jsfList();

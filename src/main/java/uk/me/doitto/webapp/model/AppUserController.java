@@ -73,6 +73,7 @@ public class AppUserController extends ControllerBase<AppUser> {
 
     @Override
 	public Object jsfList () {
+    	assert service != null;
         items = service.findAll();
         pagedItems = listPagedItems();
         return Navigation.LIST.getPage();
@@ -80,6 +81,7 @@ public class AppUserController extends ControllerBase<AppUser> {
 
     @Override
 	public Object jsfSave () {
+    	assert service != null;
         if (password != null && password.length() > 0 && password.equals(passwordConf)) {
         	item.setPassword(password);
             password = null;
@@ -101,6 +103,7 @@ public class AppUserController extends ControllerBase<AppUser> {
 
     @Override
 	public Object jsfEdit (final Long id) {
+    	assert service != null;
     	assert id != null;
     	item = service.find(id);
         return Navigation.EDIT.getPage();
@@ -108,6 +111,7 @@ public class AppUserController extends ControllerBase<AppUser> {
 
     @Override
 	public Object jsfDelete (final Long id) {
+    	assert service != null;
     	assert id != null;
         service.remove(id);
         return jsfList();
