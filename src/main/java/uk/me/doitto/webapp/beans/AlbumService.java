@@ -41,20 +41,20 @@ public class AlbumService extends Crud<Album> {
 	private static final long serialVersionUID = 1L;
 
     @EJB
-    private final TrackService trackService = new TrackService();
+    private TrackService trackService;
 
-    public AlbumService() {
+    public AlbumService () {
         super(Album.class);
     }
     
-    public void linkTrack(final Long id, final Long trackId) {
+    public void linkTrack (final Long id, final Long trackId) {
     	assert id != null;
     	assert trackId != null;
     	LOGGER.log(Level.FINE, "Linking Album: {0} to Track: {1}", new Object[]{id, trackId});
         find(id).addToTrackListing(trackService.find(trackId));
     }
 
-    public void unlinkTrack(final Long id, final Long trackId) {
+    public void unlinkTrack (final Long id, final Long trackId) {
     	assert id != null;
     	assert trackId != null;
     	LOGGER.log(Level.FINE, "Unlinking Album: {0} from Track: {1}", new Object[]{id, trackId});

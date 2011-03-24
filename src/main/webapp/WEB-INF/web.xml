@@ -25,6 +25,7 @@
         <param-name>javax.faces.PROJECT_STAGE</param-name>
         <param-value>Development</param-value>
     </context-param>
+    
     <servlet>
         <servlet-name>Faces Servlet</servlet-name>
         <servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
@@ -34,6 +35,7 @@
         <servlet-name>Faces Servlet</servlet-name>
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
+    
     <servlet>
         <servlet-name>ServletAdaptor</servlet-name>
         <servlet-class>com.sun.jersey.spi.container.servlet.ServletContainer</servlet-class>
@@ -43,6 +45,7 @@
         <servlet-name>ServletAdaptor</servlet-name>
         <url-pattern>/resources/*</url-pattern>
     </servlet-mapping>
+    
 	<servlet>
 		<servlet-name>dwr-invoker</servlet-name>
 	<!--	  <display-name>DWR Servlet</display-name>-->
@@ -72,17 +75,28 @@
 <!--			<param-name>jsonpEnabled</param-name>-->
 <!--			<param-value>false</param-value>-->
 <!--		</init-param>-->
+	    <init-param>
+	      <param-name>accessLogLevel</param-name>
+	      <param-value>CALL</param-value>
+	    </init-param>
+		<init-param>
+		  <param-name>debug</param-name>
+		  <param-value>true</param-value>
+		</init-param>
   	</servlet>	
 	<servlet-mapping>
 	  <servlet-name>dwr-invoker</servlet-name>
 	  <url-pattern>/dwr/*</url-pattern>
 	</servlet-mapping>
+	
     <session-config>
         <session-timeout>30</session-timeout>
     </session-config>
+    
     <welcome-file-list>
         <welcome-file>index.xhtml</welcome-file>
     </welcome-file-list>
+    
     <security-constraint>
         <display-name>Admin</display-name>
         <web-resource-collection>
@@ -99,6 +113,7 @@
             <transport-guarantee>CONFIDENTIAL</transport-guarantee>
         </user-data-constraint>
     </security-constraint>
+    
     <security-constraint>
         <display-name>UserSecured</display-name>
         <web-resource-collection>
@@ -110,6 +125,7 @@
             <description/>
         </auth-constraint>
     </security-constraint>
+    
 <!--    <security-constraint>-->
 <!--        <display-name>RestAccess</display-name>-->
 <!--        <web-resource-collection>-->
@@ -122,6 +138,7 @@
 <!--            <transport-guarantee>INTEGRAL</transport-guarantee>-->
 <!--        </user-data-constraint>-->
 <!--    </security-constraint>-->
+
     <login-config>
         <auth-method>FORM</auth-method>
         <realm-name>file</realm-name>
@@ -130,6 +147,7 @@
             <form-error-page>/error.xhtml</form-error-page>
         </form-login-config>
     </login-config>
+    
     <security-role>
         <description/>
         <role-name>administrator</role-name>

@@ -24,6 +24,8 @@
 package uk.me.doitto.webapp.beans;
 
 import javax.ejb.Stateless;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.Track;
@@ -37,7 +39,29 @@ public class TrackService extends Crud<Track> {
 
 	private static final long serialVersionUID = 1L;
 	
-    public TrackService() {
+	// see Effective Java Second Edition Item 71: lazy initialization of a static field
+	// needed because this class is tested outside any container so can't just get an initial context
+	private static class FieldHolder {
+		static final TrackService dwrTrackService = newInstance();
+		
+	    static TrackService newInstance () {
+	    	try {   		
+	        	return (TrackService)new InitialContext().lookup("java:global/classes/TrackService");
+			} catch (NamingException e) {
+				throw new RuntimeException("Could not create a TrackService EJB for DWR", e);
+			}
+	    }
+	}
+		
+    public TrackService () {
         super(Track.class);
     }
+    
+    /**
+     * For DWR
+     * @return the bean
+     */
+	public static TrackService getInstance () {
+		return FieldHolder.dwrTrackService;
+	}
 }
