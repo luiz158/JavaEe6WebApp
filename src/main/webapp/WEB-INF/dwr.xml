@@ -1,10 +1,8 @@
 <!DOCTYPE dwr PUBLIC "-//GetAhead Limited//DTD Direct Web Remoting 3.0//EN" "http://getahead.org/dwr/dwr30.dtd">
-
 <dwr>
 	<!-- init is only needed if you are extending DWR -->
 	<init>
 		<creator id="singleton" class="org.directwebremoting.create.SingletonCreator"/>		
-<!--		<converter id="..." class="..." />-->
 	</init>
 
 	<allow>
@@ -30,11 +28,12 @@
 		</create>		
 		<create creator="singleton" javascript="JsTrackService">
 			<param name="class" value="uk.me.doitto.webapp.beans.TrackService" />
-<!--			<param name="instanceMethodName" value="getInstance" />-->
 		</create>
 		
 		<!-- Converters -->
 		<convert converter="bean" match="uk.me.doitto.webapp.beans.*" />		
+		<convert converter="bean" match="uk.me.doitto.webapp.entity.*" />		
+		<convert converter="bean" match="uk.me.doitto.webapp.dao.AbstractEntity" />		
 		<convert converter="enum" match="uk.me.doitto.webapp.dao.TimeStamp" />
 		
 	    <!-- this is a bad idea for live, but can be useful in testing -->
