@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.metamodel.SingularAttribute;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,8 +16,8 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
-import uk.me.doitto.webapp.dao.AbstractEntity_;
 import uk.me.doitto.webapp.dao.Crud;
+import uk.me.doitto.webapp.dao.TextField;
 import uk.me.doitto.webapp.dao.TimeStamp;
 
 /**
@@ -205,6 +204,6 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 	@Override
 	public List<T> search (@QueryParam(QUERY) final String query) {
 		assert query != null;
-		return getService().search(AbstractEntity_.name, query);
+		return getService().search(TextField.name, query);
 	}
 }

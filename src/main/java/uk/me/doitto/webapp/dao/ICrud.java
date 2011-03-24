@@ -24,8 +24,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.persistence.metamodel.SingularAttribute;
-
 /**
  *
  * @param <T> persistent class
@@ -60,5 +58,5 @@ public interface ICrud<T, PK extends Serializable> extends IDb<PK> {
     
     List<T> notDuring (TimeStamp attribute, Date date1, Date date2);
     
-    List<T> search (SingularAttribute<? super T, String> attribute, String queryString);
+    List<T> search (TextField attribute, String queryString);
 }

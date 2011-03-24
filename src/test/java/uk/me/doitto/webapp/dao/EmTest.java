@@ -335,8 +335,8 @@ public class EmTest {
     
     @Test
     public void testSearch () {
-    	assertEquals("Should be " + 18 + " instances", 18, dao.search(AbstractEntity_.name, "Test%").size());
-    	assertEquals("Should be " + 7 + " instances", 7, dao.search(AbstractEntity_.name, "%Count").size());
-    	assertEquals("Should be " + 11 + " instances", 11, dao.search(AbstractEntity_.name, "%FindRange").size());
+    	assertEquals("Should be " + 18 + " instances", 18, dao.search(TextField.name, "Test%").size());
+    	assertEquals("Should be " + 7 + " instances", 7, dao.search(TextField.name, "%Count").size());
+    	assertEquals("Should be " + 11 + " instances", 11, dao.search(TextField.name, "%FindRange").size());
     }
 }

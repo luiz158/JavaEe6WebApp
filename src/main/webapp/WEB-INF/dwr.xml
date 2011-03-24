@@ -33,7 +33,9 @@
 		<!-- Converters -->
 		<convert converter="bean" match="uk.me.doitto.webapp.beans.*" />		
 		<convert converter="bean" match="uk.me.doitto.webapp.entity.*" />		
-		<convert converter="bean" match="uk.me.doitto.webapp.dao.AbstractEntity" />		
+		<convert converter="bean" match="uk.me.doitto.webapp.dao.AbstractEntity" />
+		
+		<convert converter="enum" match="uk.me.doitto.webapp.dao.TextField" />
 		<convert converter="enum" match="uk.me.doitto.webapp.dao.TimeStamp" />
 		
 	    <!-- this is a bad idea for live, but can be useful in testing -->

@@ -32,7 +32,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import javax.persistence.metamodel.SingularAttribute;
 
 
 /**
@@ -204,7 +203,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
 
     @Override
-	public List<T> search (final SingularAttribute<? super T, String> attribute, final String queryString) {
+	public List<T> search (final TextField attribute, final String queryString) {
 		assert em != null;
 		assert attribute != null;
 		assert queryString != null;
@@ -213,7 +212,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     	CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(type);
         Root<T> root = query.from(type);
-        query.select(root).where(builder.like(root.get(attribute), "%" + queryString + "%"));
+        query.select(root).where(builder.like(root.get(attribute.getValue()), "%" + queryString + "%"));
         return em.createQuery(query).getResultList();
     }
     
