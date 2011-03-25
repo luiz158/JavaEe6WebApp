@@ -17,13 +17,13 @@
 		</create>
 		
 		<!-- Service beans -->
-		<create creator="new" scope="application">
+		<create creator="singleton" javascript="JsAppUserService">
 			<param name="class" value="uk.me.doitto.webapp.beans.AppUserService" />
 		</create>		
-		<create creator="new" scope="application">
+		<create creator="singleton" javascript="JsArtistService">
 			<param name="class" value="uk.me.doitto.webapp.beans.ArtistService" />
 		</create>		
-		<create creator="new" scope="application">
+		<create creator="singleton" javascript="JsAlbumService">
 			<param name="class" value="uk.me.doitto.webapp.beans.AlbumService" />
 		</create>		
 		<create creator="singleton" javascript="JsTrackService">

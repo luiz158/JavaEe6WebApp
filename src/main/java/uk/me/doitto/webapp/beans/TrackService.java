@@ -42,6 +42,7 @@ public class TrackService extends Crud<Track> {
 	// see Effective Java Second Edition Item 71: lazy initialization of a static field
 	// needed because this class is tested outside any container so can't just get an initial context
 	private static class FieldHolder {
+		
 		static final TrackService dwrTrackService = newInstance();
 		
 	    static TrackService newInstance () {

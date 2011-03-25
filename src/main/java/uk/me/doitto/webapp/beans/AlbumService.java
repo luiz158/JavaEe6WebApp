@@ -27,6 +27,8 @@ import java.util.logging.Level;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
 
 import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.Album;
@@ -40,12 +42,35 @@ public class AlbumService extends Crud<Album> {
 
 	private static final long serialVersionUID = 1L;
 
+	// see Effective Java Second Edition Item 71: lazy initialization of a static field
+	// needed because this class is tested outside any container so can't just get an initial context
+	private static class FieldHolder {
+		
+		static final AlbumService dwrTrackService = newInstance();
+		
+	    static AlbumService newInstance () {
+	    	try {   		
+	        	return (AlbumService)new InitialContext().lookup("java:global/myapp/AlbumService");
+			} catch (NamingException e) {
+				throw new RuntimeException("Could not create an AlbumService EJB for DWR", e);
+			}
+	    }
+	}
+		
     @EJB
     private TrackService trackService;
 
     public AlbumService () {
         super(Album.class);
     }
+    
+    /**
+     * For DWR
+     * @return the bean
+     */
+	public static AlbumService getInstance () {
+		return FieldHolder.dwrTrackService;
+	}
     
     public void linkTrack (final Long id, final Long trackId) {
     	assert trackService != null;
