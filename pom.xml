@@ -486,6 +486,7 @@
 				<version>2.3.1</version>
 				<configuration>
 					<threshold>Low</threshold>
+					<effort>Max</effort>
 				</configuration>
 			</plugin>
 
