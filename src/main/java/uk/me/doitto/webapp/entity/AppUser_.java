@@ -31,6 +31,5 @@ public class AppUser_ extends AbstractEntity_ {
 
 	public static volatile SingularAttribute<AppUser, String> realName;
 	public static volatile SingularAttribute<AppUser, String> password;
-	public static volatile SingularAttribute<AppUser, String> comments;
 
 }

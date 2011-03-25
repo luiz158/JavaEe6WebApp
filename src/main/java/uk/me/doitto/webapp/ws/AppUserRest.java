@@ -72,9 +72,6 @@ public class AppUserRest extends RestCrudBase<AppUser> {
     	if (incoming.getRealName() != null) {
     		existing.setRealName(incoming.getRealName());
     	}
-    	if (incoming.getComments() != null) {
-    		existing.setComments(incoming.getComments());
-    	}
 		return existing;
 	}
 

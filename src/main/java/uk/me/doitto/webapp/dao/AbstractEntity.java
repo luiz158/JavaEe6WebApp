@@ -27,11 +27,15 @@ import java.io.ObjectOutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Date;
+import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
+import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -43,7 +47,11 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlTransient;
+
+import uk.me.doitto.webapp.entity.AppUser;
 
 /**
  * Abstract implementation of PersistentEntity, in which the primary key type
@@ -82,6 +90,8 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 */
 	protected String name;
 
+	protected String comments;
+
     @Temporal(TemporalType.TIMESTAMP)
 	private Date created;
 
@@ -91,7 +101,18 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
     @Temporal(TemporalType.TIMESTAMP)
 	private Date accessed;
 
-	protected AbstractEntity () {
+    /**
+     * Intentionally mutable field, so use a concurrent collection
+     */
+//    @XmlIDREF
+//    @XmlList
+//    @OneToMany(fetch = FetchType.EAGER)
+//    private Set<AppUser> owners = new ConcurrentSkipListSet<AppUser>();
+
+    /**
+     * Default constructor
+     */
+    protected AbstractEntity () {
 		final Date date = new Date();
 		created = new Date(date.getTime());
 		modified = new Date(date.getTime());
@@ -104,14 +125,15 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 */
 	protected AbstractEntity (final AbstractEntity entity) {
 		assert entity != null;
-		if (! isNew()) {
-			this.id = Long.valueOf(id.longValue());
+		if (! entity.isNew()) {
+			id = Long.valueOf(entity.id.longValue());
 		}
-		this.version = entity.version;
-		this.name = entity.name;
-		this.created = new Date(entity.created.getTime());
-		this.modified = new Date(entity.modified.getTime());
-		this.accessed = new Date(entity.accessed.getTime());
+		version = entity.version;
+		name = entity.name;
+		comments = entity.comments;
+		created = new Date(entity.created.getTime());
+		modified = new Date(entity.modified.getTime());
+		accessed = new Date(entity.accessed.getTime());
 	}
 	
     protected static JAXBContext initJaxbContext (final Class<? extends AbstractEntity> clazz) {
@@ -170,8 +192,26 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	 */
 	@Override
 	public void setName (final String name) {
+    	assert name != null;
 		this.name = name;
 	}
+
+	/**
+	 * {@inheritDoc}
+	 */
+    @Override
+	public String getComments () {
+        return comments;
+    }
+
+	/**
+	 * {@inheritDoc}
+	 */
+    @Override
+	public void setComments (final String comments) {
+    	assert comments != null;
+        this.comments = comments;
+    }
 
 	/**
 	 * {@inheritDoc}
@@ -214,6 +254,37 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 		assert accessed != null;
 		this.accessed = new Date(accessed.getTime());
 	}
+
+//	public Set<AppUser> getOwners () {
+//        // intentionally mutable, just return reference
+//		return owners;
+//	}
+//
+//	public void setOwners (Set<AppUser> owners) {
+//    	assert owners != null;
+//        // intentionally mutable, just pass reference
+//		this.owners = owners;
+//	}
+//
+//    /**
+//     * Creates a two-way link between this entity and an owner
+//     *
+//     * @param owner
+//     */
+//    public void addOwner (final AppUser owner) {
+//    	assert owner != null;
+//    	owners.add(owner);
+//    }
+//
+//    /**
+//     * Destroys a two-way link between this entity and an owner
+//     *
+//     * @param owner
+//     */
+//    public void removeOwner (final AppUser owner) {
+//    	assert owner != null;
+//    	owners.remove(owner);
+//    }
 
 	/**
 	 * {@inheritDoc}

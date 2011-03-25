@@ -62,6 +62,13 @@ public interface PersistentEntity<PK extends Serializable> extends IDb<PK> {
 	void setName (String name);
 
 	/**
+	 * @return the entity comments/descriptioni
+	 */
+	String getComments ();
+
+	void setComments (String comments);
+
+	/**
 	 * @return the creation date for this entity
 	 */
 	Date getCreated ();

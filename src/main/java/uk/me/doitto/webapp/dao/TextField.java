@@ -10,7 +10,8 @@ import javax.persistence.metamodel.SingularAttribute;
  * @author ian
  */
 public enum TextField {
-	name(AbstractEntity_.name);
+	name(AbstractEntity_.name),
+	comments(AbstractEntity_.comments);
 	
 	private final SingularAttribute<AbstractEntity, String> attribute;
 

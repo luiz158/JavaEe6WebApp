@@ -72,6 +72,9 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     	if (incoming.getName() != null) {
     		existing.setName(incoming.getName());
     	}
+    	if (incoming.getComments() != null) {
+    		existing.setComments(incoming.getComments());
+    	}
 		return existing;
 	}
 	

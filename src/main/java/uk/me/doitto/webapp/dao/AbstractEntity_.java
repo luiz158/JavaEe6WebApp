@@ -20,20 +20,26 @@
 package uk.me.doitto.webapp.dao;
 
 import java.util.Date;
+
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
+
+import org.eclipse.persistence.internal.jpa.metamodel.CollectionAttributeImpl;
+
+import uk.me.doitto.webapp.entity.AppUser;
 
 @Generated("EclipseLink-2.0.1.v20100213-r6600 @ Sat Nov 27 13:00:49 GMT 2010")
 @StaticMetamodel(AbstractEntity.class)
 public abstract class AbstractEntity_ { 
 
 	public static volatile SingularAttribute<AbstractEntity, Long> id;
-//	public static volatile SingularAttribute<AbstractEntity, String> xmlId;
-	public static volatile SingularAttribute<AbstractEntity, Date> accessed;
-	public static volatile SingularAttribute<AbstractEntity, Date> created;
-	public static volatile SingularAttribute<AbstractEntity, String> name;
 	public static volatile SingularAttribute<AbstractEntity, Integer> version;
+	public static volatile SingularAttribute<AbstractEntity, String> name;
+	public static volatile SingularAttribute<AbstractEntity, String> comments;
+	public static volatile SingularAttribute<AbstractEntity, Date> created;
 	public static volatile SingularAttribute<AbstractEntity, Date> modified;
+	public static volatile SingularAttribute<AbstractEntity, Date> accessed;
+//	public static volatile CollectionAttributeImpl<AbstractEntity, AppUser> owners;
 
 }

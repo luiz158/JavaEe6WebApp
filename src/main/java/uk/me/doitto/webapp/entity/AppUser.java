@@ -51,8 +51,6 @@ public class AppUser extends AbstractEntity {
 
     private String realName;
     
-    private String comments;
-
     // for hibernate
     public AppUser () {
     }
@@ -60,7 +58,6 @@ public class AppUser extends AbstractEntity {
     // Copy constructor
     public AppUser (final AppUser appUser) {
 		super(appUser);
-		comments = appUser.comments;
 		password = appUser.password;
 		realName = appUser.realName;
 	}
@@ -77,15 +74,6 @@ public class AppUser extends AbstractEntity {
     public void setPassword (final String password) {
     	assert password != null;
         this.password = password;
-    }
-
-    public String getComments () {
-        return comments;
-    }
-
-    public void setComments (final String comments) {
-    	assert comments != null;
-        this.comments = comments;
     }
 
     public String getRealName () {
