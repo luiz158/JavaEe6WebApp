@@ -32,9 +32,10 @@
 		
 		<!-- Converters -->
 		<convert converter="bean" match="uk.me.doitto.webapp.beans.*" />		
-		<convert converter="bean" match="uk.me.doitto.webapp.entity.*" />		
-		<convert converter="bean" match="uk.me.doitto.webapp.dao.AbstractEntity" />
-		
+		<convert converter="bean" match="uk.me.doitto.webapp.entity.*">
+			<param name="exclude" value="jaxbContext" />
+		</convert>		
+		<convert converter="bean" match="uk.me.doitto.webapp.dao.AbstractEntity" />		
 		<convert converter="enum" match="uk.me.doitto.webapp.dao.TextField" />
 		<convert converter="enum" match="uk.me.doitto.webapp.dao.TimeStamp" />
 		
