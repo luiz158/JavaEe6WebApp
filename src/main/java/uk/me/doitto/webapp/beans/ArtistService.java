@@ -27,11 +27,10 @@ import java.util.logging.Level;
 
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.Artist;
+import uk.me.doitto.webapp.util.Globals;
 
 /**
  *
@@ -46,15 +45,7 @@ public class ArtistService extends Crud<Artist> {
 	// needed because this class is tested outside any container so can't just get an initial context
 	private static class FieldHolder {
 		
-		static final ArtistService dwrTrackService = newInstance();
-		
-	    static ArtistService newInstance () {
-	    	try {   		
-	        	return (ArtistService)new InitialContext().lookup("java:global/myapp/ArtistService");
-			} catch (NamingException e) {
-				throw new RuntimeException("Could not create an ArtistService EJB for DWR", e);
-			}
-	    }
+		static final ArtistService dwrTrackService = (ArtistService)Globals.jndiLookup("java:global/myapp/ArtistService");
 	}
 		
     @EJB

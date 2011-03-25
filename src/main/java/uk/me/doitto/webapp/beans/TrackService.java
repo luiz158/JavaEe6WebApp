@@ -24,11 +24,10 @@
 package uk.me.doitto.webapp.beans;
 
 import javax.ejb.Stateless;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.Track;
+import uk.me.doitto.webapp.util.Globals;
 
 /**
  *
@@ -43,15 +42,7 @@ public class TrackService extends Crud<Track> {
 	// needed because this class is tested outside any container so can't just get an initial context
 	private static class FieldHolder {
 		
-		static final TrackService dwrTrackService = newInstance();
-		
-	    static TrackService newInstance () {
-	    	try {   		
-	        	return (TrackService)new InitialContext().lookup("java:global/myapp/TrackService");
-			} catch (NamingException e) {
-				throw new RuntimeException("Could not create a TrackService EJB for DWR", e);
-			}
-	    }
+		static final TrackService dwrTrackService = (TrackService)Globals.jndiLookup("java:global/myapp/TrackService");
 	}
 		
     public TrackService () {

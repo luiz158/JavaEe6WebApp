@@ -30,6 +30,9 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
+import javax.naming.InitialContext;
+import javax.naming.NamingException;
+
 /**
  *
  * @author super
@@ -61,6 +64,15 @@ public class Globals {
                 Logger.getLogger(Globals.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+    }
+    
+    public static Object jndiLookup (final String name) {
+    	assert name != null && name.length() > 0;
+    	try {   		
+        	return new InitialContext().lookup(name);
+		} catch (NamingException e) {
+			throw new RuntimeException("Lookup failed for: " + name, e);
+		}
     }
     
     // Do not instantiate this class!

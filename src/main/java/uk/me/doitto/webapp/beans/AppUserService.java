@@ -24,11 +24,10 @@
 package uk.me.doitto.webapp.beans;
 
 import javax.ejb.Stateless;
-import javax.naming.InitialContext;
-import javax.naming.NamingException;
 
 import uk.me.doitto.webapp.dao.Crud;
 import uk.me.doitto.webapp.entity.AppUser;
+import uk.me.doitto.webapp.util.Globals;
 
 /**
  *
@@ -43,15 +42,7 @@ public class AppUserService extends Crud<AppUser> {
 	// needed because this class is tested outside any container so can't just get an initial context
 	private static class FieldHolder {
 		
-		static final AppUserService dwrTrackService = newInstance();
-		
-	    static AppUserService newInstance () {
-	    	try {   		
-	        	return (AppUserService)new InitialContext().lookup("java:global/myapp/AppUserService");
-			} catch (NamingException e) {
-				throw new RuntimeException("Could not create an AppUserService EJB for DWR", e);
-			}
-	    }
+		static final AppUserService dwrTrackService = (AppUserService)Globals.jndiLookup("java:global/myapp/AppUserService");
 	}
 		
     public AppUserService () {
