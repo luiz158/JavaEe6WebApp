@@ -49,9 +49,9 @@ public class Track extends AbstractEntity {
 
     private static final JAXBContext jaxbContext = initJaxbContext(Track.class);
 
-    private int duration = 0;
+    private int duration;
     
-    private String url = "http://doitto.me.uk/";
+    private String url = "";
 
     /**
      * Intentionally mutable field, so use a concurrent collection

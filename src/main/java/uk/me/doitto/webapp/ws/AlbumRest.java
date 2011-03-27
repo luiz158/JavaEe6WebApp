@@ -82,8 +82,8 @@ public class AlbumRest extends RestCrudBase<Album> {
     	if (incoming.getCatId() != null) {
     		existing.setCatId(incoming.getCatId());
     	}
-    	if (incoming.getDate() != null) {
-    		existing.setDate(incoming.getDate());
+    	if (incoming.getReleaseDate() != null) {
+    		existing.setReleaseDate(incoming.getReleaseDate());
     	}
 		return existing;
 	}

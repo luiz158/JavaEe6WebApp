@@ -23,16 +23,13 @@
 package uk.me.doitto.webapp.entity;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertSame;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.util.Date;
-
-import javax.persistence.metamodel.SingularAttribute;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -42,7 +39,6 @@ import org.junit.Ignore;
 import org.junit.Test;
 
 import uk.me.doitto.webapp.dao.AbstractEntity;
-import uk.me.doitto.webapp.dao.AbstractEntity_;
 import uk.me.doitto.webapp.dao.SimpleEntity;
 
 /**
@@ -122,7 +118,7 @@ public class EntityTest {
 	public void testEntity () {
 		SimpleEntity track = new SimpleEntity();
 		assertNotSame("", this.entity, track);
-		assertNull("", track.getName());
+		assertNotNull("", track.getName());
 	}
 
 	@Test
@@ -136,18 +132,21 @@ public class EntityTest {
 
 	@Ignore
 	@Test
-	public void testCompareToObject() {
-//		SimpleEntity track1 = new SimpleEntity("uapa");
-//		SimpleEntity track2 = new SimpleEntity("ubpa");
-//		SimpleEntity track3 = new SimpleEntity("uapb");
-//		SimpleEntity track4 = new SimpleEntity("ubpb");
-//		SimpleEntity track5 = new SimpleEntity("uapa");
-//		assertEquals("", 0, track1.compareTo(track1));
-//		assertEquals("", 0, track1.compareTo(track5));
-//		assertEquals("", 1, track3.compareTo(track1));
-//		assertEquals("", -1, track1.compareTo(track2));
-//		assertEquals("", -1, track1.compareTo(track3));
-//		assertEquals("", -1, track1.compareTo(track4));
+	public void testCompareToEquals () {
+		SimpleEntity track1 = new SimpleEntity();
+		SimpleEntity track2 = new SimpleEntity();
+		track2.setName("a");
+		SimpleEntity track3 = new SimpleEntity();
+		track3.setName("z");
+		SimpleEntity track4 = new SimpleEntity();
+		track4.setName("z");
+		
+		assertEquals("", 0, track3.compareTo(track4));
+		assertEquals("", 1, track3.compareTo(track1));
+		assertEquals("", 1, track3.compareTo(track2));
+		
+		assertEquals("", 1, track2.compareTo(track1));
+		assertEquals("", -1, track2.compareTo(track4));
 	}
 
 	@Ignore
@@ -194,17 +193,5 @@ public class EntityTest {
 		assertNotSame("Same object!", this.entity.getCreated(), entity.getCreated());
 		assertNotSame("Same object!", this.entity.getModified(), entity.getModified());
 		assertNotSame("Same object!", this.entity.getAccessed(), entity.getAccessed());
-	}
-	
-	@Ignore
-	@SuppressWarnings("unused")
-	@Test
-	public void testMetaModel () {
-//		AbstractEntity_.id.toString();
-//		AbstractEntity_.accessed.toString();
-//		AbstractEntity_.created.toString();
-//		AbstractEntity_.name.toString();
-//		AbstractEntity_.version.toString();
-//		AbstractEntity_.modified.toString();
 	}
 }

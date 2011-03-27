@@ -47,9 +47,9 @@ public class AppUser extends AbstractEntity {
 
     private static final JAXBContext jaxbContext = initJaxbContext(AppUser.class);
 
-	private String password;
+	private String password = "";
 
-    private String realName;
+    private String realName = "";
     
     // for hibernate
     public AppUser () {

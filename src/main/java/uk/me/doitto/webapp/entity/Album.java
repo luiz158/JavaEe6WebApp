@@ -22,15 +22,12 @@
  */
 package uk.me.doitto.webapp.entity;
 
-import java.util.Date;
 import java.util.Set;
 import java.util.concurrent.ConcurrentSkipListSet;
 
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToMany;
-import javax.persistence.Temporal;
-import javax.validation.constraints.Past;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlList;
@@ -54,13 +51,11 @@ public class Album extends AbstractEntity {
 
     private static final JAXBContext jaxbContext = initJaxbContext(Album.class);
 
-    private String label = "UnknownLabel";
+    private String label = "";
 
-    private String catId = "UnknownId";
+    private String catId = "";
 
-    @Temporal(javax.persistence.TemporalType.DATE)
-    @Past
-    private Date releaseDate;
+    private String releaseDate = "";
     
     /**
      * Intentionally mutable field, so use a concurrent collection
@@ -79,10 +74,7 @@ public class Album extends AbstractEntity {
     	super(album);
         label = album.label;
         catId = album.catId;
-        Date albumReleaseDate = album.releaseDate;
-        if (albumReleaseDate != null) {
-            releaseDate = new Date(albumReleaseDate.getTime());
-        }
+        releaseDate = album.releaseDate;
         // intentionally mutable, just pass reference
         tracks = album.tracks;
     }
@@ -130,22 +122,17 @@ public class Album extends AbstractEntity {
      * Getter for the year field
      * @return releaseDate
      */
-    public Date getDate () {
-        if (releaseDate == null) {
-            return null;
-        }
-    	// make defensive copy
-        return new Date(releaseDate.getTime());
+    public String getReleaseDate () {
+        return releaseDate;
     }
 
     /**
      * Setter for the year field
      * @param releaseDate
      */
-    public void setDate (final Date date) {
-    	assert date != null;
-    	// make defensive copy
-        this.releaseDate = new Date(date.getTime());
+    public void setReleaseDate (final String releaseDate) {
+    	assert releaseDate != null;
+        this.releaseDate = releaseDate;
     }
 
     public Set<Track> getTracks () {

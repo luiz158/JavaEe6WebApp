@@ -34,7 +34,7 @@
         <h:form>
             <h:panelGrid columns="2">
                 <h:outputLabel value="#{msg.nameLabel}" />
-                <h:inputText value="#{cc.attrs.controller.item.name}" />
+                <h:inputText value="#{cc.attrs.controller.item.name}" required="true" />
 
                 <h:outputLabel value="#{msg.createdLabel}" />
                 <h:outputText value="#{cc.attrs.controller.item.created}" />

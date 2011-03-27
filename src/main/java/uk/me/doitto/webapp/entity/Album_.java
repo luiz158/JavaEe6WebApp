@@ -19,8 +19,6 @@
 
 package uk.me.doitto.webapp.entity;
 
-import java.util.Date;
-
 import javax.annotation.Generated;
 import javax.persistence.metamodel.SingularAttribute;
 import javax.persistence.metamodel.StaticMetamodel;
@@ -33,7 +31,7 @@ import uk.me.doitto.webapp.dao.AbstractEntity_;
 @StaticMetamodel(Album.class)
 public class Album_ extends AbstractEntity_ {
 
-	public static volatile SingularAttribute<Album, Date> releaseDate;
+	public static volatile SingularAttribute<Album, String> releaseDate;
 	public static volatile SingularAttribute<Album, String> label;
 	public static volatile SingularAttribute<Album, String> catId;
 	public static volatile CollectionAttributeImpl<Album, Track> tracks;

@@ -27,15 +27,11 @@ import java.io.ObjectOutputStream;
 import java.io.StringWriter;
 import java.io.Writer;
 import java.util.Date;
-import java.util.Set;
-import java.util.concurrent.ConcurrentSkipListSet;
 
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.MappedSuperclass;
-import javax.persistence.OneToMany;
 import javax.persistence.PostLoad;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -47,11 +43,7 @@ import javax.xml.bind.Marshaller;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlID;
-import javax.xml.bind.annotation.XmlIDREF;
-import javax.xml.bind.annotation.XmlList;
 import javax.xml.bind.annotation.XmlTransient;
-
-import uk.me.doitto.webapp.entity.AppUser;
 
 /**
  * Abstract implementation of PersistentEntity, in which the primary key type
@@ -85,12 +77,9 @@ public abstract class AbstractEntity implements PersistentEntity<Long>, Comparab
 	@Version
 	protected int version;
 
-	/**
-	 * for default equals(Object) & hashCode()
-	 */
-	protected String name;
+	protected String name = "";
 
-	protected String comments;
+	protected String comments = "";
 
     @Temporal(TemporalType.TIMESTAMP)
 	private Date created;

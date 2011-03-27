@@ -23,14 +23,11 @@
 package uk.me.doitto.webapp.entity;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-
-import javax.persistence.metamodel.SingularAttribute;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -138,23 +135,8 @@ public class UserTest {
 	public void testUser() {
 		AppUser appUser = new AppUser();
 		assertNotSame("", user, appUser);
-		assertNull("", appUser.getName());
-		assertNull("", appUser.getPassword());
-	}
-
-	/**
-	 * Test method for {@link uk.me.doitto.webapp.entity.AppUser#AppUser(java.lang.String, java.lang.String)}.
-	 */
-	@Test
-	public void testUserStringString() {
-		String username = "user";
-		String password = "pass";
-		AppUser appUser = new AppUser();
-		appUser.setName(username);
-		appUser.setPassword(password);
-		assertNotSame("", user, appUser);
-		assertEquals("", username, appUser.getName());
-		assertEquals("", password, appUser.getPassword());
+		assertNotNull("", appUser.getName());
+		assertNotNull("", appUser.getPassword());
 	}
 
 	/**
@@ -199,7 +181,7 @@ public class UserTest {
 	}
 	
 	@Ignore
-	@SuppressWarnings("unused")
+//	@SuppressWarnings("unused")
 	@Test
 	public void testMetaModel () {
 //		SingularAttribute<AppUser, String> realName = AppUser_.realName;

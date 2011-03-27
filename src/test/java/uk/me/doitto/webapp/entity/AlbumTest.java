@@ -23,16 +23,12 @@
 package uk.me.doitto.webapp.entity;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNotSame;
-import static org.junit.Assert.assertNull;
 import static org.junit.Assert.fail;
 
 import java.io.IOException;
-import java.util.Date;
 
-import javax.persistence.metamodel.SingularAttribute;
-
-import org.eclipse.persistence.internal.jpa.metamodel.CollectionAttributeImpl;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -106,10 +102,13 @@ public class AlbumTest {
 	}
 
 	@Test
-	public void testalbum () {
+	public void testAlbum () {
 		Album album = new Album();
 		assertNotSame("", this.album, album);
-		assertNull("", album.getName());
+		assertNotNull("", album.getName());
+		assertNotNull("", album.getCatId());
+		assertNotNull("", album.getLabel());
+		assertNotNull("", album.getReleaseDate());
 	}
 
 	@Ignore
@@ -145,15 +144,5 @@ public class AlbumTest {
 		assert album != null;
 		assertNotSame("Same object!", this.album, album);
 		assertEquals("Wrong class!", album.getClass(), this.album.getClass());
-	}
-	
-	@Ignore
-	@SuppressWarnings("unused")
-	@Test
-	public void testMetaModel () {
-//		SingularAttribute<Album, Date> releaseDate = Album_.releaseDate;
-//		SingularAttribute<Album, String> label = Album_.label;
-//		SingularAttribute<Album, String> catId = Album_.catId;
-//		CollectionAttributeImpl<Album, Track> tracks = Album_.tracks;
 	}
 }
