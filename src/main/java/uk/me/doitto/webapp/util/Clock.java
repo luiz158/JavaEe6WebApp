@@ -4,9 +4,9 @@ import java.util.Date;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import org.directwebremoting.Browser;
-import org.directwebremoting.ServerContextFactory;
-import org.directwebremoting.ui.dwr.Util;
+//import org.directwebremoting.Browser;
+//import org.directwebremoting.ServerContextFactory;
+//import org.directwebremoting.ui.dwr.Util;
 
 /**
  * Created by DWR
@@ -47,11 +47,11 @@ public class Clock implements Runnable {
 	 *            The string to display.
 	 */
 	public void setClockDisplay (final String output) {
-		Browser.withPage(ServerContextFactory.get().getContextPath() + "/", new Runnable() {
-			@Override
-			public void run() {
-				Util.setValue("clockDisplay", output);
-			}
-		});
+//		Browser.withPage(ServerContextFactory.get().getContextPath() + "/", new Runnable() {
+//			@Override
+//			public void run() {
+//				Util.setValue("clockDisplay", output);
+//			}
+//		});
 	}
 }
