@@ -555,6 +555,35 @@ public class RestIntegrationTest {
     	System.out.println("Linked Album: ");
     	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
     	System.out.println("");
+        
+        // unlink first one
+    	request = new WebRequest(new URL(REST_URL + ArtistRest.PATH + "/" + ArtistRest.UNLINK_ALBUM), HttpMethod.GET);
+    	List<NameValuePair> parameters3 = new ArrayList<NameValuePair>();
+    	parameters3.add(new NameValuePair(ArtistRest.QP_ARTISTID, artistId));
+    	parameters3.add(new NameValuePair(AlbumRest.QP_ALBUMID, album1Id));
+    	request.setRequestParameters(parameters3);
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        
+    	// get artist by ID, JSON
+    	request = new WebRequest(new URL(artistlocation), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+    	System.out.println("Artist: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+        
+    	// get albums by ID, JSON
+    	request = new WebRequest(new URL(album1location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+    	System.out.println("Linked Album: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	request = new WebRequest(new URL(album2location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+    	System.out.println("Linked Album: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
 }
     
     @Test
@@ -610,6 +639,35 @@ public class RestIntegrationTest {
     	parameters2.add(new NameValuePair(AlbumRest.QP_ALBUMID, albumId));
     	parameters2.add(new NameValuePair(TrackRest.QP_TRACKID, track2Id));
     	request.setRequestParameters(parameters2);
+    	request.setCharset(ENCODING);
+        response = webClient.getPage(request).getWebResponse();
+        
+    	// get album by ID, JSON
+    	request = new WebRequest(new URL(albumlocation), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+    	System.out.println("Album: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+        
+    	// get tracks by ID, JSON
+    	request = new WebRequest(new URL(track1location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+    	System.out.println("Linked track: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	request = new WebRequest(new URL(track2location), HttpMethod.GET);
+    	request.setAdditionalHeader(ACCEPT, MediaType.APPLICATION_JSON);
+    	request.setCharset(ENCODING);
+    	System.out.println("Linked track: ");
+    	System.out.println(webClient.getPage(request).getWebResponse().getContentAsString());
+    	System.out.println("");
+        
+        // unlink first one
+    	request = new WebRequest(new URL(REST_URL + AlbumRest.PATH + "/" + AlbumRest.UNLINK_TRACK), HttpMethod.GET);
+    	List<NameValuePair> parameters3 = new ArrayList<NameValuePair>();
+    	parameters3.add(new NameValuePair(AlbumRest.QP_ALBUMID, albumId));
+    	parameters3.add(new NameValuePair(TrackRest.QP_TRACKID, track1Id));
+    	request.setRequestParameters(parameters3);
     	request.setCharset(ENCODING);
         response = webClient.getPage(request).getWebResponse();
         
