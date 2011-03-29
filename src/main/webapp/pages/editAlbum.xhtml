@@ -33,9 +33,7 @@
             <ui:define name="content">
                 <local:itemEditor controller="#{albumController}">
                     <h:outputLabel value="#{msg.dateLabel}" />
-                    <h:inputText value="#{albumController.item.date}">
-                        <f:convertDateTime pattern="yyyy" />
-                    </h:inputText>
+                    <h:inputText value="#{albumController.item.releaseDate}" />
 
                     <h:outputLabel value="#{msg.labelLabel}" />
                     <h:inputText value="#{albumController.item.label}" />
