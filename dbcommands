@@ -1,0 +1,43 @@
+#!/bin/bash
+#set -x
+host="${1:-localhost}"
+port="${2:-9090}"
+
+root='/home/super/QNAP/Public/Freecom400GB/jukebox/playlist'
+#headers='-H "Content-Type: application/json" -H "Accept: application/json"'
+resources="http://$host:$port/jee6webapp/resources"
+
+function getId () {
+	set `echo $1 | sed 's/[\/\r\n]/ /g'`
+	shift `expr $# - 1`
+	echo $1
+}
+
+while read artist
+do
+	echo $artist
+	# Create artist
+	set `curl -s -i -X POST -H "Content-Type: application/json" -H "Accept: application/json" --data-binary "{\"name\":\"$artist\"}" $resources/artist | grep Location`
+	artistId=`getId $2`
+	while read album
+	do
+		echo "    " $album
+		# Create album
+		set `curl -s -i -X POST -H "Content-Type: application/json" -H "Accept: application/json" --data-binary "{\"name\":\"$album\"}" $resources/album | grep Location`
+		albumId=`getId $2`
+		# Link to parent
+		echo "    " Linking $albumId $album to $artistId $artist
+		curl -i -X GET "$resources/artist/linkalbum?artistid=$artistId&albumid=$albumId"
+		while read track
+		do
+			echo "        " $track
+			# Create track
+			set `curl -s -i -X POST -H "Content-Type: application/json" -H "Accept: application/json" --data-binary "{\"name\":\"$track\"}" $resources/track | grep Location`
+			trackId=`getId $2`
+			# Link to parent
+			echo "    " Linking $trackId $track to $albumId $album
+			curl -i -X GET "$resources/album/linktrack?albumid=$albumId&trackid=$trackId"
+		done < <(ls $root/"$artist"/"$album")
+	done < <(ls $root/"$artist")
+done < <(ls $root)
+
