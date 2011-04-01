@@ -65,4 +65,7 @@ public interface IRestCrud<T extends AbstractEntity, PK extends Serializable> ex
     
     List<T> notDuring (String attribute, long date1, long date2);
 
-    List<T> search (String queryString);}
+    List<T> search (String queryString);
+
+    List<T> searchInsensitive (String queryString);
+}

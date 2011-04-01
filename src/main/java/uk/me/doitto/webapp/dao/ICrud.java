@@ -59,4 +59,6 @@ public interface ICrud<T, PK extends Serializable> extends IDb<PK> {
     List<T> notDuring (TimeStamp attribute, Date date1, Date date2);
     
     List<T> search (TextField attribute, String queryString);
+    
+    List<T> searchInsensitive (TextField attribute, String queryString);
 }

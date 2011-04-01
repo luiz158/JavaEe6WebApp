@@ -215,6 +215,20 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
         query.select(root).where(builder.like(root.get(attribute.getValue()), "%" + queryString + "%"));
         return em.createQuery(query).getResultList();
     }
+
+    @Override
+    public List<T> searchInsensitive (final TextField attribute, final String queryString) {
+		assert em != null;
+		assert attribute != null;
+		assert queryString != null;
+		assert queryString.length() > 0;
+    	LOGGER.log(Level.FINE, "search() " + type);
+    	CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaQuery<T> query = builder.createQuery(type);
+        Root<T> root = query.from(type);
+        query.select(root).where(builder.like(builder.upper(root.get(attribute.getValue())), "%" + queryString.toUpperCase() + "%"));
+        return em.createQuery(query).getResultList();
+    }
     
     @Override
 	public int count () {

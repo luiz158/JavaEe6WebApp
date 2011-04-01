@@ -43,6 +43,8 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
     
     public static final String SEARCH = "search";
     
+    public static final String SEARCH_INSENSITIVE = "isearch";
+    
     public static final String ID = "id";
     
     public static final String ATTRIBUTE = "attribute";
@@ -208,5 +210,14 @@ public abstract class RestCrudBase<T extends AbstractEntity> implements IRestCru
 	public List<T> search (@QueryParam(QUERY) final String query) {
 		assert query != null;
 		return getService().search(TextField.name, query);
+	}
+
+    @GET
+    @Path(SEARCH_INSENSITIVE)
+    @Produces({MediaType.APPLICATION_XML, MediaType.APPLICATION_JSON})
+	@Override
+	public List<T> searchInsensitive (@QueryParam(QUERY) final String query) {
+		assert query != null;
+		return getService().searchInsensitive(TextField.name, query);
 	}
 }
