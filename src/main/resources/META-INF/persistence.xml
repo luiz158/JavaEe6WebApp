@@ -29,8 +29,11 @@
       <property name="eclipselink.ddl-generation" value="drop-and-create-tables"/>
       <!-- log sqls executed in server.log -->
       <property name="eclipselink.logging.level" value="FINE"/>
+<!--		<property name="eclipselink.logging.level.sql" value="FINEST" />-->
+<!--		<property name="eclipselink.logging.level.cache" value="FINE" />-->
       <!-- Instruct EclipseLink to not log execeptions it throws. Lets the application decide about it-->
       <property name="eclipselink.logging.exceptions" value="false"/>
+<!--		<property name="eclipselink.weaving" value="static" />-->
     </properties>
   </persistence-unit>
 </persistence>
