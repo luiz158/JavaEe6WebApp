@@ -114,22 +114,6 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
     }
 
     @Override
-    public List<T> findAll () {
-        return findAllRange(0, 0);
-    }
-
-    @Override
-	public List<T> findAllRange (final int first, final int max) {
-		assert em != null;
-		assert first >= 0;
-		assert max >= 0;
-    	LOGGER.log(Level.FINE, "findAll(first, max) " + type);
-    	CriteriaQuery<T> cq = em.getCriteriaBuilder().createQuery(type);
-        cq.select(cq.from(type));
-        return em.createQuery(cq).setFirstResult(first).setMaxResults(max).getResultList();
-    }
-    
-    @Override
     public List<T> findByNamedQuery (final String queryName, final Map<String, Object> parameters) {
         return findByNamedQueryRange(queryName, parameters, 0, 0);
     }
@@ -150,6 +134,22 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
         return query.setFirstResult(first).setMaxResults(max).getResultList();
     }
 
+    @Override
+    public List<T> findAll () {
+        return findAllRange(0, 0);
+    }
+
+    @Override
+	public List<T> findAllRange (final int first, final int max) {
+		assert em != null;
+		assert first >= 0;
+		assert max >= 0;
+    	LOGGER.log(Level.FINE, "findAll(first, max) " + type);
+    	CriteriaQuery<T> cq = em.getCriteriaBuilder().createQuery(type);
+        cq.select(cq.from(type));
+        return em.createQuery(cq).setFirstResult(first).setMaxResults(max).getResultList();
+    }
+    
     @Override
 	public List<T> before (final TimeStamp attribute, final Date date) {
 		assert em != null;
@@ -222,7 +222,7 @@ public abstract class Crud <T extends AbstractEntity> implements ICrud<T, Long> 
 		assert attribute != null;
 		assert queryString != null;
 		assert queryString.length() > 0;
-    	LOGGER.log(Level.FINE, "search() " + type);
+    	LOGGER.log(Level.FINE, "searchInsensitive() " + type);
     	CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<T> query = builder.createQuery(type);
         Root<T> root = query.from(type);
