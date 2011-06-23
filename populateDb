@@ -2,54 +2,49 @@
 
 host="${1:-localhost}"
 port="${2:-9090}"
+contentRoot="${3:-/home/*/QNAP/Public/Freecom400GB/jukebox/playlist}"
+resources="http://$host:$port/jee6webapp/resources"
 
 for i in 0 1 2 3 4 5 6 7 8 9
 do
 	curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" \
-		--data-binary "{\"name\":\"user$i\",\"password\":\"password$i\",\"realName\":\"User $i\",\"comments\":\"No comment\"}" \
-		http://$host:$port/jee6webapp/resources/appuser
+		--data-binary "{\"name\":\"user$i\",\"password\":\"password$i\",\"realName\":\"User $i\",\"comments\":\"No comment\"}" $resources/appuser
 	echo ""
 done
-curl -i -H "Accept: application/json" -X GET http://$host:$port/jee6webapp/resources/appuser
+curl -i -H "Accept: application/json" -X GET $resources/appuser
 echo ""
 
 while read a b c d e f g h
 do
 	if [ -n "$h" ]
 	then
-		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" \
-			--data-binary "{\"name\":\"$h\"}" \
-			http://$host:$port/jee6webapp/resources/artist
+		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" --data-binary "{\"name\":\"$h\"}" $resources/artist
 		echo ""
 	fi
-done < <(ls -l /home/*/QNAP/Public/Freecom400GB/jukebox/playlist)
-curl -i -H "Accept: application/json" -X GET http://$host:$port/jee6webapp/resources/artist
+done < <(ls -l $contentRoot)
+curl -i -H "Accept: application/json" -X GET $resources/artist
 echo ""
 
 while read a b c d e f g h
 do
 	if [ -n "$h" ]
 	then
-		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" \
-			--data-binary "{\"name\":\"$h\"}" \
-			http://$host:$port/jee6webapp/resources/album
+		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" --data-binary "{\"name\":\"$h\"}" $resources/album
 		echo ""
 	fi
-done < <(ls -l /home/*/QNAP/Public/Freecom400GB/jukebox/playlist/*)
-curl -i -H "Accept: application/json" -X GET http://$host:$port/jee6webapp/resources/album
+done < <(ls -l $contentRoot/*)
+curl -i -H "Accept: application/json" -X GET $resources/album
 echo ""
 
 while read a b c d e f g h
 do
 	if [ -n "$h" ]
 	then
-		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" \
-			--data-binary "{\"name\":\"$h\"}" \
-			http://$host:$port/jee6webapp/resources/track
+		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" --data-binary "{\"name\":\"$h\"}" $resources/track
 		echo ""
 	fi
-done < <(ls -l /home/*/QNAP/Public/Freecom400GB/jukebox/playlist/*/*)
-curl -i -H "Accept: application/json" -X GET http://$host:$port/jee6webapp/resources/track
+done < <(ls -l $contentRoot/*/*)
+curl -i -H "Accept: application/json" -X GET $resources/track
 echo ""
 
 exit 0
