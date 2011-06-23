@@ -5,50 +5,53 @@ port="${2:-9090}"
 contentRoot="${3:-/home/*/QNAP/Public/Freecom400GB/jukebox/playlist}"
 resources="http://$host:$port/jee6webapp/resources"
 
+content='Content-Type: application/json'
+accept='Accept: application/json'
+
 for i in 0 1 2 3 4 5 6 7 8 9
 do
-	curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" \
-		--data-binary "{\"name\":\"user$i\",\"password\":\"password$i\",\"realName\":\"User $i\",\"comments\":\"No comment\"}" $resources/appuser
+	curl -X POST -H "$content" -H "$accept" --data-binary "{\"name\":\"user$i\",\"password\":\"password$i\",\"realName\":\"User $i\",\"comments\":\"No comment\"}" $resources/appuser
 	echo ""
 done
-curl -i -H "Accept: application/json" -X GET $resources/appuser
+curl -i -H "$accept" -X GET $resources/appuser
 echo ""
 
 while read a b c d e f g h
 do
 	if [ -n "$h" ]
 	then
-		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" --data-binary "{\"name\":\"$h\"}" $resources/artist
+		curl -X POST -H "$content" -H "$accept" --data-binary "{\"name\":\"$h\"}" $resources/artist
 		echo ""
 	fi
 done < <(ls -l $contentRoot)
-curl -i -H "Accept: application/json" -X GET $resources/artist
+curl -i -H "$accept" -X GET $resources/artist
 echo ""
 
 while read a b c d e f g h
 do
 	if [ -n "$h" ]
 	then
-		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" --data-binary "{\"name\":\"$h\"}" $resources/album
+		curl -X POST -H "$content" -H "$accept" --data-binary "{\"name\":\"$h\"}" $resources/album
 		echo ""
 	fi
 done < <(ls -l $contentRoot/*)
-curl -i -H "Accept: application/json" -X GET $resources/album
+curl -i -H "$accept" -X GET $resources/album
 echo ""
 
 while read a b c d e f g h
 do
 	if [ -n "$h" ]
 	then
-		curl -X POST -H "Content-Type: application/json" -H "Accept: application/json" --data-binary "{\"name\":\"$h\"}" $resources/track
+		curl -X POST -H "$content" -H "$accept" --data-binary "{\"name\":\"$h\"}" $resources/track
 		echo ""
 	fi
 done < <(ls -l $contentRoot/*/*)
-curl -i -H "Accept: application/json" -X GET $resources/track
+curl -i -H "$accept" -X GET $resources/track
 echo ""
 
 exit 0
 
+# examples . . . 
 curl -X GET -H "Accept: application/json" http://localhost:9090/jee6webapp/resources/artist
 
 curl -X POST --data-binary "{\"name\":\"XXXXX\",\"url\":\"http://doitto.me.uk\",\"duration\":\"210\"}" -H "Content-Type: application/json" -H "Accept: application/json" http://localhost:9090/jee6webapp/resources/track
